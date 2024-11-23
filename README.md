@@ -26,3 +26,31 @@
 - utils:
     * không biết giải thích ntn:)) mn cx ko cần quan tâm đến thư mục này:))
 - còn lại là các file môi trường và thư viện
+# hướng dẫn tạo một component mới
+- đầu tiên vào App.js để khai báo route mình muốn tạo, kèm theo component mà mình muốn render, ví dụ Đức trích câu lệnh sau ở trong App.js:
+    * <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
+    * giải thích:
+        - Route cũng là một thẻ
+        - path là đường link của route đó, ở ví dụ thì path là {path.SYSTEM}, không phải là dạng cú pháp /.../.../... tại vì nó đã được tham chiếu ở file constant.js và đoạn lệnh đó là 
+        export const path = {
+            HOME: '/',
+            LOGIN: '/login',
+            LOG_OUT: '/logout',
+            SYSTEM: '/system'   //đây chính nó
+        };
+        hàm này đã export ra cho những file khác rằng nếu ghi path.SYSTEM thì sẽ được hiểu là đường link /system, tất nhiên ở đâu muốn sử dụng thì cũng cần import
+        - tiếp theo là component mà đường link này sẽ render ra, tên của component chính là userIsAuthenticated, đây là một component đặc biệt vì nó cần phải xác thực là đã có ai đăng nhập vào chưa thì mới render, nhưng những component đơn giản như homePage, có thể truy cập mà không cần phải đăng nhập thì đoạn lệnh trên có thể là <Route path={path.HOMEPAGE} component={homePage} />, với component homePage được import từ trong containers
+- tiếp theo là tạo component homePage trong containers, có thể tạo thêm thư mục trong đó để chứa cả file .js và .scss (file .scss sẽ cho mn code theo class cha con, class con ở trong class cha chứ không như file .css thông thường)
+- ở trong một component, sẽ có:
+    * class
+    * trong class có
+        - constructor: khai báo state của component
+        - hàm componentDidMount
+        - hàm componentDidUpdate
+        - hàm render
+        - và các hàm xử lý sự kiện
+        - vòng đời của một component như sau:
+            * render -> componentDidMount -> componentDidUpdate -> render
+            * và mỗi khi state của component bị thay đổi, component đó sẽ được render lại
+    * mapStateToProps để lấy dữ liệu từ redux
+    * mapDispatchToProps để có thể sử dụng hàm mà lấy dữ liệu từ backend để lưu vào redux
