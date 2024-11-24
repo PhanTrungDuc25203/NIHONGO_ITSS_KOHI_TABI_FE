@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Aquire';
+    src: url('../../assets/fonts/AquireBold-8Ma60.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .header {
     display: flex;
     align-items: center;
@@ -14,14 +21,20 @@
     align-items: center;
 }
 
+.logoKohi, .logoTabi {
+    font-family: 'Aquire', sans-serif; /* Sử dụng font Aquire cho logo */
+    font-weight: normal;
+    font-size: 24px;
+}
+
 .logoKohi {
-    color: #ff8243;
+    color: #ffa16c;
     font-weight: bold;
     font-size: 24px;
 }
 
 .logoTabi {
-    color: #000;
+    color: #2d2d2d;
     font-weight: bold;
     font-size: 24px;
     margin-left: 5px;
@@ -39,11 +52,14 @@
     top: 50%; /* Căn giữa theo chiều dọc */
     transform: translateY(-50%); /* Căn giữa theo chiều dọc */
     height: 100%; /* Lấp đầy chiều cao */
+    font-family: 'Inter', sans-serif;
+    font-weight: normal;
+    font-size: 24px;
 }
 
 .userAvatar {
-    width: 40px;
-    height: 40px;
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     border: 2px solid #ffffff; /* Viền trắng */
     overflow: hidden; /* Đảm bảo ảnh không vượt ra ngoài khung tròn */
