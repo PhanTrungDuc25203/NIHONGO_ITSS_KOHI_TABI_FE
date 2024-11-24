@@ -3,7 +3,8 @@ export const path = {
     LOGIN: '/login',
     LOG_OUT: '/logout',
     SYSTEM: '/system',
-    USER_PREFERENCE: '/user-preference'
+    HEADER: '/header',
+    NAVIGATION: '/navigation',
 };
 
 export const languages = {
