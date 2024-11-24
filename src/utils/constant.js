@@ -5,6 +5,7 @@ export const path = {
     SYSTEM: '/system',
     HEADER: '/header',
     NAVIGATION: '/navigation',
+    USER_PREFERENCE: '/user-preference',
 };
 
 export const languages = {
