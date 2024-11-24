@@ -1,0 +1,73 @@
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e7e7e7;
+    position: relative; /* Để đặt .userInfo tuyệt đối */
+}
+
+.logo {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.logoKohi {
+    color: #ff8243;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.logoTabi {
+    color: #000;
+    font-weight: bold;
+    font-size: 24px;
+    margin-left: 5px;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ffa16c; /* Viền cam */
+    border-radius: 10px; /* Bo tròn viền */
+    padding: 10px 15px;
+    background-color: #ffa16c;
+    position: absolute; /* Đặt tuyệt đối */
+    right: 0; /* Đặt ở bên phải */
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+    height: 100%; /* Lấp đầy chiều cao */
+}
+
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ffffff; /* Viền trắng */
+    overflow: hidden; /* Đảm bảo ảnh không vượt ra ngoài khung tròn */
+}
+
+.userAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy khung tròn */
+}
+
+.userText {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.userName {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 2px; /* Thêm khoảng cách giữa tên và email */
+}
+
+.userEmail {
+    font-size: 14px;
+    color: #555;
+}

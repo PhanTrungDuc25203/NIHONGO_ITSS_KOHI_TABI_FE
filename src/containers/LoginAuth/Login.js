@@ -70,7 +70,7 @@ class Login extends Component {
                 <div className="login-container">
                     <div className="logo">
                         <span className="logo-text-1">KOHI</span>
-                        <span className="logo-text-2">TABi</span>
+                        <span className="logo-text-2">TABI</span>
                     </div>
                     <h2 className="login-title">Login</h2>
                     <p className="login-subtitle">Discover a new world of coffee</p>
