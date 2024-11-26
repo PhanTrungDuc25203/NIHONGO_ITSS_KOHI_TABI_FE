@@ -122,7 +122,13 @@ class Homepage extends Component {
                                         className="input-time"
                                         placeholder="7"
                                         value={this.state.openingStartHour || ''}
-                                        onChange={(e) => this.setState({ openingStartHour: e.target.value })}
+                                        onChange={(e) => {
+                                        const value = e.target.value.replace(/\D/g, '');
+                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                            console.log(value);
+                                            this.setState({ openingStartHour: value });
+                                        }
+                                        }}
                                     />
                                     <p>:</p>
                                     <input
@@ -130,7 +136,13 @@ class Homepage extends Component {
                                         className="input-time"
                                         placeholder="30"
                                         value={this.state.openingStartMinute || ''}
-                                        onChange={(e) => this.setState({ openingStartMinute: e.target.value })}
+                                        onChange={(e) => {
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
+                                                console.log(value);
+                                                this.setState({ openingStartHour: value });
+                                            }
+                                            }}
                                     />
                                     <p>-</p>
                                     <input
@@ -138,7 +150,13 @@ class Homepage extends Component {
                                         className="input-time"
                                         placeholder="21"
                                         value={this.state.closingStartHour || ''}
-                                        onChange={(e) => this.setState({ closingStartHour: e.target.value })}
+                                        onChange={(e) => {
+                                        const value = e.target.value.replace(/\D/g, '');
+                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                            console.log(value);
+                                            this.setState({ openingStartHour: value });
+                                        }
+                                        }}
                                     />
                                     <p>:</p>
                                     <input
@@ -146,7 +164,13 @@ class Homepage extends Component {
                                         className="input-time"
                                         placeholder="30"
                                         value={this.state.closingStartMinute || ''}
-                                        onChange={(e) => this.setState({ closingStartMinute: e.target.value })}
+                                        onChange={(e) => {
+                                        const value = e.target.value.replace(/\D/g, '');
+                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
+                                            console.log(value);
+                                            this.setState({ openingStartHour: value });
+                                        }
+                                        }}
                                     />
                                 </div>
                             </div>
