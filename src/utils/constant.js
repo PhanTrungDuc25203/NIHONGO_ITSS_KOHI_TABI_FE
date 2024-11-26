@@ -6,6 +6,7 @@ export const path = {
     HEADER: '/header',
     NAVIGATION: '/navigation',
     USER_PREFERENCE: '/user-preference',
+    HOMEPAGE: '/homepage',
 };
 
 export const languages = {
