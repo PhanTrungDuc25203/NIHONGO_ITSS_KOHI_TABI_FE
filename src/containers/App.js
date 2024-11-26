@@ -15,6 +15,7 @@ import Home from '../routes/Home';
 import System from '../routes/System';
 import Header from './Header/Header';
 import Login from './LoginAuth/Login';
+import UsersHeader from '../components/Users/Header';
 import UserPreference from './UserPreference/UserPreference';
 
 import ConfirmModal from '../components/ConfirmModal';
@@ -53,6 +54,7 @@ class App extends Component {
                                 <Route path={path.HOME} exact component={(Home)} />
                                 <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
                                 <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
+                                <Route path={path.HEADER} component={UsersHeader} />
                                 <Route path={path.USER_PREFERENCE} component={UserPreference} />
                             </Switch>
                         </span>

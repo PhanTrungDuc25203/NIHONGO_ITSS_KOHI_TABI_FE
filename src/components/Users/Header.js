@@ -16,7 +16,7 @@ class UsersHeader extends Component {
                     </div>
                     <div className="userText">
                         <span className="userName">Đỗ Thùy Dương</span>
-                        <span className="userEmail">magi@example.com</span>
+                        <span className="userEmail">dothuyduong25022003@gmail.com</span>
                     </div>
                 </div>
             </div>
