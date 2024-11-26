@@ -4,13 +4,11 @@ import './UserPreference.scss';
 
 const UserPreference = () => {
     const [preferences, setPreferences] = useState([
-        { title: "Type", items: ["Cafe", "Breakfast", "Cat", "Brunch", "Classic"] },
         { title: "Style", items: ["Cafe Bakery", "Modern", "Pop-up Cafe", "Themed Cafe"] },
-        { title: "Special Services", items: ["Books", "Laptop"] },
+        { title: "Preferred Services", items: ["Books", "Laptop"] },
         { title: "Preferred Amenities", items: ["Bed", "Sofa", "TV"] },
-        { title: "Black List", items: ["Aha Coffee", "Phúc Long", "Constrast", "TocoToco"] },
-        { title: "Favorite Drink", items: ["Mojito", "Daiquiri", "Margarita", "Comospolitan"] },
-        { title: "Favorite Time", items: ["7:30", "14:30", "20:00"] }
+        { title: "Preferred Drink", items: ["Mojito", "Daiquiri", "Margarita", "Comospolitan"] },
+        { title: "Preferred Time", items: ["7:30", "14:30", "20:00"] }
     ]);
 
     const [distance, setDistance] = useState('');
