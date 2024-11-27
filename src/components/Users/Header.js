@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'; // Import withRouter
 import './Header.scss';
 import avatar from '../../assets/header/avatar.jpg';
 import { LanguageUtils, languages } from "../../utils";
@@ -24,13 +25,14 @@ class UsersHeader extends Component {
 
     changeLanguage(language) {
         this.props.switchLanguageOfWebsite(language);
+    handleLogoClick = () => {
+        this.props.history.push('/homepage'); // Chuyển hướng đến /homepage
     }
 
     render() {
-        console.log("check props: ", this.props);
         return (
             <div className="header">
-                <div className="logo">
+                <div className="logo" onClick={this.handleLogoClick}>
                     <span className="logoKohi">KOHI</span>
                     <span className="logoTabi">TABI</span>
                 </div>
@@ -76,4 +78,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersHeader);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UsersHeader));
