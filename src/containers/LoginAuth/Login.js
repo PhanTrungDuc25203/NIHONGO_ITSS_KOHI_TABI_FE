@@ -42,7 +42,9 @@ class Login extends Component {
                 });
             }
             if (data && data.errCode === 0) {
-                //cần sử dụng tới redux
+                //cần sử dụng tới redux'
+                // console.log("CHeck user: ", data.user);
+                this.props.userLoginSuccess(data.user);
             }
         } catch (e) {
             if (e.response) {
@@ -136,7 +138,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         navigate: (path) => dispatch(push(path)),
-        adminLoginSuccess: (adminInfo) => dispatch(actions.adminLoginSuccess(adminInfo)),
+        userLoginSuccess: (userInfor) => dispatch(actions.userLoginSuccess(userInfor)),
         adminLoginFail: () => dispatch(actions.adminLoginFail()),
     };
 };

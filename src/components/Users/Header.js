@@ -12,14 +12,19 @@ class UsersHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            userName: '',
+            email: '',
         };
     }
 
     componentDidMount() {
-        
+
     }
 
+    componentDidUpdate(prevProps) { }
+
+    changeLanguage(language) {
+        this.props.switchLanguageOfWebsite(language);
     handleLogoClick = () => {
         this.props.history.push('/homepage'); // Chuyển hướng đến /homepage
     }
@@ -36,13 +41,41 @@ class UsersHeader extends Component {
                         <img src={avatar} alt="avatar" />
                     </div>
                     <div className="userText">
-                        <span className="userName">Đỗ Thùy Dương</span>
-                        <span className="userEmail">magi@example.com</span>
+                        <span className="userName">{this.props.isLoggedIn ?
+                            this.props.userInfo.name
+                            :
+                            'Đăng nhập'
+                        }</span>
+                        <span className="userEmail">
+                            {this.props.isLoggedIn ?
+                                this.props.userInfo.email
+                                :
+                                ''
+                            }
+                        </span>
                     </div>
+                    <button
+                        onClick={() => { this.changeLanguage(languages.EN) }}
+                        hidden
+                    >Change language</button>
                 </div>
             </div>
         );
     }
 }
 
-export default withRouter(connect(null, actions)(UsersHeader));
+const mapStateToProps = state => {
+    return {
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        switchLanguageOfWebsite: (language) => dispatch(actions.switchLanguageOfWebsite(language)),
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UsersHeader));
