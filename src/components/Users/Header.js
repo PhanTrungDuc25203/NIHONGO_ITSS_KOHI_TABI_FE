@@ -39,7 +39,7 @@ class UsersHeader extends Component {
                     </div>
                     <div className="userText">
                         <span className="userName"><FormattedMessage id="header.user-logo.name"/></span>
-                        <span className="userEmail">dothuyduong25022003@gmail.com</span>
+                        <span className="userEmail">kohitabi@gmail.com</span>
                     </div>
                     <button
                         onClick={()=>{this.changeLanguage(languages.EN)}}
