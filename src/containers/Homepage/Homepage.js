@@ -5,7 +5,7 @@ import * as actions from "../../store/actions";
 import { KeyCodeUtils, LanguageUtils } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
-import Header from '../Header/Header';
+import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
 
 class Homepage extends Component {
