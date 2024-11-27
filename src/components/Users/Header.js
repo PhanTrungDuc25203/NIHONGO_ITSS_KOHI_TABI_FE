@@ -1,5 +1,6 @@
 import { Component } from "react";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'; // Import withRouter
 import './Header.scss';
 import avatar from '../../assets/header/avatar.jpg';
 import { LanguageUtils, languages } from "../../utils";
@@ -19,17 +20,14 @@ class UsersHeader extends Component {
         
     }
 
-    componentDidUpdate(prevProps) {}
-
-    changeLanguage(language) {
-        this.props.switchLanguageOfWebsite(language);
+    handleLogoClick = () => {
+        this.props.history.push('/homepage'); // Chuyển hướng đến /homepage
     }
 
     render() {
-        console.log("check props: ", this.props);
         return (
             <div className="header">
-                <div className="logo">
+                <div className="logo" onClick={this.handleLogoClick}>
                     <span className="logoKohi">KOHI</span>
                     <span className="logoTabi">TABI</span>
                 </div>
@@ -38,29 +36,13 @@ class UsersHeader extends Component {
                         <img src={avatar} alt="avatar" />
                     </div>
                     <div className="userText">
-                        <span className="userName"><FormattedMessage id="header.user-logo.name"/></span>
-                        <span className="userEmail">kohitabi@gmail.com</span>
+                        <span className="userName">Đỗ Thùy Dương</span>
+                        <span className="userEmail">magi@example.com</span>
                     </div>
-                    <button
-                        onClick={()=>{this.changeLanguage(languages.EN)}}
-                        hidden
-                    >Change language</button>
                 </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        language: state.app.language,
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        switchLanguageOfWebsite: (language) => dispatch(actions.switchLanguageOfWebsite(language)),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UsersHeader);
+export default withRouter(connect(null, actions)(UsersHeader));
