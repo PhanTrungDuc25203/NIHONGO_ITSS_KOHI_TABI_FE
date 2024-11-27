@@ -1,5 +1,5 @@
 import { Component } from "react";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import './Header.scss';
 import avatar from '../../assets/header/avatar.jpg';
 import { LanguageUtils, languages } from "../../utils";
@@ -11,15 +11,16 @@ class UsersHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            userName: '',
+            email: '',
         };
     }
 
     componentDidMount() {
-        
+
     }
 
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate(prevProps) { }
 
     changeLanguage(language) {
         this.props.switchLanguageOfWebsite(language);
@@ -38,11 +39,21 @@ class UsersHeader extends Component {
                         <img src={avatar} alt="avatar" />
                     </div>
                     <div className="userText">
-                        <span className="userName"><FormattedMessage id="header.user-logo.name"/></span>
-                        <span className="userEmail">kohitabi@gmail.com</span>
+                        <span className="userName">{this.props.isLoggedIn ?
+                            this.props.userInfo.name
+                            :
+                            'Đăng nhập'
+                        }</span>
+                        <span className="userEmail">
+                            {this.props.isLoggedIn ?
+                                this.props.userInfo.email
+                                :
+                                ''
+                            }
+                        </span>
                     </div>
                     <button
-                        onClick={()=>{this.changeLanguage(languages.EN)}}
+                        onClick={() => { this.changeLanguage(languages.EN) }}
                         hidden
                     >Change language</button>
                 </div>
@@ -54,6 +65,8 @@ class UsersHeader extends Component {
 const mapStateToProps = state => {
     return {
         language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
     };
 };
 
