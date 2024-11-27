@@ -120,6 +120,7 @@
     "header":{
         "user-logo":{
             "name": "Do Thuy Duong"
-        }
+        },
+        "login-text":"Login"
     }
 }

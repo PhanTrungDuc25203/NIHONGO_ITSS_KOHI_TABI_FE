@@ -25,6 +25,8 @@ class UsersHeader extends Component {
 
     changeLanguage(language) {
         this.props.switchLanguageOfWebsite(language);
+    }
+
     handleLogoClick = () => {
         this.props.history.push('/homepage'); // Chuyển hướng đến /homepage
     }

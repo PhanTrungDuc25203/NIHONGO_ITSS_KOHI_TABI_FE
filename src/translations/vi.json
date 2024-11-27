@@ -120,6 +120,7 @@
     "header":{
         "user-logo":{
             "name": "KohiTabi"
-        }
+        },
+        "login-text":"Ddăng nhập"
     }
 }
