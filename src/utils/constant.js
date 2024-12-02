@@ -7,6 +7,7 @@ export const path = {
     NAVIGATION: '/navigation',
     USER_PREFERENCE: '/user-preference',
     HOMEPAGE: '/homepage',
+    TEST: '/test',
 };
 
 export const languages = {

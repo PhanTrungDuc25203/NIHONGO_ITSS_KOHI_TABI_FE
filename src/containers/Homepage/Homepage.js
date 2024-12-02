@@ -14,7 +14,7 @@ class Homepage extends Component {
         this.state = {
             selectedLocation: null,
             selectedWaitingTime: null,
-            selectedStyle: null,
+            selectedStyles: [],
             selectedOtherTags: [],
             minPrice: null,
             maxPrice: null,
@@ -34,7 +34,17 @@ class Homepage extends Component {
     };
 
     handleStyleSelect = (style) => {
-        this.setState({ selectedStyle: style });
+        this.setState((prevState) => {
+            console.log(prevState.selectedStyles);
+            const selectedStyles = [...prevState.selectedStyles];
+            const styleIndex = selectedStyles.indexOf(style);
+            if (styleIndex === -1) {
+                selectedStyles.push(style);
+            } else {
+                selectedStyles.splice(styleIndex, 1);
+            }
+            return { selectedStyles };
+        });
     };
 
     handleOtherTagsSelect = (tag) => {
@@ -50,19 +60,26 @@ class Homepage extends Component {
         });
     };
 
-    handleMinPriceChange = (minPrice) => {
-        this.setState({ minPrice: minPrice });
-    };
-
-    handleMaxPriceChange = (maxPrice) => {
-        this.setState({ maxPrice: maxPrice });
-    };
-
     togglePasswordVisibility = () => {
         this.setState((prevState) => ({
             isPasswordVisible: !prevState.isPasswordVisible,
         }));
     };
+
+    handleMinPriceChange = (value) => {
+        const numericValue = value.replace(/\D/g, "");
+        this.setState({ minPrice: numericValue ? parseInt(numericValue, 10) : null });
+    };
+    
+    handleMaxPriceChange = (value) => {
+        const numericValue = value.replace(/\D/g, "");
+        this.setState({ maxPrice: numericValue ? parseInt(numericValue, 10) : null });
+    };
+
+    formatPrice = (value) => {
+        if (!value) return "";
+        return new Intl.NumberFormat().format(value);
+    };  
 
     render() {
         const { isPasswordVisible } = this.state;
@@ -101,7 +118,7 @@ class Homepage extends Component {
                                         type="text"
                                         className="input-price"
                                         placeholder="Min Price"
-                                        value={this.state.minPrice || ''}
+                                        value={this.formatPrice(this.state.minPrice)}
                                         onChange={(e) => this.handleMinPriceChange(e.target.value)}
                                     />
                                     <p>to</p>
@@ -109,7 +126,7 @@ class Homepage extends Component {
                                         type="text"
                                         className="input-price"
                                         placeholder="Max Price"
-                                        value={this.state.maxPrice || ''}
+                                        value={this.formatPrice(this.state.maxPrice)}
                                         onChange={(e) => this.handleMaxPriceChange(e.target.value)}
                                     />
                                 </div>
@@ -195,15 +212,15 @@ class Homepage extends Component {
                                 <h4>Style</h4>
                                 <div className='btn-group'>
                                     <button
-                                        className={this.state.selectedStyle === 'modern' ? 'active' : ''}
+                                        className={this.state.selectedStyles.includes('modern') ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('modern')}
                                     >Modern</button>
                                     <button
-                                        className={this.state.selectedStyle === 'vintage' ? 'active' : ''}
+                                        className={this.state.selectedStyles.includes('vintage') ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('vintage')}
                                     >Vintage</button>
                                     <button
-                                        className={this.state.selectedStyle === 'freestyle' ? 'active' : ''}
+                                        className={this.state.selectedStyles.includes('freestyle') ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('freestyle')}
                                     >Freestyle</button>
                                 </div>
@@ -232,20 +249,20 @@ class Homepage extends Component {
                         <section className="card-section">
                             <h4>For you</h4>
                             <div className="cards">
-                                {Array.from({ length: 5 }).map((_, idx) => (
+                                {Array.from({ length: 8 }).map((_, idx) => (
                                 <Card
-                                key={idx}
-                                imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                title="Đông Tây Cafe sách"
-                                location="Hanoi"
-                            ></Card>
+                                    key={idx}
+                                    imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                    title="Đông Tây Cafe sách"
+                                    location="Hanoi"
+                                ></Card>
                                 ))}
                             </div>
                         </section>
                         <section className="card-section">
                             <h4>Recent</h4>
                             <div className="cards">
-                                {Array.from({ length: 5 }).map((_, idx) => (
+                                {Array.from({ length: 6 }).map((_, idx) => (
                                 <Card
                                 key={idx}
                                 imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
