@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
-import { KeyCodeUtils, LanguageUtils } from "../../utils";
+import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
+import { FormattedMessage } from "react-intl";
 import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
 
@@ -74,7 +75,7 @@ class Homepage extends Component {
                     <aside className="sidebar">
                         <div className="search">
                             <input type="text" placeholder="Search by name" />
-                            <button className='homepage-btn'>Search</button>
+                            <button className='homepage-btn'><FormattedMessage id="homepage.sidebar.search" /></button>
                         </div>
                         <div className="filters">
                             <div className="filter-group">
@@ -123,11 +124,11 @@ class Homepage extends Component {
                                         placeholder="7"
                                         value={this.state.openingStartHour || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                            console.log(value);
-                                            this.setState({ openingStartHour: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                                console.log(value);
+                                                this.setState({ openingStartHour: value });
+                                            }
                                         }}
                                     />
                                     <p>:</p>
@@ -142,7 +143,7 @@ class Homepage extends Component {
                                                 console.log(value);
                                                 this.setState({ openingStartHour: value });
                                             }
-                                            }}
+                                        }}
                                     />
                                     <p>-</p>
                                     <input
@@ -151,11 +152,11 @@ class Homepage extends Component {
                                         placeholder="21"
                                         value={this.state.closingStartHour || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                            console.log(value);
-                                            this.setState({ openingStartHour: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                                console.log(value);
+                                                this.setState({ openingStartHour: value });
+                                            }
                                         }}
                                     />
                                     <p>:</p>
@@ -165,11 +166,11 @@ class Homepage extends Component {
                                         placeholder="30"
                                         value={this.state.closingStartMinute || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
-                                            console.log(value);
-                                            this.setState({ openingStartHour: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
+                                                console.log(value);
+                                                this.setState({ openingStartHour: value });
+                                            }
                                         }}
                                     />
                                 </div>
@@ -233,12 +234,12 @@ class Homepage extends Component {
                             <h4>For you</h4>
                             <div className="cards">
                                 {Array.from({ length: 5 }).map((_, idx) => (
-                                <Card
-                                key={idx}
-                                imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                title="Đông Tây Cafe sách"
-                                location="Hanoi"
-                            ></Card>
+                                    <Card
+                                        key={idx}
+                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        title="Đông Tây Cafe sách"
+                                        location="Hanoi"
+                                    ></Card>
                                 ))}
                             </div>
                         </section>
@@ -246,12 +247,12 @@ class Homepage extends Component {
                             <h4>Recent</h4>
                             <div className="cards">
                                 {Array.from({ length: 5 }).map((_, idx) => (
-                                <Card
-                                key={idx}
-                                imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                title="Đông Tây Cafe sách"
-                                location="Hanoi"
-                            ></Card>
+                                    <Card
+                                        key={idx}
+                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        title="Đông Tây Cafe sách"
+                                        location="Hanoi"
+                                    ></Card>
                                 ))}
                             </div>
                         </section>
@@ -259,12 +260,12 @@ class Homepage extends Component {
                             <h4>Favorite</h4>
                             <div className="cards">
                                 {Array.from({ length: 5 }).map((_, idx) => (
-                                <Card
-                                key={idx}
-                                imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                title="Đông Tây Cafe sách"
-                                location="Hanoi"
-                            ></Card>
+                                    <Card
+                                        key={idx}
+                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        title="Đông Tây Cafe sách"
+                                        location="Hanoi"
+                                    ></Card>
                                 ))}
                             </div>
                         </section>

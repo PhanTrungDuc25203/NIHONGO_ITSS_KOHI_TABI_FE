@@ -122,5 +122,11 @@
             "name": "Do Thuy Duong"
         },
         "login-text":"Login"
+    },
+    "homepage": {
+        "sidebar": {
+            "search": "Search",
+            "search-box": "Search by name"
+        }
     }
 }
