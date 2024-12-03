@@ -74,12 +74,18 @@ class Homepage extends Component {
                 <div className='homepage-container'>
                     <aside className="sidebar">
                         <div className="search">
-                            <input type="text" placeholder="Search by name" />
+                            <FormattedMessage id="homepage.sidebar.search-box" >
+                                {
+                                    (placeholderText) => (
+                                        <input type="text" placeholder={placeholderText} />
+                                    )
+                                }
+                            </FormattedMessage>
                             <button className='homepage-btn'><FormattedMessage id="homepage.sidebar.search" /></button>
                         </div>
                         <div className="filters">
                             <div className="filter-group">
-                                <h4>Location</h4>
+                                <h4><FormattedMessage id="homepage.sidebar.filters.location" /></h4>
                                 <div className="btn-group">
                                     <button
                                         className={this.state.selectedLocation === 'hanoi' ? 'active' : ''}
@@ -96,27 +102,39 @@ class Homepage extends Component {
                                 </div>
                             </div>
                             <div className="filter-group">
-                                <h4>Price range</h4>
+                                <h4><FormattedMessage id="homepage.sidebar.filters.price-range" /></h4>
                                 <div className='price-range-input'>
-                                    <input
-                                        type="text"
-                                        className="input-price"
-                                        placeholder="Min Price"
-                                        value={this.state.minPrice || ''}
-                                        onChange={(e) => this.handleMinPriceChange(e.target.value)}
-                                    />
-                                    <p>to</p>
-                                    <input
-                                        type="text"
-                                        className="input-price"
-                                        placeholder="Max Price"
-                                        value={this.state.maxPrice || ''}
-                                        onChange={(e) => this.handleMaxPriceChange(e.target.value)}
-                                    />
+                                    <FormattedMessage id="homepage.sidebar.filters.minprice" >
+                                        {
+                                            (placeholderText) => (
+                                                <input
+                                                    type="text"
+                                                    className="input-price"
+                                                    placeholder={placeholderText}
+                                                    value={this.state.minPrice || ''}
+                                                    onChange={(e) => this.handleMinPriceChange(e.target.value)}
+                                                />
+                                            )
+                                        }
+                                    </FormattedMessage>
+                                    <p><FormattedMessage id="homepage.sidebar.filters.to" /></p>
+                                    <FormattedMessage id="homepage.sidebar.filters.maxprice" >
+                                        {
+                                            (placeholderText) => (
+                                                <input
+                                                    type="text"
+                                                    className="input-price"
+                                                    placeholder={placeholderText}
+                                                    value={this.state.maxPrice || ''}
+                                                    onChange={(e) => this.handleMaxPriceChange(e.target.value)}
+                                                />
+                                            )
+                                        }
+                                    </FormattedMessage>
                                 </div>
                             </div>
                             <div className="filter-group">
-                                <h4>Opening time</h4>
+                                <h4><FormattedMessage id="homepage.sidebar.filters.opening-time" /></h4>
                                 <div className='opening-time-input'>
                                     <input
                                         type="text"
@@ -176,62 +194,62 @@ class Homepage extends Component {
                                 </div>
                             </div>
                             <div className="filter-group">
-                                <h4>Waiting time</h4>
+                                <h4><FormattedMessage id="homepage.sidebar.filters.waiting-time" /></h4>
                                 <div className='btn-group'>
                                     <button
                                         className={this.state.selectedWaitingTime === '15m' ? 'active' : ''}
                                         onClick={() => this.handleWaitingTimeSelect('15m')}
-                                    >2h</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.2h" /></button>
                                     <button
                                         className={this.state.selectedWaitingTime === '30m' ? 'active' : ''}
                                         onClick={() => this.handleWaitingTimeSelect('30m')}
-                                    >30m</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.30m" /></button>
                                     <button
                                         className={this.state.selectedWaitingTime === '1h' ? 'active' : ''}
                                         onClick={() => this.handleWaitingTimeSelect('1h')}
-                                    >3h</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.3h" /></button>
                                 </div>
                             </div>
                             <div className="filter-group">
-                                <h4>Style</h4>
+                                <h4><FormattedMessage id="homepage.sidebar.filters.style.title" /></h4>
                                 <div className='btn-group'>
                                     <button
                                         className={this.state.selectedStyle === 'modern' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('modern')}
-                                    >Modern</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.style.modern" /></button>
                                     <button
                                         className={this.state.selectedStyle === 'vintage' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('vintage')}
-                                    >Vintage</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.style.vintage" /></button>
                                     <button
                                         className={this.state.selectedStyle === 'freestyle' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('freestyle')}
-                                    >Freestyle</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.style.freestyle" /></button>
                                 </div>
                             </div>
                             <div className="filter-group">
-                                <h4>Other tags</h4>
+                                <h4><FormattedMessage id="homepage.sidebar.filters.other-tags.title" /></h4>
                                 <div className='btn-group'>
                                     <button
                                         className={this.state.selectedOtherTags.includes('cat') ? 'active' : ''}
                                         onClick={() => this.handleOtherTagsSelect('cat')}
-                                    >Cat</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.other-tags.cat" /></button>
                                     <button
                                         className={this.state.selectedOtherTags.includes('dog') ? 'active' : ''}
                                         onClick={() => this.handleOtherTagsSelect('dog')}
-                                    >Dog</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.other-tags.dog" /></button>
                                     <button
                                         className={this.state.selectedOtherTags.includes('for-kids') ? 'active' : ''}
                                         onClick={() => this.handleOtherTagsSelect('for-kids')}
-                                    >For kids</button>
+                                    ><FormattedMessage id="homepage.sidebar.filters.other-tags.for-kids" /></button>
                                 </div>
                             </div>
                         </div>
-                        <button className='homepage-btn'>Open map</button>
+                        <button className='homepage-btn'><FormattedMessage id="homepage.sidebar.filters.open-map" /></button>
                     </aside>
                     <main className="content">
                         <section className="card-section">
-                            <h4>For you</h4>
+                            <h4><FormattedMessage id="homepage.sidebar.filters.for-you" /></h4>
                             <div className="cards">
                                 {Array.from({ length: 5 }).map((_, idx) => (
                                     <Card
@@ -244,7 +262,7 @@ class Homepage extends Component {
                             </div>
                         </section>
                         <section className="card-section">
-                            <h4>Recent</h4>
+                            <h4><FormattedMessage id="homepage.sidebar.filters.recent" /></h4>
                             <div className="cards">
                                 {Array.from({ length: 5 }).map((_, idx) => (
                                     <Card
@@ -257,7 +275,7 @@ class Homepage extends Component {
                             </div>
                         </section>
                         <section className="card-section">
-                            <h4>Favorite</h4>
+                            <h4><FormattedMessage id="homepage.sidebar.filters.favorite" /></h4>
                             <div className="cards">
                                 {Array.from({ length: 5 }).map((_, idx) => (
                                     <Card

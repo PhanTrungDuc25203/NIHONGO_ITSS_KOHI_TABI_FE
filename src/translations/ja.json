@@ -117,16 +117,54 @@
             "sure-delete-assign": "Bạn có chắc chắn muốn bỏ gán gói dịch vụ cho khách hàng?"
         }
     },
-    "header":{
-        "user-logo":{
+    "header": {
+        "user-logo": {
             "name": "KohiTabi"
         },
-        "login-text":"Ddăng nhập"
+        "login-text": "Ddăng nhập"
     },
     "homepage": {
         "sidebar": {
             "search": "けんさく",
-            "search-box": "なまえでけんさく"
+            "search-box": "なまえでけんさく",
+            "filters": {
+                "location": "場所",
+                "maxprice": "最大価格",
+                "minprice": "最小価格",
+                "price-range": "価格帯",
+                "to": "~",
+                "opening-time": "営業時間",
+                "waiting-time": "待機時間",
+                "2h": "2時間",
+                "30m": "30分",
+                "3h": "3時間",
+                "style": {
+                    "title": "スタイル",
+                    "modern": "モダン",
+                    "vintage": "ヴィンテージ",
+                    "freestyle": "フリースタイル"
+                },
+                "other-tags": {
+                    "title": "その他のタグ",
+                    "cat": "猫",
+                    "dog": "犬",
+                    "for-kids": "子供向け"
+                },
+                "open-map": "地図を開く",
+                "for-you": "あなたへ",
+                "recent": "最近",
+                "favorite": "お気に入り"
+            }
+        }
+    },
+    "user-preference": {
+        "page-title": "パーソナライズ",
+        "style": {
+            "title": "Style",
+            "entice-item": "ヴィンテージ",
+            "itm1": "ヴィンテージ",
+            "itm2": "モダン",
+            "itm3": "エコフレンドリー"
         }
     }
 }
