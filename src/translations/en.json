@@ -126,7 +126,45 @@
     "homepage": {
         "sidebar": {
             "search": "Search",
-            "search-box": "Search by name"
+            "search-box": "Search by name",
+            "filters": {
+                "location": "Location",
+                "maxprice": "Max price",
+                "minprice": "Min price",
+                "price-range": "Price range",
+                "to": "to",
+                "opening-time": "Opening time",
+                "waiting-time": "Waiting time",
+                "2h": "2h",
+                "30m": "30m",
+                "3h": "3h",
+                "style": {
+                    "title": "Style",
+                    "modern": "Modern",
+                    "vintage": "Vintage",
+                    "freestyle": "Freestyle"
+                },
+                "other-tags": {
+                    "title": "Other tags",
+                    "cat": "Cat",
+                    "dog": "Dog",
+                    "for-kids": "For kids" 
+                },
+                "open-map": "Open map",
+                "for-you": "For you",
+                "recent": "Recent",
+                "favorite": "Favorite"
+            }
+        }
+    },
+    "user-preference": {
+        "page-title": "Personalization",
+        "style": {
+            "title": "Style",
+            "entice-item": "Vintage",
+            "itm1": "Vintage",
+            "itm2": "Modern",
+            "itm3": "Eco-Friendly"
         }
     }
 }
