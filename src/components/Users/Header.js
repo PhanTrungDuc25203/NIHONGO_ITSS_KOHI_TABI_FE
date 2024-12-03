@@ -57,9 +57,13 @@ class UsersHeader extends Component {
                         </span>
                     </div>
                     <button
+                        onClick={() => { this.changeLanguage(languages.JA) }}
+                    // hidden
+                    >Change to Jap</button>
+                    <button
                         onClick={() => { this.changeLanguage(languages.EN) }}
-                        hidden
-                    >Change language</button>
+                    // hidden
+                    >Change to Eng</button>
                 </div>
             </div>
         );

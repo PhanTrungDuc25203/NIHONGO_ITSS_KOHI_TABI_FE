@@ -11,9 +11,10 @@ export const path = {
 
 export const languages = {
     VI: 'vi',
-    EN: 'en'
+    EN: 'en',
+    JA: 'ja'
 };
- 
+
 export const manageActions = {
     ADD: "ADD",
     EDIT: "EDIT",
