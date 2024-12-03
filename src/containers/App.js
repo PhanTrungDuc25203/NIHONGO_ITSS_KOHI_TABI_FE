@@ -18,6 +18,7 @@ import Login from './LoginAuth/Login';
 import UsersHeader from '../components/Users/Header';
 import UserPreference from './UserPreference/UserPreference';
 import Homepage from './Homepage/Homepage';
+import Test from './Test/Test';
 
 import ConfirmModal from '../components/ConfirmModal';
 import { CustomToastCloseButton } from '../components/CustomToast';
@@ -58,6 +59,7 @@ class App extends Component {
                                 <Route path={path.HEADER} component={UsersHeader} />
                                 <Route path={path.USER_PREFERENCE} component={UserPreference} />
                                 <Route path={path.HOMEPAGE} component={Homepage} />
+                                <Route path={path.TEST} component={Test} />
                             </Switch>
                         </span>
 
