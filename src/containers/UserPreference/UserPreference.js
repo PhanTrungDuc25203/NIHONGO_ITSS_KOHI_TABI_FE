@@ -108,6 +108,7 @@ class UserPreference extends Component {
         // Xây dựng đối tượng dữ liệu cần gửi
         const dataToSend = {
             // tôi không biết lấy email của người dùng trong phiên hiện tại, giúp với 
+            email: his.props.userInfo.email,
             stylePreference: this.state.preferences.find(group => group.title === "Style").items,
             servicePreference: this.state.preferences.find(group => group.title === "Preferred Services").items.map(service => serviceMap[service] || service),
             amenityPreference: this.state.preferences.find(group => group.title === "Preferred Amenities").items.map(amenity => amenityMap[amenity] || amenity),
@@ -213,9 +214,12 @@ class UserPreference extends Component {
 
 const mapStateToProps = state => {
     return {
-        lang: state.app.language
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
     };
 };
+
 
 export default connect(mapStateToProps)(UserPreference);
 
