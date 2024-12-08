@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import './LandingPage.scss';
+import main_image from '../../assets/landing_page/main_image.png';
 
 class LandingPage extends Component {
     render() {
@@ -22,7 +23,7 @@ class LandingPage extends Component {
                         <div className="main-title">
                             <h1>KOHI TABI</h1>
                         </div>
-                        <img className="main-image" src="path/to/your/image.jpg" alt="Main" />
+                        <img className="main-image" src={main_image} alt="Main" />
                     </div>
                     <div className="about-section">
                         <h2>About Us</h2>
