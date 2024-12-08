@@ -42,6 +42,7 @@ class UsersHeader extends Component {
                     <div className="userAvatar">
                         <img src={avatar} alt="avatar" />
                     </div>
+
                     <div className="userText">
                         <span className="userName">{this.props.isLoggedIn ?
                             this.props.userInfo.name
@@ -55,15 +56,16 @@ class UsersHeader extends Component {
                                 ''
                             }
                         </span>
+                        <div className="languageButtons">
+                            <button
+                                onClick={() => { this.changeLanguage(languages.JA) }}
+                            >日本語</button>
+                            <button
+                                onClick={() => { this.changeLanguage(languages.EN) }}
+                            >English</button>
+                        </div>
                     </div>
-                    <button
-                        onClick={() => { this.changeLanguage(languages.JA) }}
-                    // hidden
-                    >Change to Jap</button>
-                    <button
-                        onClick={() => { this.changeLanguage(languages.EN) }}
-                    // hidden
-                    >Change to Eng</button>
+
                 </div>
             </div>
         );

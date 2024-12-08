@@ -82,10 +82,28 @@
 .userName {
     font-size: 16px;
     font-weight: bold;
-    margin-bottom: 2px; /* Thêm khoảng cách giữa tên và email */
+    margin-bottom: auto; /* Thêm khoảng cách giữa tên và email */
 }
 
 .userEmail {
     font-size: 14px;
     color: #555;
+}
+
+.languageButtons {
+    display: none; /* Ẩn các nút đổi ngôn ngữ mặc định */   
+}
+
+.languageButtons button {
+    background-color: #ffffff;
+    border: 1px solid #ffa16c; /* Viền cam */
+    border-radius: 5px;
+    margin-right: 5px; /* Thêm khoảng cách giữa các nút */
+    cursor: pointer; /* Biến con trỏ thành hình bàn tay khi di chuột vào nút */
+    font-size: 12px;
+}
+
+.userInfo:hover .languageButtons {
+    display: flex; /* Hiển thị các nút đổi ngôn ngữ khi hover vào .userInfo */
+    // flex-direction: column;
 }
