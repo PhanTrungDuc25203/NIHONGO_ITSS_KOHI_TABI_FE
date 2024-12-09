@@ -6,7 +6,7 @@ class LandingPage extends Component {
     render() {
         return (
             <div className="landing-page">
-                <header className="header">
+                <header className="landing-header">
                     <div className="logo">KOHI TABI</div>
                     <div className="line"></div>
                 </header>
@@ -25,15 +25,25 @@ class LandingPage extends Component {
                         </div>
                         <img className="main-image" src={main_image} alt="Main" />
                     </div>
-                    <div className="about-section">
-                        <h2>About Us</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque leo nec magna.</p>
-                        <div className="buttons">
-                            <button className="btn signup">Sign Up</button>
-                            <button className="btn login">Log In</button>
+                </main>
+                <div className="about-section">
+                    <div className="about-btns">
+                        <div className="left-btn">
+                            <button className="about-btn">About Us</button>
+                        </div>
+                        <div className="right-btns">
+                            <button className="btn-signup">Sign Up</button>
+                            <button className="btn-login">Log In</button>
                         </div>
                     </div>
-                </main>
+                    <div className="about-text">
+                        <p>
+                            <b>Kohi Tabi – </b>
+                            Ứng dụng tìm kiếm quán cafe theo nhu cầu cá nhân</p>
+                        <p>Bạn đang tìm kiếm một không gian để thư giãn, làm việc, hoặc hẹn hò cùng bạn bè?</p>
+                        <p>Với Kohi Tabi, bạn không chỉ tìm được quán cafe phù hợp mà còn khám phá phong cách riêng của mình!</p>
+                    </div>
+                </div>
             </div>
         );
     }

@@ -15,7 +15,7 @@
     align-items: center;
 }
 
-.header {
+.landing-header {
     font-family: 'Aquire', sans-serif;
     width: 100%;
     display: flex;
@@ -29,39 +29,49 @@
 }
 
 .logo {
-    flex: 0 0 auto; /* Đảm bảo logo không co giãn */
+    flex: 0 0 auto;
+    /* Đảm bảo logo không co giãn */
 }
 
 .line {
-    flex: 1; /* Đường thẳng sẽ chiếm phần còn lại của không gian */
-    margin-left: 2%; /* Khoảng cách giữa logo và đường thẳng */
-    border-top: 1px solid #ffffff; /* Đường thẳng */
+    flex: 1;
+    /* Đường thẳng sẽ chiếm phần còn lại của không gian */
+    margin-left: 2%;
+    /* Khoảng cách giữa logo và đường thẳng */
+    border-top: 1px solid #ffffff;
+    /* Đường thẳng */
 }
 
 .text-1 {
     display: flex;
     flex-direction: row;
     color: #ffffff;
+    font-size: 20px;
+    // border: 1px solid black;
 }
 
 .text-1 .left-text {
     flex: 1;
-    justify-content: left;
+    text-align: left;
+    // border: 1px solid black;
 }
+
 
 .text-1 .right-text {
     flex: 1;
-    justify-content: right;
+    text-align: right;
+    // border: 1px solid black;
 }
+
 
 .main-content {
 
     text-align: center;
     padding: 20px;
-    border: 1px solid black;
-
+    cursor: pointer;
 
     .center-content {
+
         font-family: 'Aquire', sans-serif;
         position: relative;
         margin-bottom: 30px;
@@ -70,61 +80,77 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 68px;
+            font-size: 150px;
             color: #fff;
+        }
 
-            .main-title {
-                font-size: 68px;
-                font-weight: bold;
-            }
+        h3 {
+            font-size: 20px;
         }
 
         .main-image {
-            margin-top: 20px;
+            margin-top: -100px;
             width: 300px;
             height: auto;
         }
     }
+}
 
-    .about-section {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 600px;
+.about-section {
 
-        h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+    background-color: #fff1e9;
 
-        p {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
+    .about-btns {
 
-        .buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        /* Di chuyển lên trên một nửa chiều cao */
+        height: 5%;
 
-            .btn {
-                padding: 10px 20px;
-                font-size: 16px;
+        .left-btn {
+            text-align: left;
+            flex: 1;
+            border: none;
+
+            .about-btn {
+                font-size: 20px;
+                background-color: #fff1e9;
+                padding: 5px 20px 5px 20px;
+                color: #9e886b;
                 border: none;
-                border-radius: 5px;
+                border-radius: 10px;
                 cursor: pointer;
-
-                &.signup {
-                    background-color: #ff8243;
-                    color: #fff;
-                }
-
-                &.login {
-                    background-color: #5f4638;
-                    color: #fff;
-                }
             }
         }
+
+        .right-btns {
+
+            text-align: right;
+            flex: 1;
+
+            button {
+                border-radius: 40px;
+                padding: 5px 20px 5px 20px;
+            }
+
+            .btn-signup {
+                border: 3px solid #9e886b;
+                margin: 0 2px 0 0;
+            }
+
+            .btn-login {
+                border: 3px solid #f8ebda;
+                margin: 0 0 0 2px;
+            }
+
+        }
+
     }
+
+    .about-text {
+        text-align: center;
+        width: 100vw;
+    }
+
 }
