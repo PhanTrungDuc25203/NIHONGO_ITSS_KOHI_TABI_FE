@@ -78,7 +78,7 @@ class Login extends Component {
                     <p className="login-subtitle">Discover a new world of coffee</p>
                     <div className="login-form">
                         <div className="input-group">
-                            <label htmlFor="username" className="input-label">Username</label>
+                            <label htmlFor="username" className="input-label">Email</label>
                             <input
                                 type="text"
                                 value={this.state.username}
