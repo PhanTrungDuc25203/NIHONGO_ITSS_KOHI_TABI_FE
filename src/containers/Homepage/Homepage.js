@@ -38,7 +38,7 @@ class Homepage extends Component {
             name: '',
             selectedLocation: null,
             selectedWaitingTime: null,
-            selectedStyles: [],
+            selectedStyle: null,
             selectedAmenityTags: [],
             selectedServiceTags: [],
             minPrice: null,
@@ -64,16 +64,7 @@ class Homepage extends Component {
     };
 
     handleStyleSelect = (style) => {
-        this.setState((prevState) => {
-            const selectedStyles = [...prevState.selectedStyles];
-            const styleIndex = selectedStyles.indexOf(style);
-            if (styleIndex === -1) {
-                selectedStyles.push(style);
-            } else {
-                selectedStyles.splice(styleIndex, 1);
-            }
-            return { selectedStyles };
-        });
+        this.setState({ selectedStyle: style });
     };
 
     handleAmenityTagsSelect = (tag) => {
@@ -123,9 +114,9 @@ class Homepage extends Component {
         this.setState((prevState) => ({
             showSearchResults: !prevState.showSearchResults,
         }));
-        const { name, selectedLocation, selectedWaitingTime, selectedStyles, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
+        const { name, selectedLocation, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
         try {
-            let data = await handleSearch(name, selectedLocation, selectedWaitingTime, openingStartHour + ':' + openingStartMinute + ':0', closingStartHour + ':' + closingStartMinute + ':0', minPrice, maxPrice, selectedStyles, selectedServiceTags[0], selectedAmenityTags[0]);
+            let data = await handleSearch(name, selectedLocation, selectedWaitingTime, openingStartHour + ':' + openingStartMinute + ':0', closingStartHour + ':' + closingStartMinute + ':0', minPrice, maxPrice, selectedStyle, selectedServiceTags[0], selectedAmenityTags[0]);
             console.log('Search data: ', data);
         } catch (e) {
             console.log('Error searching: ', e);
@@ -241,7 +232,7 @@ class Homepage extends Component {
                                         value={this.state.openingStartMinute || ''}
                                         onChange={(e) => {
                                             const value = e.target.value.replace(/\D/g, '');
-                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
+                                            if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 60)) {
                                                 this.setState({ openingStartMinute: value });
                                             }
                                         }}
@@ -267,7 +258,7 @@ class Homepage extends Component {
                                         value={this.state.closingStartMinute || ''}
                                         onChange={(e) => {
                                         const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
+                                        if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 60)) {
                                             this.setState({ closingStartMinute: value });
                                         }
                                         }}
@@ -295,15 +286,15 @@ class Homepage extends Component {
                                 <h4><FormattedMessage id="homepage.sidebar.filters.style.title" /></h4>
                                 <div className='btn-group'>
                                     <button
-                                        className={this.state.selectedStyles.includes('Vintage') ? 'active' : ''}
+                                        className={this.state.selectedStyle === 'Vintage' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Vintage')}
                                     >Vintage</button>
                                     <button
-                                        className={this.state.selectedStyles.includes('Modern') ? 'active' : ''}
+                                        className={this.state.selectedStyle === 'Modern' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Modern')}
                                     >Modern</button>
                                     <button
-                                        className={this.state.selectedStyles.includes('Eco-Friendly') ? 'active' : ''}
+                                        className={this.state.selectedStyle === 'Eco-Friendly' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Eco-Friendly')}
                                     >Eco-Friendly</button>
                                 </div>
