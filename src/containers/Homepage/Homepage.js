@@ -48,6 +48,7 @@ class Homepage extends Component {
             closingStartHour: null,
             closingStartMinute: null,
             showSearchResults: false,
+            namesAndProvinces: [],
         };
     }
 
@@ -118,6 +119,14 @@ class Homepage extends Component {
         try {
             let response = await handleSearch(name, selectedLocation, selectedWaitingTime, openingStartHour + ':' + openingStartMinute + ':0', closingStartHour + ':' + closingStartMinute + ':0', minPrice, maxPrice, selectedStyle, selectedServiceTags[0], selectedAmenityTags[0]);
             console.log('Search data: ', response);
+            const coffeeShops = response.coffeShops || [];
+            const namesAndProvinces = coffeeShops.map(shop => ({
+                name: shop.name,
+                provinceVie: shop.province_vie,
+                provinceJap: shop.province_jap
+            }));
+            this.setState(this.namesAndProvinces(namesAndProvinces));
+            console.log('Names and Provinces:', namesAndProvinces);
         } catch (e) {
             console.log('Error searching: ', e);
         }
@@ -148,7 +157,7 @@ class Homepage extends Component {
                 'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
         ];
 
-        const { selectedLocation, isPasswordVisible, showSearchResults } = this.state;
+        const { selectedLocation, isPasswordVisible, showSearchResults, namesAndProvinces = [] } = this.state;
 
         return (
             <div className="homepage">
@@ -349,14 +358,14 @@ class Homepage extends Component {
                         <section className="card-section">
                             <h4>Search Result</h4>
                             <div className="cards">
-                                {Array.from({ length: 1 }).map((_, idx) => (
+                            {namesAndProvinces.map((shop, idx) => (
                                 <Card
                                     key={idx}
                                     imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                    title="Đông Tây Cafe sách"
-                                    location="Hanoi"
-                                ></Card>
-                                ))}
+                                    title={shop.name}
+                                    location={shop.provinceVie || shop.provinceJap}
+                                />
+                            ))}
                             </div>
                         </section>
                         )}
