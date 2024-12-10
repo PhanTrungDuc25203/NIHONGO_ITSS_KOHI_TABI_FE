@@ -1,0 +1,159 @@
+@font-face {
+    font-family: 'Aquire';
+    src: url('../../assets/fonts/Aquire-BW0ox.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.landing-page {
+    color: #3f3f3f;
+    background-color: #9e886b;
+    min-height: 100vh;
+    padding: 2% 2% 0 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.landing-header {
+    font-family: 'Aquire', sans-serif;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 1% 2%;
+    background-color: #9e886b;
+    color: #f8ebda;
+    border: none;
+}
+
+.logo {
+    flex: 0 0 auto;
+    /* Đảm bảo logo không co giãn */
+}
+
+.line {
+    flex: 1;
+    /* Đường thẳng sẽ chiếm phần còn lại của không gian */
+    margin-left: 2%;
+    /* Khoảng cách giữa logo và đường thẳng */
+    border-top: 1px solid #ffffff;
+    /* Đường thẳng */
+}
+
+.text-1 {
+    display: flex;
+    flex-direction: row;
+    color: #ffffff;
+    font-size: 20px;
+    // border: 1px solid black;
+}
+
+.text-1 .left-text {
+    flex: 1;
+    text-align: left;
+    // border: 1px solid black;
+}
+
+
+.text-1 .right-text {
+    flex: 1;
+    text-align: right;
+    // border: 1px solid black;
+}
+
+
+.main-content {
+
+    text-align: center;
+    padding: 1%;
+    cursor: pointer;
+
+    .center-content {
+
+        font-family: 'Aquire', sans-serif;
+        position: relative;
+        margin-bottom: 3%;
+
+
+        h1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 150px;
+            color: #fff;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+
+        .main-image {
+            margin-top: -100px;
+            width: 300px;
+            height: auto;
+        }
+    }
+}
+
+.about-section {
+
+    background-color: #fff1e9;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+
+    .about-btns {
+
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        /* Di chuyển lên trên một nửa chiều cao */
+        height: 5%;
+
+        .left-btn {
+            text-align: left;
+            flex: 1;
+            border: none;
+
+            .about-btn {
+                font-size: 20px;
+                background-color: #fff1e9;
+                padding: 5px 20px 5px 20px;
+                color: #9e886b;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+        }
+
+        .right-btns {
+
+            text-align: right;
+            flex: 1;
+
+            button {
+                border-radius: 40px;
+                padding: 5px 20px 5px 20px;
+            }
+
+            .btn-signup {
+                border: 3px solid #9e886b;
+                margin: 0 2px 0 0;
+            }
+
+            .btn-login {
+                border: 3px solid #f8ebda;
+                margin: 0 0 0 2px;
+            }
+
+        }
+
+    }
+
+    .about-text {
+        text-align: center;
+        width: 97vw;
+    }
+
+}

@@ -8,6 +8,7 @@ export const path = {
     USER_PREFERENCE: '/user-preference',
     HOMEPAGE: '/homepage',
     TEST: '/test',
+    LANDING_PAGE: '/landing-page',
 };
 
 export const languages = {
