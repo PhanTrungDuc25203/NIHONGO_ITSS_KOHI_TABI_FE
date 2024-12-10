@@ -3,6 +3,15 @@ import './LandingPage.scss';
 import main_image from '../../assets/landing_page/main_image.png';
 
 class LandingPage extends Component {
+
+    handleLoginButtonClick = () => {
+        this.props.history.push('/login');
+    };
+
+    handleSignupButtonClick = () => {
+        alert('Sign up');
+    };
+
     render() {
         return (
             <div className="landing-page">
@@ -32,8 +41,14 @@ class LandingPage extends Component {
                             <button className="about-btn">About Us</button>
                         </div>
                         <div className="right-btns">
-                            <button className="btn-signup">Sign Up</button>
-                            <button className="btn-login">Log In</button>
+                            <button 
+                            className="btn-signup"
+                            onClick={this.handleSignupButtonClick}
+                            >Sign Up</button>
+                            <button 
+                            className="btn-login"
+                            onClick={this.handleLoginButtonClick}
+                            >Log In</button>
                         </div>
                     </div>
                     <div className="about-text">
