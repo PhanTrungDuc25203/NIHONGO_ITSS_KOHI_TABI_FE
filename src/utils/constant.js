@@ -10,6 +10,7 @@ export const path = {
     TEST: '/test',
     LANDING_PAGE: '/landing-page',
     SIGNUP: '/signup',
+    CAFE_DETAIL: '/detail-coffee-shop/:id',
 };
 
 export const languages = {
