@@ -16,18 +16,20 @@ class Homepage extends Component {
             selectedLocation: null,
             selectedWaitingTime: null,
             selectedStyles: [],
-            selectedOtherTags: [],
+            selectedAmenityTags: [],
+            selectedServiceTags: [],
             minPrice: null,
             maxPrice: null,
             openingStartHour: null,
             openingStartMinute: null,
             closingStartHour: null,
             closingStartMinute: null,
+            showSearchResults: false,
         };
     }
 
-    handleLocationSelect = (location) => {
-        this.setState({ selectedLocation: location });
+    handleLocationSelect = (event) => {
+        this.setState({ selectedLocation: event.target.value });
     };
 
     handleWaitingTimeSelect = (waitingTime) => {
@@ -36,7 +38,6 @@ class Homepage extends Component {
 
     handleStyleSelect = (style) => {
         this.setState((prevState) => {
-            console.log(prevState.selectedStyles);
             const selectedStyles = [...prevState.selectedStyles];
             const styleIndex = selectedStyles.indexOf(style);
             if (styleIndex === -1) {
@@ -48,16 +49,29 @@ class Homepage extends Component {
         });
     };
 
-    handleOtherTagsSelect = (tag) => {
+    handleAmenityTagsSelect = (tag) => {
         this.setState((prevState) => {
-            const selectedOtherTags = [...prevState.selectedOtherTags];
-            const tagIndex = selectedOtherTags.indexOf(tag);
+            const selectedAmenityTags = [...prevState.selectedAmenityTags];
+            const tagIndex = selectedAmenityTags.indexOf(tag);
             if (tagIndex === -1) {
-                selectedOtherTags.push(tag);
+                selectedAmenityTags.push(tag);
             } else {
-                selectedOtherTags.splice(tagIndex, 1);
+                selectedAmenityTags.splice(tagIndex, 1);
             }
-            return { selectedOtherTags };
+            return { selectedAmenityTags };
+        });
+    };
+
+    handleServiceTagsSelect = (tag) => {
+        this.setState((prevState) => {
+            const selectedServiceTags = [...prevState.selectedServiceTags];
+            const tagIndex = selectedServiceTags.indexOf(tag);
+            if (tagIndex === -1) {
+                selectedServiceTags.push(tag);
+            } else {
+                selectedServiceTags.splice(tagIndex, 1);
+            }
+            return { selectedServiceTags };
         });
     };
 
@@ -77,13 +91,33 @@ class Homepage extends Component {
         this.setState({ maxPrice: numericValue ? parseInt(numericValue, 10) : null });
     };
 
+    handleSearchClick = () => {
+        console.log('Search clicked');
+        this.setState((prevState) => ({
+            showSearchResults: !prevState.showSearchResults,
+        }));
+    };
+
     formatPrice = (value) => {
         if (!value) return "";
         return new Intl.NumberFormat().format(value);
     };  
 
     render() {
-        const { isPasswordVisible } = this.state;
+        const provinces = [
+                'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu', 'Bắc Ninh',
+                'Bến Tre', 'Bình Định', 'Bình Dương', 'Bình Phước', 'Bình Thuận', 'Cà Mau',
+                'Cần Thơ', 'Cao Bằng', 'Đà Nẵng', 'Đắk Lắk', 'Đắk Nông', 'Điện Biên', 'Đồng Nai',
+                'Đồng Tháp', 'Gia Lai', 'Hà Giang', 'Hà Nam', 'Hà Nội', 'Hà Tĩnh', 'Hải Dương',
+                'Hải Phòng', 'Hậu Giang', 'Hòa Bình', 'Hưng Yên', 'Khánh Hòa', 'Kiên Giang',
+                'Kon Tum', 'Lai Châu', 'Lâm Đồng', 'Lạng Sơn', 'Lào Cai', 'Long An', 'Nam Định',
+                'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên', 'Quảng Bình',
+                'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị', 'Sóc Trăng', 'Sơn La',
+                'Tây Ninh', 'Thái Bình', 'Thái Nguyên', 'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang',
+                'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
+        ];
+
+        const { selectedLocation, isPasswordVisible, showSearchResults } = this.state;
 
         return (
             <div className="homepage">
@@ -91,32 +125,21 @@ class Homepage extends Component {
                 <div className='homepage-container'>
                     <aside className="sidebar">
                         <div className="search">
-                            <FormattedMessage id="homepage.sidebar.search-box" >
-                                {
-                                    (placeholderText) => (
-                                        <input type="text" placeholder={placeholderText} />
-                                    )
-                                }
-                            </FormattedMessage>
-                            <button className='homepage-btn'><FormattedMessage id="homepage.sidebar.search" /></button>
+                            <input type="text" placeholder="Search by name" />
+                            <button className='homepage-btn' onClick={this.handleSearchClick}>Search</button>
                         </div>
                         <div className="filters">
-                            <div className="filter-group">
-                                <h4><FormattedMessage id="homepage.sidebar.filters.location" /></h4>
-                                <div className="btn-group">
-                                    <button
-                                        className={this.state.selectedLocation === 'hanoi' ? 'active' : ''}
-                                        onClick={() => this.handleLocationSelect('hanoi')}
-                                    >Hanoi</button>
-                                    <button
-                                        className={this.state.selectedLocation === 'hochiminh' ? 'active' : ''}
-                                        onClick={() => this.handleLocationSelect('hochiminh')}
-                                    >Ho Chi Minh</button>
-                                    <button
-                                        className={this.state.selectedLocation === 'danang' ? 'active' : ''}
-                                        onClick={() => this.handleLocationSelect('danang')}
-                                    >Da Nang</button>
-                                </div>
+                            <div className="filter-group select-container">
+                                <h4>Province</h4>
+                                <select
+                                    value={selectedLocation || ''}
+                                    onChange={this.handleLocationSelect}
+                                >
+                                    <option value="">Select a province</option>
+                                    {provinces.map((province, index) => (
+                                        <option key={index} value={province}>{province}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="filter-group">
                                 <h4><FormattedMessage id="homepage.sidebar.filters.price-range" /></h4>
@@ -159,11 +182,10 @@ class Homepage extends Component {
                                         placeholder="7"
                                         value={this.state.openingStartHour || ''}
                                         onChange={(e) => {
-                                            const value = e.target.value.replace(/\D/g, '');
-                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                                console.log(value);
-                                                this.setState({ openingStartHour: value });
-                                            }
+                                        const value = e.target.value.replace(/\D/g, '');
+                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                            this.setState({ openingStartHour: value });
+                                        }
                                         }}
                                     />
                                     <p>:</p>
@@ -175,7 +197,6 @@ class Homepage extends Component {
                                         onChange={(e) => {
                                             const value = e.target.value.replace(/\D/g, '');
                                             if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
-                                                console.log(value);
                                                 this.setState({ openingStartHour: value });
                                             }
                                         }}
@@ -187,11 +208,10 @@ class Homepage extends Component {
                                         placeholder="21"
                                         value={this.state.closingStartHour || ''}
                                         onChange={(e) => {
-                                            const value = e.target.value.replace(/\D/g, '');
-                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                                console.log(value);
-                                                this.setState({ openingStartHour: value });
-                                            }
+                                        const value = e.target.value.replace(/\D/g, '');
+                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                            this.setState({ openingStartHour: value });
+                                        }
                                         }}
                                     />
                                     <p>:</p>
@@ -201,11 +221,10 @@ class Homepage extends Component {
                                         placeholder="30"
                                         value={this.state.closingStartMinute || ''}
                                         onChange={(e) => {
-                                            const value = e.target.value.replace(/\D/g, '');
-                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
-                                                console.log(value);
-                                                this.setState({ openingStartHour: value });
-                                            }
+                                        const value = e.target.value.replace(/\D/g, '');
+                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
+                                            this.setState({ openingStartHour: value });
+                                        }
                                         }}
                                     />
                                 </div>
@@ -214,57 +233,97 @@ class Homepage extends Component {
                                 <h4><FormattedMessage id="homepage.sidebar.filters.waiting-time" /></h4>
                                 <div className='btn-group'>
                                     <button
+                                        className={this.state.selectedWaitingTime === '5m' ? 'active' : ''}
+                                        onClick={() => this.handleWaitingTimeSelect('5m')}
+                                    >5m</button>
+                                    <button
                                         className={this.state.selectedWaitingTime === '15m' ? 'active' : ''}
                                         onClick={() => this.handleWaitingTimeSelect('15m')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.2h" /></button>
+                                    >15m</button>
                                     <button
                                         className={this.state.selectedWaitingTime === '30m' ? 'active' : ''}
                                         onClick={() => this.handleWaitingTimeSelect('30m')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.30m" /></button>
-                                    <button
-                                        className={this.state.selectedWaitingTime === '1h' ? 'active' : ''}
-                                        onClick={() => this.handleWaitingTimeSelect('1h')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.3h" /></button>
+                                    >30m</button>
                                 </div>
                             </div>
                             <div className="filter-group">
                                 <h4><FormattedMessage id="homepage.sidebar.filters.style.title" /></h4>
                                 <div className='btn-group'>
                                     <button
-                                        className={this.state.selectedStyles.includes('modern') ? 'active' : ''}
-                                        onClick={() => this.handleStyleSelect('modern')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.style.modern" /></button>
+                                        className={this.state.selectedStyles.includes('Vintage') ? 'active' : ''}
+                                        onClick={() => this.handleStyleSelect('Vintage')}
+                                    >Vintage</button>
                                     <button
-                                        className={this.state.selectedStyles.includes('vintage') ? 'active' : ''}
-                                        onClick={() => this.handleStyleSelect('vintage')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.style.vintage" /></button>
+                                        className={this.state.selectedStyles.includes('Modern') ? 'active' : ''}
+                                        onClick={() => this.handleStyleSelect('Modern')}
+                                    >Modern</button>
                                     <button
-                                        className={this.state.selectedStyles.includes('freestyle') ? 'active' : ''}
-                                        onClick={() => this.handleStyleSelect('freestyle')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.style.freestyle" /></button>
+                                        className={this.state.selectedStyles.includes('Eco-Friendly') ? 'active' : ''}
+                                        onClick={() => this.handleStyleSelect('Eco-Friendly')}
+                                    >Eco-Friendly</button>
                                 </div>
                             </div>
                             <div className="filter-group">
-                                <h4><FormattedMessage id="homepage.sidebar.filters.other-tags.title" /></h4>
+                                <h4>Amenity tags</h4>
                                 <div className='btn-group'>
                                     <button
-                                        className={this.state.selectedOtherTags.includes('cat') ? 'active' : ''}
-                                        onClick={() => this.handleOtherTagsSelect('cat')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.other-tags.cat" /></button>
+                                        className={this.state.selectedAmenityTags.includes('Wifi') ? 'active' : ''}
+                                        onClick={() => this.handleAmenityTagsSelect('Wifi')}
+                                    >Wifi</button>
                                     <button
-                                        className={this.state.selectedOtherTags.includes('dog') ? 'active' : ''}
-                                        onClick={() => this.handleOtherTagsSelect('dog')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.other-tags.dog" /></button>
+                                        className={this.state.selectedAmenityTags.includes('Parking') ? 'active' : ''}
+                                        onClick={() => this.handleAmenityTagsSelect('Parking')}
+                                    >Parking</button>
                                     <button
-                                        className={this.state.selectedOtherTags.includes('for-kids') ? 'active' : ''}
-                                        onClick={() => this.handleOtherTagsSelect('for-kids')}
-                                    ><FormattedMessage id="homepage.sidebar.filters.other-tags.for-kids" /></button>
+                                        className={this.state.selectedAmenityTags.includes('Air Conditioning') ? 'active' : ''}
+                                        onClick={() => this.handleAmenityTagsSelect('Air Conditioning')}
+                                    >Air Conditioning</button>
+                                    <button
+                                        className={this.state.selectedAmenityTags.includes('Restroom') ? 'active' : ''}
+                                        onClick={() => this.handleAmenityTagsSelect('Restroom')}
+                                    >Restroom</button>
+                                </div>
+                            </div>
+                            <div className="filter-group">
+                                <h4>Service tags</h4>
+                                <div className='btn-group'>
+                                    <button
+                                        className={this.state.selectedServiceTags.includes('Table Service') ? 'active' : ''}
+                                        onClick={() => this.handleServiceTagsSelect('Table Service')}
+                                    >Table Service</button>
+                                    <button
+                                        className={this.state.selectedServiceTags.includes('Takeaway') ? 'active' : ''}
+                                        onClick={() => this.handleServiceTagsSelect('Takeaway')}
+                                    >Takeaway</button>
+                                    <button
+                                        className={this.state.selectedServiceTags.includes('Outdoor Seating') ? 'active' : ''}
+                                        onClick={() => this.handleServiceTagsSelect('Outdoor Seating')}
+                                    >Outdoor Seating</button>
+                                    <button
+                                        className={this.state.selectedServiceTags.includes('Event Hosting') ? 'active' : ''}
+                                        onClick={() => this.handleServiceTagsSelect('Event Hosting')}
+                                    >Event Hosting</button>
                                 </div>
                             </div>
                         </div>
                         <button className='homepage-btn'><FormattedMessage id="homepage.sidebar.filters.open-map" /></button>
                     </aside>
                     <main className="content">
+                        {showSearchResults && (
+                        <section className="card-section">
+                            <h4>Search Result</h4>
+                            <div className="cards">
+                                {Array.from({ length: 1 }).map((_, idx) => (
+                                <Card
+                                    key={idx}
+                                    imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                    title="Đông Tây Cafe sách"
+                                    location="Hanoi"
+                                ></Card>
+                                ))}
+                            </div>
+                        </section>
+                        )}
                         <section className="card-section">
                             <h4><FormattedMessage id="homepage.sidebar.filters.for-you" /></h4>
                             <div className="cards">
