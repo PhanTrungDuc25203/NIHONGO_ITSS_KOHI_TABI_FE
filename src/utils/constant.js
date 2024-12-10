@@ -9,6 +9,7 @@ export const path = {
     HOMEPAGE: '/homepage',
     TEST: '/test',
     LANDING_PAGE: '/landing-page',
+    SIGNUP: '/signup',
 };
 
 export const languages = {

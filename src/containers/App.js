@@ -17,6 +17,7 @@ import Header from './Header/Header';
 import Login from './LoginAuth/Login';
 import UsersHeader from '../components/Users/Header';
 import UserPreference from './UserPreference/UserPreference';
+import Signup from './Signup/Signup';
 import Homepage from './Homepage/Homepage';
 import Test from './Test/Test';
 import LandingPage from '../containers/LandingPage/LandingPage';
@@ -62,6 +63,8 @@ class App extends Component {
                                 <Route path={path.HOMEPAGE} component={Homepage} />
                                 <Route path={path.TEST} component={Test} />
                                 <Route path={path.LANDING_PAGE} component={LandingPage} />
+                                <Route path={path.SIGNUP} component={Signup} />
+
                             </Switch>
                         </span>
 
