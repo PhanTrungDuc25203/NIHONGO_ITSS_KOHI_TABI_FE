@@ -127,7 +127,7 @@ class Homepage extends Component {
                 provinceJap: shop.province_jap
             }));
             console.log('Names and Provinces:', namesAndProvinces);
-            this.setState(this.namesAndProvinces(namesAndProvinces));
+            this.setState({namesAndProvinces});
             console.log('haha: ', this.state.namesAndProvinces);
         } catch (e) {
             console.log('Error searching: ', e);
