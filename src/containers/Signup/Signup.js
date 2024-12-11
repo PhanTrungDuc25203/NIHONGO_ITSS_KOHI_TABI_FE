@@ -11,17 +11,62 @@ class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            email: '',
             username: '',
             password: '',
+            confirmPassword: '',
+            phone: '',
             isPasswordVisible: false, // Trạng thái mặc định là ẩn mật khẩu
+            isConfirmPasswordVisible: false,
             errMessage: '',
         };
     }
-
     
 
+    handleOnChangeEmail = (event) => {
+        this.setState({
+            email: event.target.value
+        })
+    }
+
+    handleOnChangeUsername = (event) => {
+        this.setState({
+            username: event.target.value
+        })
+    }
+
+    handleOnChangePhone = (event) => {
+        this.setState({
+            phone: event.target.value
+        })
+    }
+    
+    handleOnChangePassword = (event) => {
+        this.setState({
+            password: event.target.value
+        })
+    }
+
+    handleOnChangeConfirmPassword = (event) => {
+        this.setState({
+            confirmPassword: event.target.value
+        })
+    }
+
+    togglePasswordVisibility = () => {
+        this.setState((prevState) => ({
+            isPasswordVisible: !prevState.isPasswordVisible,
+        }));
+    }
+
+    toggleConfirmPasswordVisibility = () => {
+        this.setState((prevState) => ({
+            isConfirmPasswordVisible: !prevState.isConfirmPasswordVisible,
+        }));
+    }
+
     render() {
-        const { isPasswordVisible } = this.state;
+        const { isPasswordVisible, isConfirmPasswordVisible } = this.state;
 
         return (
             <div className="website-login-form">
@@ -30,11 +75,23 @@ class Signup extends Component {
                         <span className="logo-text-1">KOHI</span>
                         <span className="logo-text-2">TABI</span>
                     </div>
-                    <h2 className="login-title">Login</h2>
+                    <h2 className="login-title">Sign Up</h2>
                     <p className="login-subtitle">Discover a new world of coffee</p>
                     <div className="login-form">
                         <div className="input-group">
                             <label htmlFor="username" className="input-label">Email</label>
+                            <input
+                                type="text"
+                                value={this.state.email}
+                                id="email"
+                                onChange={(event) => { this.handleOnChangeEmail(event) }}
+                                name="email"
+                                placeholder="Enter your email"
+                                className="input-field"
+                            />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="username" className="input-label">Username</label>
                             <input
                                 type="text"
                                 value={this.state.username}
@@ -68,17 +125,53 @@ class Signup extends Component {
                                 </button>
                             </div>
                         </div>
+                        <div className="input-group">
+                            <label htmlFor="password" className="input-label">Confirm Password</label>
+                            <div className="password-wrapper">
+                                <input
+                                    type={isPasswordVisible ? "text" : "password"} // Thay đổi type dựa vào state
+                                    id="confirmpassword"
+                                    name="confirmpassword"
+                                    value={this.state.confirmPassword}
+                                    onChange={(event) => { this.handleOnChangeConfirmPassword(event) }}
+                                    placeholder="Retype your password"
+                                    className="input-field"
+                                />
+                                <button
+                                    type="button"
+                                    className="toggle-password"
+                                    onClick={this.toggleConfirmPasswordVisibility}
+                                >
+                                    <span role="img" aria-label="toggle-password">
+                                        {isConfirmPasswordVisible ? "🙈" : "👁️"}
+                                    </span>
+                                </button>
+                            </div>
+
+                        
+                            
+                        </div>
+
+                        <div className="input-group">
+                            <label htmlFor="username" className="input-label">Phone</label>
+                            <input
+                                type="text"
+                                value={this.state.phone}
+                                id="phone"
+                                onChange={(event) => { this.handleOnChangePhone(event) }}
+                                name="phone"
+                                placeholder="Enter your phone number"
+                                className="input-field"
+                            />
+                        </div>
+
                         <div className="warning-text">
                             {this.state.errMessage}
                         </div>
-                        <a href="#" className="forgot-password">Forgot password?</a>
                         <button className="login-button"
-                            onClick={() => { this.handleLoginButtonClicked() }}
-                        >Login</button>
+                            //onClick={() => { this.handleLoginButtonClicked() }}
+                        >Sign Up</button>
                     </div>
-                    <p className="signup-text">
-                        Not a member? <a href="#" className="signup-link">Sign up now</a>
-                    </p>
                 </div>
             </div>
         );
