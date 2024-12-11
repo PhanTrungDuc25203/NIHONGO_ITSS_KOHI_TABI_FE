@@ -21,12 +21,17 @@ const handleSearch = (name, province, waiting_time, open_time, end_time, min_pri
     });
 }
 
+const fetchCoffeeShopDetail = (id) => {
+    return axios.get(`/api/get-coffee-shop/${id}`);
+}
+
 const handleSignUp = (email, username, password, confirmPassword, phone) => {
-    return axios.get('/api/signup', { params: {email: email, username: username ,password: password, confirmPassword: confirmPassword,  phone : phone} });
+    return axios.get('/api/signup', { params: { email: email, username: username, password: password, confirmPassword: confirmPassword, phone: phone } });
 }
 
 export {
     handleLogin,
     handleSearch,
-    handleSignUp
+    handleSignUp,
+    fetchCoffeeShopDetail
 };

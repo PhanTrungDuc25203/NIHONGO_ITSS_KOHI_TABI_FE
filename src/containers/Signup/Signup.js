@@ -21,7 +21,7 @@ class Signup extends Component {
             errMessage: '',
         };
     }
-    
+
 
     handleOnChangeEmail = (event) => {
         this.setState({
@@ -40,7 +40,7 @@ class Signup extends Component {
             phone: event.target.value
         })
     }
-    
+
     handleOnChangePassword = (event) => {
         this.setState({
             password: event.target.value
@@ -176,8 +176,8 @@ class Signup extends Component {
                                 </button>
                             </div>
 
-                        
-                            
+
+
                         </div>
 
                         <div className="input-group">
