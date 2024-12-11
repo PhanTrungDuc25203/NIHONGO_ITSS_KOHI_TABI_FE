@@ -1,0 +1,92 @@
+.coffee-shop-detail {
+
+    .navigation {
+        display: flex;
+        align-items: center;
+        position: relative; /* Để tiêu đề có thể căn giữa tuyệt đối */
+        
+        .back-button {
+            color: #ffa16c !important;
+            font-size: 32px !important; 
+            cursor: pointer;
+            margin-right: 10px;
+            font-weight: bold !important;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute; /* Căn giữa tuyệt đối */
+            left: 50%;
+            transform: translateX(-50%); /* Dịch chuyển tiêu đề về giữa */
+        }
+    }
+
+    .coffee-shop-header {
+
+        display: flex;
+        gap: 5%;
+
+        .main-image {
+            width: 50%;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            margin-bottom: 8%;
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 50%;
+
+            .info-item {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                column-gap: 10%;
+            }
+
+        }
+    }
+
+    .featured-drinks {
+        margin-top: 20px;
+
+        .drink-list {
+            display: flex;
+            gap: 15px;
+
+            .drink-item {
+                text-align: center;
+
+                img {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 10px;
+                }
+            }
+        }
+    }
+
+    .description {
+        margin-top: 20px;
+        line-height: 1.6;
+    }
+
+    .map {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        display: none;
+
+        img {
+            width: 70%;
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+    }
+}
