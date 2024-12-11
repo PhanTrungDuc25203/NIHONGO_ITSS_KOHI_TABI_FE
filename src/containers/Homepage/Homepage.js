@@ -120,13 +120,15 @@ class Homepage extends Component {
             let response = await handleSearch(name, selectedLocation, selectedWaitingTime, openingStartHour + ':' + openingStartMinute + ':0', closingStartHour + ':' + closingStartMinute + ':0', minPrice, maxPrice, selectedStyle, selectedServiceTags[0], selectedAmenityTags[0]);
             console.log('Search data: ', response);
             const coffeeShops = response.coffeShops || [];
+            console.log('hihi:', coffeeShops);
             const namesAndProvinces = coffeeShops.map(shop => ({
                 name: shop.name,
                 provinceVie: shop.province_vie,
                 provinceJap: shop.province_jap
             }));
-            this.setState(this.namesAndProvinces(namesAndProvinces));
             console.log('Names and Provinces:', namesAndProvinces);
+            this.setState(this.namesAndProvinces(namesAndProvinces));
+            console.log('haha: ', this.state.namesAndProvinces);
         } catch (e) {
             console.log('Error searching: ', e);
         }

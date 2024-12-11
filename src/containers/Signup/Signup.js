@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
-import { handleLogin } from '../../services/userService';
+import { handleSignUp } from '../../services/userService';
 import * as actions from "../../store/actions";
 import { KeyCodeUtils, LanguageUtils } from "../../utils";
 import './Signup.scss';
@@ -63,6 +63,34 @@ class Signup extends Component {
         this.setState((prevState) => ({
             isConfirmPasswordVisible: !prevState.isConfirmPasswordVisible,
         }));
+    }
+
+    handleSignUpButtonClicked = async () => {
+        this.setState({
+            errMessage: '',
+        });
+        try {
+            let data = await handleSignUp(this.state.email, this.state.username, this.state.password, this.state.confirmPassword, this.state.phone);
+            if (data && data.errCode !== 0) {
+                this.setState({
+                    errMessage: data.message,
+                });
+            }
+            if (data && data.errCode === 0) {
+                //cần sử dụng tới redux'
+                // console.log("CHeck user: ", data.user);
+                this.props.userLoginSuccess(data.user);
+            }
+        } catch (e) {
+            if (e.response) {
+                if (e.response.data) {
+                    this.setState({
+                        errMessage: e.response.data.message,
+                    })
+                }
+            }
+        }
+
     }
 
     render() {
@@ -169,7 +197,7 @@ class Signup extends Component {
                             {this.state.errMessage}
                         </div>
                         <button className="login-button"
-                            //onClick={() => { this.handleLoginButtonClicked() }}
+                            onClick={() => { this.handleSignUpButtonClicked() }}
                         >Sign Up</button>
                     </div>
                 </div>

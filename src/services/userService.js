@@ -21,8 +21,12 @@ const handleSearch = (name, province, waiting_time, open_time, end_time, min_pri
     });
 }
 
+const handleSignUp = (email, username, password, confirmPassword, phone) => {
+    return axios.get('/api/signup', { params: {email: email, username: username ,password: password, confirmPassword: confirmPassword,  phone : phone} });
+}
 
 export {
     handleLogin,
-    handleSearch
+    handleSearch,
+    handleSignUp
 };
