@@ -7,37 +7,9 @@ import defaultCoffeeShop from '../../assets/images/coffee_shop/default.jpg';
 import defaultMap from '../../assets/images/map/default.png';
 import defaultDrink from '../../assets/images/drinks/default.png';
 import * as actions from "../../store/actions";
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
-const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-        {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1,
-                infinite: true,
-                dots: true
-            }
-        },
-        {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-            }
-        }
-    ]
-};
 
 class DetailCoffeeShop extends Component {
-
     state = {
         coffeeShop: null,
         loading: true,
@@ -47,12 +19,6 @@ class DetailCoffeeShop extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         this.fetchCoffeeShopDetail(id);
-    }
-
-    componentDidUpdate(prevProps) { }
-
-    changeLanguage(language) {
-        this.props.switchLanguageOfWebsite(language);
     }
 
     fetchCoffeeShopDetail = async (id) => {
@@ -101,8 +67,8 @@ class DetailCoffeeShop extends Component {
                         </div>
                         <div className="featured-drinks">
                             <h2>Featured drinks:</h2>
-                            <Slider {...settings}>
-                                {coffeeShop.drinks.map((drink, index) => (
+                            <div className="drink-list">
+                                {coffeeShop.drinks.slice(0, 4).map((drink, index) => ( // Hiển thị tối đa 3 drinks
                                     <div className="drink-item" key={index}>
                                         <img src={drink.image || defaultDrink}
                                             alt={drink.name_eng}
@@ -111,21 +77,21 @@ class DetailCoffeeShop extends Component {
                                         <p>{drink.price} VND</p>
                                     </div>
                                 ))}
-                            </Slider>
+                            </div>
                         </div>
                         <div className="description">
                             <h2>Description:</h2>
                             <p>{coffeeShop.description_eng}</p>
                             <p>{this.props.isLoggedIn ?
-                                this.props.userInfo.name
-                                :
-                                'Mèo Béo'}</p>
+                            this.props.userInfo.name
+                            :
+                            'Mèo Béo'}</p>
                         </div>
                     </div>
                 </div>
 
                 <div>
-
+                    
                 </div>
 
                 <div className="map">
