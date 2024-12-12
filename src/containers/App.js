@@ -22,6 +22,7 @@ import Homepage from './Homepage/Homepage';
 import Test from './Test/Test';
 import LandingPage from '../containers/LandingPage/LandingPage';
 import CafeDetail from '../containers/CoffeeShop/DetailCoffeeShop';
+import Profile from '../containers/Profile/Profile';
 
 import ConfirmModal from '../components/ConfirmModal';
 import { CustomToastCloseButton } from '../components/CustomToast';
@@ -66,6 +67,7 @@ class App extends Component {
                                 <Route path={path.LANDING_PAGE} component={LandingPage} />
                                 <Route path={path.SIGNUP} component={Signup} />
                                 <Route path={path.CAFE_DETAIL} component={CafeDetail} />
+                                <Route path={path.PROFILE} component={Profile} />
                             </Switch>
                         </span>
 

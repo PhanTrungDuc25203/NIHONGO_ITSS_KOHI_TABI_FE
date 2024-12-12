@@ -11,6 +11,7 @@ export const path = {
     LANDING_PAGE: '/landing-page',
     SIGNUP: '/signup',
     CAFE_DETAIL: '/detail-coffee-shop/:id',
+    PROFILE: '/profile',
 };
 
 export const languages = {
