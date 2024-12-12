@@ -7,6 +7,10 @@ import defaultCoffeeShop from '../../assets/images/coffee_shop/default.jpg';
 import defaultMap from '../../assets/images/map/default.png';
 import defaultDrink from '../../assets/images/drinks/default.png';
 import * as actions from "../../store/actions";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { withRouter } from 'react-router-dom'; // Import withRouter
+import Slider from 'react-slick';
 
 
 class DetailCoffeeShop extends Component {
@@ -31,6 +35,7 @@ class DetailCoffeeShop extends Component {
     };
 
     render() {
+
         const { coffeeShop, loading, error } = this.state;
 
         if (loading) {
@@ -46,7 +51,7 @@ class DetailCoffeeShop extends Component {
                 <Header />
                 <div className='navigation'>
                     <div className="back-button" onClick={() => this.props.history.goBack()}>&lt;</div>
-                    <div className='title'>Cafe Details</div>
+                    <h1 className='title'>Cafe Details</h1>
                 </div>
                 <div className="coffee-shop-header">
                     <img
@@ -56,7 +61,7 @@ class DetailCoffeeShop extends Component {
                         onError={(e) => { e.target.src = defaultCoffeeShop; }}
                     />
                     <div className="info">
-                        <h1>{coffeeShop.name}</h1>
+                        <div><h5>{coffeeShop.name}</h5></div>
                         <div className='info-item'>
                             <div><p><strong>Price range:</strong></p></div>
                             <div><p> {coffeeShop.min_price} - {coffeeShop.max_price} VND</p></div>
@@ -82,10 +87,10 @@ class DetailCoffeeShop extends Component {
                         <div className="description">
                             <h2>Description:</h2>
                             <p>{coffeeShop.description_eng}</p>
-                            <p>{this.props.isLoggedIn ?
-                            this.props.userInfo.name
+                            {/* <p>{this.props.isLoggedIn ?
+                            this.props.userInfo.email
                             :
-                            'Mèo Béo'}</p>
+                            'Mèo Béo'}</p> */}
                         </div>
                     </div>
                 </div>
@@ -116,4 +121,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect()(DetailCoffeeShop);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DetailCoffeeShop));
