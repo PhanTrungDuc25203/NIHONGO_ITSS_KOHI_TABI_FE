@@ -8,14 +8,37 @@ import './../../components/Card/Card'
 import { FormattedMessage } from "react-intl";
 import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
+import { handleSearch } from '../../services/userService';
+
+const WaitingTime = {
+    FIVE_MINUTES: '1',
+    FIFTEEN_MINUTES: '2',
+    THIRTY_MINUTES: '3'
+};
+
+const Service = {
+    TABLE_SERVICE: 1,
+    TAKEAWAY: 2,
+    OUTDOOR_SEATING: 3,
+    EVENT_HOSTING: 4
+};
+
+const Amenity = {
+    WIFI: 1,
+    PARKING: 2,
+    AIR_CONDITIONING: 3,
+    RESTROOM: 4
+};
 
 class Homepage extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
+            name: '',
             selectedLocation: null,
             selectedWaitingTime: null,
-            selectedStyles: [],
+            selectedStyle: null,
             selectedAmenityTags: [],
             selectedServiceTags: [],
             minPrice: null,
@@ -25,6 +48,7 @@ class Homepage extends Component {
             closingStartHour: null,
             closingStartMinute: null,
             showSearchResults: false,
+            namesAndProvinces: [],
         };
     }
 
@@ -33,20 +57,15 @@ class Homepage extends Component {
     };
 
     handleWaitingTimeSelect = (waitingTime) => {
-        this.setState({ selectedWaitingTime: waitingTime });
+        const { selectedWaitingTime } = this.state;
+        const updatedValue = WaitingTime[waitingTime];
+        if (updatedValue !== selectedWaitingTime) {
+            this.setState({ selectedWaitingTime: updatedValue });
+        }
     };
 
     handleStyleSelect = (style) => {
-        this.setState((prevState) => {
-            const selectedStyles = [...prevState.selectedStyles];
-            const styleIndex = selectedStyles.indexOf(style);
-            if (styleIndex === -1) {
-                selectedStyles.push(style);
-            } else {
-                selectedStyles.splice(styleIndex, 1);
-            }
-            return { selectedStyles };
-        });
+        this.setState({ selectedStyle: style });
     };
 
     handleAmenityTagsSelect = (tag) => {
@@ -91,10 +110,33 @@ class Homepage extends Component {
         this.setState({ maxPrice: numericValue ? parseInt(numericValue, 10) : null });
     };
 
-    handleSearchClick = () => {
+    handleSearchClick = async () => {
         console.log('Search clicked');
         this.setState((prevState) => ({
             showSearchResults: !prevState.showSearchResults,
+        }));
+        const { name, selectedLocation, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
+        try {
+            let response = await handleSearch(name, selectedLocation, selectedWaitingTime, openingStartHour + ':' + openingStartMinute + ':0', closingStartHour + ':' + closingStartMinute + ':0', minPrice, maxPrice, selectedStyle, selectedServiceTags[0], selectedAmenityTags[0]);
+            console.log('Search data: ', response);
+            const coffeeShops = response.coffeShops || [];
+            console.log('hihi:', coffeeShops);
+            const namesAndProvinces = coffeeShops.map(shop => ({
+                name: shop.name,
+                provinceVie: shop.province_vie,
+                provinceJap: shop.province_jap
+            }));
+            console.log('Names and Provinces:', namesAndProvinces);
+            this.setState({namesAndProvinces});
+            console.log('haha: ', this.state.namesAndProvinces);
+        } catch (e) {
+            console.log('Error searching: ', e);
+        }
+    };
+
+    togglePasswordVisibility = () => {
+        this.setState((prevState) => ({
+            isPasswordVisible: !prevState.isPasswordVisible,
         }));
     };
 
@@ -117,7 +159,7 @@ class Homepage extends Component {
                 'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
         ];
 
-        const { selectedLocation, isPasswordVisible, showSearchResults } = this.state;
+        const { selectedLocation, isPasswordVisible, showSearchResults, namesAndProvinces = [] } = this.state;
 
         return (
             <div className="homepage">
@@ -125,7 +167,12 @@ class Homepage extends Component {
                 <div className='homepage-container'>
                     <aside className="sidebar">
                         <div className="search">
-                            <input type="text" placeholder="Search by name" />
+                            <input 
+                            type="text" 
+                            placeholder="Search by name" 
+                            value={this.state.name}
+                            onChange={(e) => this.setState({ name: e.target.value })}
+                            />
                             <button className='homepage-btn' onClick={this.handleSearchClick}>Search</button>
                         </div>
                         <div className="filters">
@@ -151,7 +198,7 @@ class Homepage extends Component {
                                                     type="text"
                                                     className="input-price"
                                                     placeholder={placeholderText}
-                                                    value={this.formatPrice(this.state.maxPrice)}
+                                                    value={this.formatPrice(this.state.minPrice)}
                                                     onChange={(e) => this.handleMinPriceChange(e.target.value)}
                                                 />
                                             )
@@ -196,8 +243,8 @@ class Homepage extends Component {
                                         value={this.state.openingStartMinute || ''}
                                         onChange={(e) => {
                                             const value = e.target.value.replace(/\D/g, '');
-                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
-                                                this.setState({ openingStartHour: value });
+                                            if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 60)) {
+                                                this.setState({ openingStartMinute: value });
                                             }
                                         }}
                                     />
@@ -210,7 +257,7 @@ class Homepage extends Component {
                                         onChange={(e) => {
                                         const value = e.target.value.replace(/\D/g, '');
                                         if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                            this.setState({ openingStartHour: value });
+                                            this.setState({ closingStartHour: value });
                                         }
                                         }}
                                     />
@@ -222,8 +269,8 @@ class Homepage extends Component {
                                         value={this.state.closingStartMinute || ''}
                                         onChange={(e) => {
                                         const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 60)) {
-                                            this.setState({ openingStartHour: value });
+                                        if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 60)) {
+                                            this.setState({ closingStartMinute: value });
                                         }
                                         }}
                                     />
@@ -233,16 +280,16 @@ class Homepage extends Component {
                                 <h4><FormattedMessage id="homepage.sidebar.filters.waiting-time" /></h4>
                                 <div className='btn-group'>
                                     <button
-                                        className={this.state.selectedWaitingTime === '5m' ? 'active' : ''}
-                                        onClick={() => this.handleWaitingTimeSelect('5m')}
+                                        className={this.state.selectedWaitingTime === WaitingTime.FIVE_MINUTES ? 'active' : ''}
+                                        onClick={() => this.handleWaitingTimeSelect('FIVE_MINUTES')}
                                     >5m</button>
                                     <button
-                                        className={this.state.selectedWaitingTime === '15m' ? 'active' : ''}
-                                        onClick={() => this.handleWaitingTimeSelect('15m')}
+                                        className={this.state.selectedWaitingTime === WaitingTime.FIFTEEN_MINUTES ? 'active' : ''}
+                                        onClick={() => this.handleWaitingTimeSelect('FIFTEEN_MINUTES')}
                                     >15m</button>
                                     <button
-                                        className={this.state.selectedWaitingTime === '30m' ? 'active' : ''}
-                                        onClick={() => this.handleWaitingTimeSelect('30m')}
+                                        className={this.state.selectedWaitingTime === WaitingTime.THIRTY_MINUTES ? 'active' : ''}
+                                        onClick={() => this.handleWaitingTimeSelect('THIRTY_MINUTES')}
                                     >30m</button>
                                 </div>
                             </div>
@@ -250,15 +297,15 @@ class Homepage extends Component {
                                 <h4><FormattedMessage id="homepage.sidebar.filters.style.title" /></h4>
                                 <div className='btn-group'>
                                     <button
-                                        className={this.state.selectedStyles.includes('Vintage') ? 'active' : ''}
+                                        className={this.state.selectedStyle === 'Vintage' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Vintage')}
                                     >Vintage</button>
                                     <button
-                                        className={this.state.selectedStyles.includes('Modern') ? 'active' : ''}
+                                        className={this.state.selectedStyle === 'Modern' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Modern')}
                                     >Modern</button>
                                     <button
-                                        className={this.state.selectedStyles.includes('Eco-Friendly') ? 'active' : ''}
+                                        className={this.state.selectedStyle === 'Eco-Friendly' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Eco-Friendly')}
                                     >Eco-Friendly</button>
                                 </div>
@@ -267,20 +314,20 @@ class Homepage extends Component {
                                 <h4>Amenity tags</h4>
                                 <div className='btn-group'>
                                     <button
-                                        className={this.state.selectedAmenityTags.includes('Wifi') ? 'active' : ''}
-                                        onClick={() => this.handleAmenityTagsSelect('Wifi')}
+                                        className={this.state.selectedAmenityTags.includes(Amenity.WIFI) ? 'active' : ''}
+                                        onClick={() => this.handleAmenityTagsSelect(Amenity.WIFI)}
                                     >Wifi</button>
                                     <button
-                                        className={this.state.selectedAmenityTags.includes('Parking') ? 'active' : ''}
-                                        onClick={() => this.handleAmenityTagsSelect('Parking')}
+                                        className={this.state.selectedAmenityTags.includes(Amenity.PARKING) ? 'active' : ''}
+                                        onClick={() => this.handleAmenityTagsSelect(Amenity.PARKING)}
                                     >Parking</button>
                                     <button
-                                        className={this.state.selectedAmenityTags.includes('Air Conditioning') ? 'active' : ''}
-                                        onClick={() => this.handleAmenityTagsSelect('Air Conditioning')}
+                                        className={this.state.selectedAmenityTags.includes(Amenity.AIR_CONDITIONING) ? 'active' : ''}
+                                        onClick={() => this.handleAmenityTagsSelect(Amenity.AIR_CONDITIONING)}
                                     >Air Conditioning</button>
                                     <button
-                                        className={this.state.selectedAmenityTags.includes('Restroom') ? 'active' : ''}
-                                        onClick={() => this.handleAmenityTagsSelect('Restroom')}
+                                        className={this.state.selectedAmenityTags.includes(Amenity.RESTROOM) ? 'active' : ''}
+                                        onClick={() => this.handleAmenityTagsSelect(Amenity.RESTROOM)}
                                     >Restroom</button>
                                 </div>
                             </div>
@@ -288,20 +335,20 @@ class Homepage extends Component {
                                 <h4>Service tags</h4>
                                 <div className='btn-group'>
                                     <button
-                                        className={this.state.selectedServiceTags.includes('Table Service') ? 'active' : ''}
-                                        onClick={() => this.handleServiceTagsSelect('Table Service')}
+                                        className={this.state.selectedServiceTags.includes(Service.TABLE_SERVICE) ? 'active' : ''}
+                                        onClick={() => this.handleServiceTagsSelect(Service.TABLE_SERVICE)}
                                     >Table Service</button>
                                     <button
-                                        className={this.state.selectedServiceTags.includes('Takeaway') ? 'active' : ''}
-                                        onClick={() => this.handleServiceTagsSelect('Takeaway')}
+                                        className={this.state.selectedServiceTags.includes(Service.TAKEAWAY) ? 'active' : ''}
+                                        onClick={() => this.handleServiceTagsSelect(Service.TAKEAWAY)}
                                     >Takeaway</button>
                                     <button
-                                        className={this.state.selectedServiceTags.includes('Outdoor Seating') ? 'active' : ''}
-                                        onClick={() => this.handleServiceTagsSelect('Outdoor Seating')}
+                                        className={this.state.selectedServiceTags.includes(Service.OUTDOOR_SEATING) ? 'active' : ''}
+                                        onClick={() => this.handleServiceTagsSelect(Service.OUTDOOR_SEATING)}
                                     >Outdoor Seating</button>
                                     <button
-                                        className={this.state.selectedServiceTags.includes('Event Hosting') ? 'active' : ''}
-                                        onClick={() => this.handleServiceTagsSelect('Event Hosting')}
+                                        className={this.state.selectedServiceTags.includes(Service.EVENT_HOSTING) ? 'active' : ''}
+                                        onClick={() => this.handleServiceTagsSelect(Service.EVENT_HOSTING)}
                                     >Event Hosting</button>
                                 </div>
                             </div>
@@ -313,14 +360,14 @@ class Homepage extends Component {
                         <section className="card-section">
                             <h4>Search Result</h4>
                             <div className="cards">
-                                {Array.from({ length: 1 }).map((_, idx) => (
+                            {namesAndProvinces.map((shop, idx) => (
                                 <Card
                                     key={idx}
                                     imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                    title="Đông Tây Cafe sách"
-                                    location="Hanoi"
-                                ></Card>
-                                ))}
+                                    title={shop.name}
+                                    location={shop.provinceVie || shop.provinceJap}
+                                />
+                            ))}
                             </div>
                         </section>
                         )}
