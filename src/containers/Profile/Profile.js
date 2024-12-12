@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Profile.scss';
 import Header from '../../components/Users/Header';
+import * as actions from "../../store/actions";
 
 class Profile extends Component {
     constructor(props) {
@@ -43,6 +44,11 @@ class Profile extends Component {
         const newAddresses = addresses.filter((_, i) => i !== index);
         this.setState({ addresses: newAddresses });
     };
+
+    handleLoginForUser = () => {
+        this.props.processLogout();
+        this.props.history.push(`/login`);
+    }
 
     render() {
         const { username, label, phone, addresses, newAddress, selectedImage } = this.state;
@@ -118,12 +124,12 @@ class Profile extends Component {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <button className="btn personalization-btn">Personalization Setting</button>
                             <div className="change-password">
                                 <p>Change password</p>
                             </div>
-                            <button className="btn logout-btn">Logout</button>
+                            <button className="btn logout-btn" onClick={this.handleLoginForUser}>Logout</button>
 
                             <div className="actions">
                                 <button className="btn discard-btn">Discard change</button>
@@ -143,4 +149,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps = dispatch => {
+    return {
+        processLogout: () => dispatch(actions.processLogout()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

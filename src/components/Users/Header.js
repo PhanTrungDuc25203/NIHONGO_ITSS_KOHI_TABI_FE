@@ -31,6 +31,10 @@ class UsersHeader extends Component {
         this.props.history.push('/homepage'); // Chuyển hướng đến /homepage
     }
 
+    navigateToProfilePage = () => {
+        this.props.history.push(`/user-profile/${this.props.userInfo.email}`);
+    }
+
     render() {
         return (
             <div className="header">
@@ -63,6 +67,9 @@ class UsersHeader extends Component {
                             <button
                                 onClick={() => { this.changeLanguage(languages.EN) }}
                             >English</button>
+                            <button
+                                onClick={() => { this.navigateToProfilePage() }}
+                            >Profile</button>
                         </div>
                     </div>
 
