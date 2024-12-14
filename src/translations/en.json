@@ -19,12 +19,6 @@
         "sum": "Sum",
         "date-range-invalid": "Date range invalid"
     },
-    "login": {
-        "login": "Login",
-        "username": "Username",
-        "password": "Password",
-        "userpass-wrong": "Invalid username or password!"
-    },
     "menu": {
         "system": {
             "header": "System",
@@ -167,5 +161,15 @@
             "itm2": "Modern",
             "itm3": "Eco-Friendly"
         }
+    },
+    "login": {
+        "login-text": "Login",
+        "sub-login-text": "Discover a new world of coffee",
+        "email": "Email",
+        "email-placeholder": "Enter your email",
+        "password": "Password",
+        "password-placeholder": "Enter your password",
+        "forgot-password": "Forgot password?",
+        "sign-up": "Not a member? Sign up now"
     }
 }

@@ -19,12 +19,6 @@
         "sum": "Tổng",
         "date-range-invalid": "Khoảng thời gian không hợp lệ"
     },
-    "login": {
-        "login": "Đăng nhập",
-        "username": "Tên đăng nhập",
-        "password": "Mật khẩu",
-        "userpass-wrong": "Sai tên đăng nhập hoặc mật khẩu!"
-    },
     "menu": {
         "system": {
             "header": "Hệ thống",
@@ -167,5 +161,15 @@
             "itm2": "Modern",
             "itm3": "Eco-Friendly"
         }
+    },
+    "login": {
+        "login-text": "Login",
+        "sub-login-text": "Discover a new world of coffee",
+        "email": "Email",
+        "email-placeholder": "Enter your email",
+        "password": "Password",
+        "password-placeholder": "Enter your password",
+        "forgot-password": "Forgot password?",
+        "sign-up": "Not a member? Sign up now"
     }
 }

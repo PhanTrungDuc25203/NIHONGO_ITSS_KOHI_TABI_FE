@@ -19,12 +19,6 @@
         "sum": "Tổng",
         "date-range-invalid": "Khoảng thời gian không hợp lệ"
     },
-    "login": {
-        "login": "Đăng nhập",
-        "username": "Tên đăng nhập",
-        "password": "Mật khẩu",
-        "userpass-wrong": "Sai tên đăng nhập hoặc mật khẩu!"
-    },
     "menu": {
         "system": {
             "header": "Hệ thống",
@@ -167,5 +161,15 @@
             "itm2": "モダン",
             "itm3": "エコフレンドリー"
         }
-    }
+    },
+    "login": {
+    "login-text": "ログイン",
+    "sub-login-text": "新しいコーヒーの世界を発見する",
+    "email": "メールアドレス",
+    "email-placeholder": "メールアドレスを入力してください",
+    "password": "パスワード",
+    "password-placeholder": "パスワードを入力してください",
+    "forgot-password": "パスワードをお忘れですか？",
+    "sign-up": "未登録ですか？今すぐ登録を！"
+}
 }
