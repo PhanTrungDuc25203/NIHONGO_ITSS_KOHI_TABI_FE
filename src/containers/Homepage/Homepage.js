@@ -31,7 +31,7 @@ const Amenity = {
 };
 
 class Homepage extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -104,7 +104,7 @@ class Homepage extends Component {
         const numericValue = value.replace(/\D/g, "");
         this.setState({ minPrice: numericValue ? parseInt(numericValue, 10) : null });
     };
-    
+
     handleMaxPriceChange = (value) => {
         const numericValue = value.replace(/\D/g, "");
         this.setState({ maxPrice: numericValue ? parseInt(numericValue, 10) : null });
@@ -127,7 +127,7 @@ class Homepage extends Component {
                 provinceJap: shop.province_jap
             }));
             console.log('Names and Provinces:', namesAndProvinces);
-            this.setState({namesAndProvinces});
+            this.setState({ namesAndProvinces });
             console.log('haha: ', this.state.namesAndProvinces);
         } catch (e) {
             console.log('Error searching: ', e);
@@ -143,20 +143,20 @@ class Homepage extends Component {
     formatPrice = (value) => {
         if (!value) return "";
         return new Intl.NumberFormat().format(value);
-    };  
+    };
 
     render() {
         const provinces = [
-                'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu', 'Bắc Ninh',
-                'Bến Tre', 'Bình Định', 'Bình Dương', 'Bình Phước', 'Bình Thuận', 'Cà Mau',
-                'Cần Thơ', 'Cao Bằng', 'Đà Nẵng', 'Đắk Lắk', 'Đắk Nông', 'Điện Biên', 'Đồng Nai',
-                'Đồng Tháp', 'Gia Lai', 'Hà Giang', 'Hà Nam', 'Hà Nội', 'Hà Tĩnh', 'Hải Dương',
-                'Hải Phòng', 'Hậu Giang', 'Hòa Bình', 'Hưng Yên', 'Khánh Hòa', 'Kiên Giang',
-                'Kon Tum', 'Lai Châu', 'Lâm Đồng', 'Lạng Sơn', 'Lào Cai', 'Long An', 'Nam Định',
-                'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên', 'Quảng Bình',
-                'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị', 'Sóc Trăng', 'Sơn La',
-                'Tây Ninh', 'Thái Bình', 'Thái Nguyên', 'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang',
-                'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
+            'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu', 'Bắc Ninh',
+            'Bến Tre', 'Bình Định', 'Bình Dương', 'Bình Phước', 'Bình Thuận', 'Cà Mau',
+            'Cần Thơ', 'Cao Bằng', 'Đà Nẵng', 'Đắk Lắk', 'Đắk Nông', 'Điện Biên', 'Đồng Nai',
+            'Đồng Tháp', 'Gia Lai', 'Hà Giang', 'Hà Nam', 'Hà Nội', 'Hà Tĩnh', 'Hải Dương',
+            'Hải Phòng', 'Hậu Giang', 'Hòa Bình', 'Hưng Yên', 'Khánh Hòa', 'Kiên Giang',
+            'Kon Tum', 'Lai Châu', 'Lâm Đồng', 'Lạng Sơn', 'Lào Cai', 'Long An', 'Nam Định',
+            'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên', 'Quảng Bình',
+            'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị', 'Sóc Trăng', 'Sơn La',
+            'Tây Ninh', 'Thái Bình', 'Thái Nguyên', 'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang',
+            'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
         ];
 
         const { selectedLocation, isPasswordVisible, showSearchResults, namesAndProvinces = [] } = this.state;
@@ -167,22 +167,24 @@ class Homepage extends Component {
                 <div className='homepage-container'>
                     <aside className="sidebar">
                         <div className="search">
-                            <input 
-                            type="text" 
-                            placeholder="Search by name" 
-                            value={this.state.name}
-                            onChange={(e) => this.setState({ name: e.target.value })}
+                            <input
+                                type="text"
+                                placeholder="Search by name"
+                                value={this.state.name}
+                                onChange={(e) => this.setState({ name: e.target.value })}
                             />
-                            <button className='homepage-btn' onClick={this.handleSearchClick}>Search</button>
+                            <button className='homepage-btn' onClick={this.handleSearchClick}><FormattedMessage id="homepage.sidebar.search" /></button>
                         </div>
                         <div className="filters">
                             <div className="filter-group select-container">
-                                <h4>Province</h4>
+                                <h4><FormattedMessage id="homepage.sidebar.filters.location" /></h4>
                                 <select
                                     value={selectedLocation || ''}
                                     onChange={this.handleLocationSelect}
                                 >
-                                    <option value="">Select a province</option>
+                                    <option value="">
+                                        {this.props.lang === languages.JA ? '都市を選んでください' : 'Select a province'}
+                                    </option>
                                     {provinces.map((province, index) => (
                                         <option key={index} value={province}>{province}</option>
                                     ))}
@@ -229,10 +231,10 @@ class Homepage extends Component {
                                         placeholder="7"
                                         value={this.state.openingStartHour || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                            this.setState({ openingStartHour: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                                this.setState({ openingStartHour: value });
+                                            }
                                         }}
                                     />
                                     <p>:</p>
@@ -255,10 +257,10 @@ class Homepage extends Component {
                                         placeholder="21"
                                         value={this.state.closingStartHour || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                            this.setState({ closingStartHour: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                                this.setState({ closingStartHour: value });
+                                            }
                                         }}
                                     />
                                     <p>:</p>
@@ -268,10 +270,10 @@ class Homepage extends Component {
                                         placeholder="30"
                                         value={this.state.closingStartMinute || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 60)) {
-                                            this.setState({ closingStartMinute: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 60)) {
+                                                this.setState({ closingStartMinute: value });
+                                            }
                                         }}
                                     />
                                 </div>
@@ -357,30 +359,30 @@ class Homepage extends Component {
                     </aside>
                     <main className="content">
                         {showSearchResults && (
-                        <section className="card-section">
-                            <h4>Search Result</h4>
-                            <div className="cards">
-                            {namesAndProvinces.map((shop, idx) => (
-                                <Card
-                                    key={idx}
-                                    imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                    title={shop.name}
-                                    location={shop.provinceVie || shop.provinceJap}
-                                />
-                            ))}
-                            </div>
-                        </section>
+                            <section className="card-section">
+                                <h4>Search Result</h4>
+                                <div className="cards">
+                                    {namesAndProvinces.map((shop, idx) => (
+                                        <Card
+                                            key={idx}
+                                            imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                            title={shop.name}
+                                            location={shop.provinceVie || shop.provinceJap}
+                                        />
+                                    ))}
+                                </div>
+                            </section>
                         )}
                         <section className="card-section">
                             <h4><FormattedMessage id="homepage.sidebar.filters.for-you" /></h4>
                             <div className="cards">
                                 {Array.from({ length: 8 }).map((_, idx) => (
-                                <Card
-                                    key={idx}
-                                    imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                    title="Đông Tây Cafe sách"
-                                    location="Hanoi"
-                                ></Card>
+                                    <Card
+                                        key={idx}
+                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        title="Đông Tây Cafe sách"
+                                        location="Hanoi"
+                                    ></Card>
                                 ))}
                             </div>
                         </section>
@@ -388,12 +390,12 @@ class Homepage extends Component {
                             <h4><FormattedMessage id="homepage.sidebar.filters.recent" /></h4>
                             <div className="cards">
                                 {Array.from({ length: 6 }).map((_, idx) => (
-                                <Card
-                                key={idx}
-                                imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                title="Đông Tây Cafe sách"
-                                location="Hanoi"
-                            ></Card>
+                                    <Card
+                                        key={idx}
+                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        title="Đông Tây Cafe sách"
+                                        location="Hanoi"
+                                    ></Card>
                                 ))}
                             </div>
                         </section>

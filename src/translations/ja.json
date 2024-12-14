@@ -128,7 +128,8 @@
             "search": "けんさく",
             "search-box": "なまえでけんさく",
             "filters": {
-                "location": "場所",
+                "location": "地方",
+                "choose-location": "都市を選んでください",
                 "maxprice": "最大価格",
                 "minprice": "最小価格",
                 "price-range": "価格帯",

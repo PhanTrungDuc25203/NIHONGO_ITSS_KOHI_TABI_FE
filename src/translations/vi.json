@@ -129,6 +129,7 @@
             "search-box": "Search by name",
             "filters": {
                 "location": "Province",
+                "choose-location": "Select a province",
                 "maxprice": "Max price",
                 "minprice": "Min price",
                 "price-range": "Price range",
