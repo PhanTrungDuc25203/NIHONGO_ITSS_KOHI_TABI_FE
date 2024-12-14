@@ -171,5 +171,16 @@
         "password-placeholder": "Enter your password",
         "forgot-password": "Forgot password?",
         "sign-up": "Not a member? Sign up now"
+    },
+    "landing-page": {
+        "vietnam": "Viet Name",
+        "since2024": "SINCE 2024",
+        "about-us": "About us",
+        "kohitabi": "Kohi Tabi - ",
+        "para1": "An application to find coffee shops based on your personal preferences",
+        "para2": "Are you looking for a space to relax, work, or hang out with friends?",
+        "para3": "With Kohi Tabi, you can not only find the perfect coffee shop but also discover your own unique style!",
+        "sign-up": "Sign-up",
+        "login": "Login"
     }
 }
