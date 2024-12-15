@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import './Profile.scss';
 import Header from '../../components/Users/Header';
 import * as actions from "../../store/actions";
+import { getUserProfileData } from '../../services/userService';
+import { saveUserProfileData } from '../../services/userService';
+
+
 
 class Profile extends Component {
     constructor(props) {
