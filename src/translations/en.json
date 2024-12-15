@@ -191,5 +191,17 @@
         "confirm-password-placeholder": "Retype your password",
         "phone": "PhonePhone",
         "phone-placeholder": "Enter your phone number"
+    },
+    "detail-cofee-shop": {
+        "loading": "Loading...",
+        "error": "Error: ",
+        "cafe-detail": "Coffee details",
+        "like": "Add to favorite",
+        "liked": "Added to favorite",
+        "price-range": "Price range:",
+        "address": "Address:",
+        "open-from": "Open from:",
+        "featured-drink": "Featured drinks:",
+        "desc": "Description:"
     }
 }

@@ -8,7 +8,7 @@ import defaultCoffeeShop from '../../assets/images/coffee_shop/default.jpg';
 import defaultMap from '../../assets/images/map/default.png';
 import defaultDrink from '../../assets/images/drinks/default.png';
 import * as actions from "../../store/actions";
-
+import { FormattedMessage } from "react-intl";
 
 class DetailCoffeeShop extends Component {
 
@@ -48,11 +48,11 @@ class DetailCoffeeShop extends Component {
         let { coffeeShop, loading, error, isFavorite } = this.state;
 
         if (loading) {
-            return <div>Loading...</div>;
+            return <div><FormattedMessage id="detail-cofee-shop.loading" /></div>;
         }
 
         if (error) {
-            return <div>Error: {error}</div>;
+            return <div><FormattedMessage id="detail-cofee-shop.error" />{error}</div>;
         }
 
         return (
@@ -61,7 +61,7 @@ class DetailCoffeeShop extends Component {
                 <div className='content'>
                     <div className='navigation'>
                         <div className="back-button" onClick={() => this.props.history.goBack()}>&lt;</div>
-                        <div className='title'>Cafe Details</div>
+                        <div className='title'><FormattedMessage id="detail-cofee-shop.cafe-detail" /></div>
                     </div>
                     <div className="coffee-shop-header">
                         <img
@@ -75,22 +75,22 @@ class DetailCoffeeShop extends Component {
                                 <h1>{coffeeShop && coffeeShop.name ? coffeeShop.name : 'Tên quán không có sẵn'}</h1>
                                 <div className='is-favorite-button'>
                                     {isFavorite ? (
-                                        <button>Đã yêu thích</button>
+                                        <button><FormattedMessage id="detail-cofee-shop.like" /></button>
                                     ) : (
-                                        <button>Yêu thích</button>
+                                        <button><FormattedMessage id="detail-cofee-shop.liked" /></button>
                                     )}
                                 </div>
                             </div>
                             <div className='info-item'>
-                                <div><p><strong>Price range:</strong></p></div>
+                                <div><p><strong><FormattedMessage id="detail-cofee-shop.price-range" /></strong></p></div>
                                 <div><p> {coffeeShop && coffeeShop.min_price} - {coffeeShop && coffeeShop.max_price} VND</p></div>
-                                <div><p><strong>Address:</strong></p></div>
+                                <div><p><strong><FormattedMessage id="detail-cofee-shop.address" /></strong></p></div>
                                 <div><p> {coffeeShop && coffeeShop.address}</p></div>
-                                <div><p><strong>Open from:</strong></p></div>
+                                <div><p><strong><FormattedMessage id="detail-cofee-shop.open-from" /></strong></p></div>
                                 <div><p> {coffeeShop && coffeeShop.open_hour} - {coffeeShop && coffeeShop.close_hour}</p></div>
                             </div>
                             <div className="featured-drinks">
-                                <h2>Featured drinks:</h2>
+                                <h2><FormattedMessage id="detail-cofee-shop.featured-drink" /></h2>
                                 <div className="drink-list">
                                     {coffeeShop && coffeeShop.drinks && coffeeShop.drinks.slice(0, 4).map((drink, index) => ( // Hiển thị tối đa 3 drinks
                                         <div className="drink-item" key={index}>
@@ -104,7 +104,7 @@ class DetailCoffeeShop extends Component {
                                 </div>
                             </div>
                             <div className="description">
-                                <h2>Description:</h2>
+                                <h2><FormattedMessage id="detail-cofee-shop.desc" /></h2>
                                 <p>{coffeeShop && coffeeShop.description_eng}</p>
                                 <p>{this.props.isLoggedIn ?
                                     this.props.userInfo.name

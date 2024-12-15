@@ -191,5 +191,17 @@
         "confirm-password-placeholder": "パスワードを再入力してください",
         "phone": "電話",
         "phone-placeholder": "電話番号を入力してください"
+    },
+    "detail-cofee-shop": {
+        "loading": "読み込み中...",
+        "error": "エラー: ",
+        "cafe-detail": "コーヒーの詳細",
+        "like": "お気に入りに追加",
+        "liked": "お気に入りに追加済み",
+        "price-range": "価格帯:",
+        "address": "アドレス:",
+        "open-from": "オープン:",
+        "featured-drink": "おすすめのドリンク:",
+        "desc": "説明:"
     }
 }
