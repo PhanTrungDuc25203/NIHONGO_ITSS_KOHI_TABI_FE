@@ -3,23 +3,46 @@ import { connect } from 'react-redux';
 import './Profile.scss';
 import Header from '../../components/Users/Header';
 import * as actions from "../../store/actions";
-import { getUserProfileData } from '../../services/userService';
-import { saveUserProfileData } from '../../services/userService';
-
-
+import { getUserProfileData, updateUserProfileData } from '../../services/userService';
+import e from 'cors';
 
 class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: 'Magi',
-            label: '',
+            username: '',
+            email: '',
+            name: '',
             phone: '',
-            addresses: ['Hanoi', 'Ho Chi Minh'],
+            addresses: [],
             newAddress: '',
             selectedImage: '',
         };
     }
+
+    componentDidMount() {
+        this.handleGetProfile();
+    }
+
+    handleGetProfile = async () => {
+        console.log('Get data profile');
+        const email = this.props.userInfo.email;
+
+        try {
+            const response = await getUserProfileData(email);
+            const user = response.user || [];
+
+            this.setState({
+                username: user.username,
+                email: user.email,
+                name: user.name,
+                phone: user.phone,
+                addresses: user.addresses || [],
+            });
+        } catch (error) {
+            console.error('Error fetching proflie data:', error);
+        }
+    };
 
     handleInputChange = (e, field) => {
         this.setState({ [field]: e.target.value });
@@ -55,7 +78,7 @@ class Profile extends Component {
     }
 
     render() {
-        const { username, label, phone, addresses, newAddress, selectedImage } = this.state;
+        const { username, name, email, phone, addresses, newAddress, selectedImage } = this.state;
 
         return (
             <div className='profile'>
@@ -89,12 +112,17 @@ class Profile extends Component {
                             </div>
 
                             <div className="detail-item">
-                                <span className="label">Label:</span>
+                                <span className="label">Email:</span>
+                                <span className="value">{email}</span>
+                            </div>
+
+                            <div className="detail-item">
+                                <span className="label">Name:</span>
                                 <input
                                     type="text"
-                                    value={label}
+                                    value={name}
                                     placeholder="Placeholder"
-                                    onChange={(e) => this.handleInputChange(e, 'label')}
+                                    onChange={(e) => this.handleInputChange(e, 'name')}
                                 />
                             </div>
 
@@ -149,7 +177,9 @@ class Profile extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        lang: state.app.language,
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
     };
 };
 
@@ -159,4 +189,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile));
