@@ -58,6 +58,12 @@ class Homepage extends Component {
         this.handleGetDataForYou();
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.userInfo !== this.props.userInfo) {
+            this.handleGetDataForYou();
+        }
+    }
+
     handleLocationSelect = (event) => {
         this.setState({ selectedLocation: event.target.value });
     };
