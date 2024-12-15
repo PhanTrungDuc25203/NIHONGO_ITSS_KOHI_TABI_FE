@@ -211,7 +211,7 @@ class Homepage extends Component {
                                     onChange={this.handleLocationSelect}
                                 >
                                     <option value="">
-                                        {this.props.lang === languages.JA ? '都市を選んでください' : 'Select a province'}
+                                        {this.props.language === languages.JA ? '都市を選んでください' : 'Select a province'}
                                     </option>
                                     {provinces.map((province, index) => (
                                         <option key={index} value={province}>{province}</option>
