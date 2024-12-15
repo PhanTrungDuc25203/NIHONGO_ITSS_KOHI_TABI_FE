@@ -38,10 +38,26 @@ const handleSignUp = (email, username, password, confirmPassword, phone) => {
     return axios.get('/api/signup', { params: { email: email, username: username, password: password, confirmPassword: confirmPassword, phone: phone } });
 }
 
+const handleGetCoffeeShopForYou = (email) => {
+    return axios.get('/api/get-coffee-shop-for-you', {
+        params: { email: email }
+    });
+}
+
+const getUserProfileData = (email) => {
+    return axios.get('/api/getuserdata',{ params: {email: email}});
+}
+
+const updateUserProfileData = (email,phone,name,address) =>{
+    return axios.get('/api/saveuserdata',{ param: {email: email, phone: phone, name: name, address: address}});
+}
+
 export {
     handleLogin,
     handleSearch,
     handleSignUp,
     fetchCoffeeShopDetail,
     isFavoriteCoffeeShop,
+    handleGetCoffeeShopForYou,
+    getUserProfileData
 };

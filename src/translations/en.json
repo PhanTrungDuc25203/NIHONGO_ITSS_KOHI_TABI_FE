@@ -182,5 +182,26 @@
         "para3": "With Kohi Tabi, you can not only find the perfect coffee shop but also discover your own unique style!",
         "sign-up": "Sign-up",
         "login": "Login"
+    },
+    "signup-page": {
+        "signup-text": "Sign up",
+        "username": "Username",
+        "username-placeholder": "Enter your user name",
+        "confirm-password": "Confirm password",
+        "confirm-password-placeholder": "Retype your password",
+        "phone": "PhonePhone",
+        "phone-placeholder": "Enter your phone number"
+    },
+    "detail-cofee-shop": {
+        "loading": "Loading...",
+        "error": "Error: ",
+        "cafe-detail": "Coffee details",
+        "like": "Add to favorite",
+        "liked": "Added to favorite",
+        "price-range": "Price range:",
+        "address": "Address:",
+        "open-from": "Open from:",
+        "featured-drink": "Featured drinks:",
+        "desc": "Description:"
     }
 }

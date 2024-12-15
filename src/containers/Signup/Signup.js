@@ -79,7 +79,7 @@ class Signup extends Component {
             if (data && data.errCode === 0) {
                 //cần sử dụng tới redux'
                 // console.log("CHeck user: ", data.user);
-                this.props.userLoginSuccess(data.user);
+                //this.props.userLoginSuccess(data.user);
             }
         } catch (e) {
             if (e.response) {
@@ -103,45 +103,63 @@ class Signup extends Component {
                         <span className="logo-text-1">KOHI</span>
                         <span className="logo-text-2">TABI</span>
                     </div>
-                    <h2 className="login-title">Sign Up</h2>
-                    <p className="login-subtitle">Discover a new world of coffee</p>
+                    <h2 className="login-title"><FormattedMessage id="signup-page.signup-text" /></h2>
+                    <p className="login-subtitle"><FormattedMessage id="login.sub-login-text" /></p>
                     <div className="login-form">
                         <div className="input-group">
-                            <label htmlFor="username" className="input-label">Email</label>
-                            <input
-                                type="text"
-                                value={this.state.email}
-                                id="email"
-                                onChange={(event) => { this.handleOnChangeEmail(event) }}
-                                name="email"
-                                placeholder="Enter your email"
-                                className="input-field"
-                            />
+                            <label htmlFor="username" className="input-label"><FormattedMessage id="login.email" /></label>
+                            <FormattedMessage id="login.email-placeholder" >
+                                {
+                                    (placeholderText) => (
+                                        <input
+                                            type="text"
+                                            value={this.state.email}
+                                            id="email"
+                                            onChange={(event) => { this.handleOnChangeEmail(event) }}
+                                            name="email"
+                                            placeholder={placeholderText}
+                                            className="input-field"
+                                        />
+                                    )
+                                }
+                            </FormattedMessage>
                         </div>
                         <div className="input-group">
-                            <label htmlFor="username" className="input-label">Username</label>
-                            <input
-                                type="text"
-                                value={this.state.username}
-                                id="username"
-                                onChange={(event) => { this.handleOnChangeUsername(event) }}
-                                name="username"
-                                placeholder="Enter your username"
-                                className="input-field"
-                            />
+                            <label htmlFor="username" className="input-label"><FormattedMessage id="signup-page.username" /></label>
+                            <FormattedMessage id="signup-page.username-placeholder" >
+                                {
+                                    (placeholderText) => (
+                                        <input
+                                            type="text"
+                                            value={this.state.username}
+                                            id="username"
+                                            onChange={(event) => { this.handleOnChangeUsername(event) }}
+                                            name="username"
+                                            placeholder={placeholderText}
+                                            className="input-field"
+                                        />
+                                    )
+                                }
+                            </FormattedMessage>
                         </div>
                         <div className="input-group">
-                            <label htmlFor="password" className="input-label">Password</label>
+                            <label htmlFor="password" className="input-label"><FormattedMessage id="login.password" /></label>
                             <div className="password-wrapper">
-                                <input
-                                    type={isPasswordVisible ? "text" : "password"} // Thay đổi type dựa vào state
-                                    id="password"
-                                    name="password"
-                                    value={this.state.password}
-                                    onChange={(event) => { this.handleOnChangePassword(event) }}
-                                    placeholder="Enter your password"
-                                    className="input-field"
-                                />
+                                <FormattedMessage id="login.password-placeholder" >
+                                    {
+                                        (placeholderText) => (
+                                            <input
+                                                type={isPasswordVisible ? "text" : "password"} // Thay đổi type dựa vào state
+                                                id="password"
+                                                name="password"
+                                                value={this.state.password}
+                                                onChange={(event) => { this.handleOnChangePassword(event) }}
+                                                placeholder={placeholderText}
+                                                className="input-field"
+                                            />
+                                        )
+                                    }
+                                </FormattedMessage>
                                 <button
                                     type="button"
                                     className="toggle-password"
@@ -154,17 +172,23 @@ class Signup extends Component {
                             </div>
                         </div>
                         <div className="input-group">
-                            <label htmlFor="password" className="input-label">Confirm Password</label>
+                            <label htmlFor="password" className="input-label"><FormattedMessage id="signup-page.confirm-password" /></label>
                             <div className="password-wrapper">
-                                <input
-                                    type={isPasswordVisible ? "text" : "password"} // Thay đổi type dựa vào state
-                                    id="confirmpassword"
-                                    name="confirmpassword"
-                                    value={this.state.confirmPassword}
-                                    onChange={(event) => { this.handleOnChangeConfirmPassword(event) }}
-                                    placeholder="Retype your password"
-                                    className="input-field"
-                                />
+                                <FormattedMessage id="signup-page.confirm-password-placeholder" >
+                                    {
+                                        (placeholderText) => (
+                                            <input
+                                                type={isPasswordVisible ? "text" : "password"} // Thay đổi type dựa vào state
+                                                id="confirmpassword"
+                                                name="confirmpassword"
+                                                value={this.state.confirmPassword}
+                                                onChange={(event) => { this.handleOnChangeConfirmPassword(event) }}
+                                                placeholder={placeholderText}
+                                                className="input-field"
+                                            />
+                                        )
+                                    }
+                                </FormattedMessage>
                                 <button
                                     type="button"
                                     className="toggle-password"
@@ -181,16 +205,22 @@ class Signup extends Component {
                         </div>
 
                         <div className="input-group">
-                            <label htmlFor="username" className="input-label">Phone</label>
-                            <input
-                                type="text"
-                                value={this.state.phone}
-                                id="phone"
-                                onChange={(event) => { this.handleOnChangePhone(event) }}
-                                name="phone"
-                                placeholder="Enter your phone number"
-                                className="input-field"
-                            />
+                            <label htmlFor="username" className="input-label"><FormattedMessage id="signup-page.phone" /></label>
+                            <FormattedMessage id="signup-page.phone-placeholder" >
+                                {
+                                    (placeholderText) => (
+                                        <input
+                                            type="text"
+                                            value={this.state.phone}
+                                            id="phone"
+                                            onChange={(event) => { this.handleOnChangePhone(event) }}
+                                            name="phone"
+                                            placeholder={placeholderText}
+                                            className="input-field"
+                                        />
+                                    )
+                                }
+                            </FormattedMessage>
                         </div>
 
                         <div className="warning-text">
@@ -198,7 +228,7 @@ class Signup extends Component {
                         </div>
                         <button className="login-button"
                             onClick={() => { this.handleSignUpButtonClicked() }}
-                        >Sign Up</button>
+                        ><FormattedMessage id="signup-page.signup-text" /></button>
                     </div>
                 </div>
             </div>
