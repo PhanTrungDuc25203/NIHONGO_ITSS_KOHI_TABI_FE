@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import './DetailCoffeeShop.scss';
 import Header from '../../components/Users/Header';
@@ -20,12 +21,12 @@ class DetailCoffeeShop extends Component {
             error: null,
             isFavorite: false,
         }
-
     }
 
     checkIfFavorite = async (coffeeShopId) => {
-        const logginUserId = 1; // Tạm fix cứng vì chưa đăng nhập được ???
-        return isFavoriteCoffeeShop(logginUserId, coffeeShopId)
+        const userId = this.props.isLoggedIn ? this.props.userInfo.id : 0;
+        const result = await isFavoriteCoffeeShop(userId, coffeeShopId);
+        return result.isFavorite; // Chỉ trả về giá trị boolean
     };
 
     async componentDidMount() {
@@ -36,16 +37,19 @@ class DetailCoffeeShop extends Component {
                 coffeeShop: res.data,
                 loading: false,
             });
-            if (this.checkIfFavorite(id)) {
-                this.setState({
-                    isFavorite: true,
-                });
-            }
+
+            let isFav = await this.checkIfFavorite(id);
+            this.setState({
+                isFavorite: isFav,
+            }, () => {
+                console.log("isFavorite sau khi cập nhật:", this.state.isFavorite);
+            });
         }
     }
 
     render() {
         let { coffeeShop, loading, error, isFavorite } = this.state;
+        let { isLoggedIn, userInfo } = this.props;
 
         if (loading) {
             return <div><FormattedMessage id="detail-cofee-shop.loading" /></div>;
@@ -92,24 +96,23 @@ class DetailCoffeeShop extends Component {
                             <div className="featured-drinks">
                                 <h2><FormattedMessage id="detail-cofee-shop.featured-drink" /></h2>
                                 <div className="drink-list">
-                                    {coffeeShop && coffeeShop.drinks && coffeeShop.drinks.slice(0, 4).map((drink, index) => ( // Hiển thị tối đa 3 drinks
-                                        <div className="drink-item" key={index}>
-                                            <img src={drink.image || defaultDrink}
-                                                alt={drink.name_eng}
-                                                onError={(e) => { e.target.src = defaultDrink; }} />
-                                            <p>{drink.name_eng}</p>
-                                            <p>{drink.price} VND</p>
-                                        </div>
-                                    ))}
+                                    <div className="drink-list" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+                                        {coffeeShop && coffeeShop.drinks && coffeeShop.drinks.map((drink, index) => (
+                                            <div className="drink-item" key={index} style={{ display: 'inline-block', marginRight: '10px' }}>
+                                                <img src={drink.image || defaultDrink}
+                                                    alt={drink.name_eng}
+                                                    onError={(e) => { e.target.src = defaultDrink; }} />
+                                                <p>{drink.name_eng}</p>
+                                                <p>{drink.price} VND</p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <div className="description">
                                 <h2><FormattedMessage id="detail-cofee-shop.desc" /></h2>
                                 <p>{coffeeShop && coffeeShop.description_eng}</p>
-                                <p>{this.props.isLoggedIn ?
-                                    this.props.userInfo.name
-                                    :
-                                    'Mèo Béo'}</p>
+                                {/* <p>{isLoggedIn && userInfo ? userInfo.name : 'Mèo Béo'}</p> */}
                             </div>
                         </div>
                     </div>
@@ -141,4 +144,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect()(DetailCoffeeShop);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DetailCoffeeShop));
