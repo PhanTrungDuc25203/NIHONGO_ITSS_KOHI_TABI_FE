@@ -96,21 +96,23 @@ class DetailCoffeeShop extends Component {
                             <div className="featured-drinks">
                                 <h2><FormattedMessage id="detail-cofee-shop.featured-drink" /></h2>
                                 <div className="drink-list">
-                                    {coffeeShop && coffeeShop.drinks && coffeeShop.drinks.slice(0, 4).map((drink, index) => ( // Hiển thị tối đa 3 drinks
-                                        <div className="drink-item" key={index}>
-                                            <img src={drink.image || defaultDrink}
-                                                alt={drink.name_eng}
-                                                onError={(e) => { e.target.src = defaultDrink; }} />
-                                            <p>{drink.name_eng}</p>
-                                            <p>{drink.price} VND</p>
-                                        </div>
-                                    ))}
+                                    <div className="drink-list" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+                                        {coffeeShop && coffeeShop.drinks && coffeeShop.drinks.map((drink, index) => (
+                                            <div className="drink-item" key={index} style={{ display: 'inline-block', marginRight: '10px' }}>
+                                                <img src={drink.image || defaultDrink}
+                                                    alt={drink.name_eng}
+                                                    onError={(e) => { e.target.src = defaultDrink; }} />
+                                                <p>{drink.name_eng}</p>
+                                                <p>{drink.price} VND</p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <div className="description">
                                 <h2><FormattedMessage id="detail-cofee-shop.desc" /></h2>
                                 <p>{coffeeShop && coffeeShop.description_eng}</p>
-                                <p>{isLoggedIn && userInfo ? userInfo.name : 'Mèo Béo'}</p>
+                                {/* <p>{isLoggedIn && userInfo ? userInfo.name : 'Mèo Béo'}</p> */}
                             </div>
                         </div>
                     </div>
