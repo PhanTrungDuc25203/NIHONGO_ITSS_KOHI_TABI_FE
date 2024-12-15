@@ -68,7 +68,6 @@ class App extends Component {
                                 <Route path={path.SIGNUP} component={Signup} />
                                 <Route path={path.USER_PROFILE} component={Profile} />
                                 <Route path={path.CAFE_DETAIL} component={CafeDetail} />
-                                <Route path={path.PROFILE} component={Profile} />
                             </Switch>
                         </span>
 
