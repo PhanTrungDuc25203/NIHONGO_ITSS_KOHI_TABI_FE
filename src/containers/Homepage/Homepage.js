@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
-import { withRouter } from 'react-router-dom'; 
+import { withRouter } from 'react-router-dom';
 import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
@@ -147,11 +147,11 @@ class Homepage extends Component {
     handleGetDataForYou = async () => {
         console.log('Get data for you');
         const email = this.props.userInfo.name.email;
-    
+
         try {
             const response = await handleGetCoffeeShopForYou(email);
             console.log('API response:', response.data);
-    
+
             const coffeeShops = response.coffeeShops || [];
             console.log('Coffee Shops:', coffeeShops);
 
@@ -189,12 +189,18 @@ class Homepage extends Component {
                 <div className='homepage-container'>
                     <aside className="sidebar">
                         <div className="search">
-                            <input
-                                type="text"
-                                placeholder="Search by name"
-                                value={this.state.name}
-                                onChange={(e) => this.setState({ name: e.target.value })}
-                            />
+                            <FormattedMessage id="homepage.sidebar.search-box" >
+                                {
+                                    (placeholderText) => (
+                                        <input
+                                            type="text"
+                                            placeholder={placeholderText}
+                                            value={this.state.name}
+                                            onChange={(e) => this.setState({ name: e.target.value })}
+                                        />
+                                    )
+                                }
+                            </FormattedMessage>
                             <button className='homepage-btn' onClick={this.handleSearchClick}><FormattedMessage id="homepage.sidebar.search" /></button>
                         </div>
                         <div className="filters">
