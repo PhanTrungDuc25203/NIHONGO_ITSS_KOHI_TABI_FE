@@ -182,5 +182,14 @@
         "para3": "With Kohi Tabi, you can not only find the perfect coffee shop but also discover your own unique style!",
         "sign-up": "Sign-up",
         "login": "Login"
+    },
+    "signup-page": {
+        "signup-text": "Sign up",
+        "username": "Username",
+        "username-placeholder": "Enter your user name",
+        "confirm-password": "Confirm password",
+        "confirm-password-placeholder": "Retype your password",
+        "phone": "PhonePhone",
+        "phone-placeholder": "Enter your phone number"
     }
 }
