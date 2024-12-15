@@ -44,11 +44,20 @@ const handleGetCoffeeShopForYou = (email) => {
     });
 }
 
+const getUserProfileData = (email) => {
+    return axios.get('/api/getuserdata',{ params: {email: email}});
+}
+
+const updateUserProfileData = (email,phone,name,address) =>{
+    return axios.get('/api/saveuserdata',{ param: {email: email, phone: phone, name: name, address: address}});
+}
+
 export {
     handleLogin,
     handleSearch,
     handleSignUp,
     fetchCoffeeShopDetail,
     isFavoriteCoffeeShop,
-    handleGetCoffeeShopForYou
+    handleGetCoffeeShopForYou,
+    getUserProfileData
 };
