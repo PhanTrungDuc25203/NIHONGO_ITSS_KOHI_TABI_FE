@@ -9,7 +9,16 @@ const handleSearch = (name, province, waiting_time,open_time,end_time,min_price,
          open_time : open_time , end_time : end_time, min_price : min_price, max_price : max_price, style : style, service : service, amenity : amenity });
 }
 
+const handleGetCoffeeShopForYou = (email) => {
+    return axios.get('/api/get-coffee-shop-for-you', {
+        params: { email: email }
+    });
+}
+
 export {
     handleLogin,
-    handleSearch
+    handleSearch,
+    handleSignUp,
+    fetchCoffeeShopDetail,
+    handleGetCoffeeShopForYou
 };
