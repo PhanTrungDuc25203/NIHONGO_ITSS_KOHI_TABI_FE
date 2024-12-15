@@ -58,6 +58,12 @@ class Homepage extends Component {
         this.handleGetDataForYou();
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.userInfo !== this.props.userInfo) {
+            this.handleGetDataForYou();
+        }
+    }
+
     handleLocationSelect = (event) => {
         this.setState({ selectedLocation: event.target.value });
     };
@@ -150,7 +156,7 @@ class Homepage extends Component {
 
     handleGetDataForYou = async () => {
         console.log('Get data for you');
-        const email = this.props.userInfo.email;
+        const email = this.props.userInfo?.email;
 
         try {
             const response = await handleGetCoffeeShopForYou(email);
