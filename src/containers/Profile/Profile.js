@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'; // Import withRouter
 import './Profile.scss';
 import Header from '../../components/Users/Header';
 import * as actions from "../../store/actions";
@@ -26,7 +27,7 @@ class Profile extends Component {
 
     handleGetProfile = async () => {
         console.log('Get data profile');
-        const email = this.props.userInfo.email;
+        const email = this.props.userInfo?.email;
 
         try {
             const response = await getUserProfileData(email);
@@ -108,12 +109,12 @@ class Profile extends Component {
                         <div className="profile-details">
                             <div className="detail-item">
                                 <span className="label">Username:</span>
-                                <span className="value">{username}</span>
+                                <span className="value">{username && username}</span>
                             </div>
 
                             <div className="detail-item">
                                 <span className="label">Email:</span>
-                                <span className="value">{email}</span>
+                                <span className="value">{email && email}</span>
                             </div>
 
                             <div className="detail-item">

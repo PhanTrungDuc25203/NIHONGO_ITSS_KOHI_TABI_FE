@@ -150,7 +150,7 @@ class Homepage extends Component {
 
     handleGetDataForYou = async () => {
         console.log('Get data for you');
-        const email = this.props.userInfo.email;
+        const email = this.props.userInfo?.email;
 
         try {
             const response = await handleGetCoffeeShopForYou(email);

@@ -49,13 +49,13 @@ class UsersHeader extends Component {
 
                     <div className="userText">
                         <span className="userName">{this.props.isLoggedIn ?
-                            this.props.userInfo.name
+                            this.props.userInfo && this.props.userInfo.name && this.props.userInfo.name
                             :
                             'Đăng nhập'
                         }</span>
                         <span className="userEmail">
                             {this.props.isLoggedIn ?
-                                this.props.userInfo.email
+                                this.props.userInfo && this.props.userInfo.email && this.props.userInfo.email
                                 :
                                 ''
                             }
