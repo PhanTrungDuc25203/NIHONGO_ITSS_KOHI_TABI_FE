@@ -25,8 +25,23 @@ const fetchCoffeeShopDetail = (id) => {
     return axios.get(`/api/get-coffee-shop/${id}`);
 }
 
+const isFavoriteCoffeeShop = (userId, coffeeShopId) => {
+    return axios.get('/api/is-favorite-coffee-shop', {
+        params: {
+            user_id: userId,
+            coffee_shop_id: coffeeShopId
+        }
+    });
+};
+
 const handleSignUp = (email, username, password, confirmPassword, phone) => {
     return axios.get('/api/signup', { params: { email: email, username: username, password: password, confirmPassword: confirmPassword, phone: phone } });
+}
+
+const handleGetCoffeeShopForYou = (email) => {
+    return axios.get('/api/get-coffee-shop-for-you', {
+        params: { email: email }
+    });
 }
 
 const getUserProfileData = (email) => {
@@ -42,5 +57,7 @@ export {
     handleSearch,
     handleSignUp,
     fetchCoffeeShopDetail,
+    isFavoriteCoffeeShop,
+    handleGetCoffeeShopForYou,
     getUserProfileData
 };

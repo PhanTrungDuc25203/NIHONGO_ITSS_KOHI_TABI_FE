@@ -19,12 +19,6 @@
         "sum": "Tổng",
         "date-range-invalid": "Khoảng thời gian không hợp lệ"
     },
-    "login": {
-        "login": "Đăng nhập",
-        "username": "Tên đăng nhập",
-        "password": "Mật khẩu",
-        "userpass-wrong": "Sai tên đăng nhập hoặc mật khẩu!"
-    },
     "menu": {
         "system": {
             "header": "Hệ thống",
@@ -128,7 +122,8 @@
             "search": "けんさく",
             "search-box": "なまえでけんさく",
             "filters": {
-                "location": "場所",
+                "location": "地方",
+                "choose-location": "都市を選んでください",
                 "maxprice": "最大価格",
                 "minprice": "最小価格",
                 "price-range": "価格帯",
@@ -166,5 +161,47 @@
             "itm2": "モダン",
             "itm3": "エコフレンドリー"
         }
+    },
+    "login": {
+        "login-text": "ログイン",
+        "sub-login-text": "新しいコーヒーの世界を発見する",
+        "email": "メールアドレス",
+        "email-placeholder": "メールアドレスを入力してください",
+        "password": "パスワード",
+        "password-placeholder": "パスワードを入力してください",
+        "forgot-password": "パスワードをお忘れですか？",
+        "sign-up": "未登録ですか？今すぐ登録を！"
+    },
+    "landing-page": {
+        "vietnam": "ベトナム",
+        "since2024": "2024年から",
+        "about-us": "私たちについて",
+        "kohitabi": "コヒタビ - ",
+        "para1": "あなたの個人的な好みに基づいてカフェを見つけるアプリ",
+        "para2": "リラックスしたり、仕事をしたり、友達と過ごすための空間をお探しですか？",
+        "para3": "Kohi Tabiを使えば、完璧なカフェを見つけるだけでなく、自分だけのユニークなスタイルも発見できます！",
+        "sign-up": "サインアップ",
+        "login": "ログイン"
+    },
+    "signup-page": {
+        "signup-text": "サインアップ",
+        "username": "ユーザー名",
+        "username-placeholder": "ユーザー名を入力してください",
+        "confirm-password": "パスワードを確認する",
+        "confirm-password-placeholder": "パスワードを再入力してください",
+        "phone": "電話",
+        "phone-placeholder": "電話番号を入力してください"
+    },
+    "detail-cofee-shop": {
+        "loading": "読み込み中...",
+        "error": "エラー: ",
+        "cafe-detail": "コーヒーの詳細",
+        "like": "お気に入りに追加",
+        "liked": "お気に入りに追加済み",
+        "price-range": "価格帯:",
+        "address": "アドレス:",
+        "open-from": "オープン:",
+        "featured-drink": "おすすめのドリンク:",
+        "desc": "説明:"
     }
 }

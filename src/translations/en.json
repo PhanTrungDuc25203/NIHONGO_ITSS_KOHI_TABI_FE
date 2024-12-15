@@ -19,12 +19,6 @@
         "sum": "Sum",
         "date-range-invalid": "Date range invalid"
     },
-    "login": {
-        "login": "Login",
-        "username": "Username",
-        "password": "Password",
-        "userpass-wrong": "Invalid username or password!"
-    },
     "menu": {
         "system": {
             "header": "System",
@@ -129,6 +123,7 @@
             "search-box": "Search by name",
             "filters": {
                 "location": "Province",
+                "choose-location": "Select a province",
                 "maxprice": "Max price",
                 "minprice": "Min price",
                 "price-range": "Price range",
@@ -166,5 +161,47 @@
             "itm2": "Modern",
             "itm3": "Eco-Friendly"
         }
+    },
+    "login": {
+        "login-text": "Login",
+        "sub-login-text": "Discover a new world of coffee",
+        "email": "Email",
+        "email-placeholder": "Enter your email",
+        "password": "Password",
+        "password-placeholder": "Enter your password",
+        "forgot-password": "Forgot password?",
+        "sign-up": "Not a member? Sign up now"
+    },
+    "landing-page": {
+        "vietnam": "Viet Name",
+        "since2024": "SINCE 2024",
+        "about-us": "About us",
+        "kohitabi": "Kohi Tabi - ",
+        "para1": "An application to find coffee shops based on your personal preferences",
+        "para2": "Are you looking for a space to relax, work, or hang out with friends?",
+        "para3": "With Kohi Tabi, you can not only find the perfect coffee shop but also discover your own unique style!",
+        "sign-up": "Sign-up",
+        "login": "Login"
+    },
+    "signup-page": {
+        "signup-text": "Sign up",
+        "username": "Username",
+        "username-placeholder": "Enter your user name",
+        "confirm-password": "Confirm password",
+        "confirm-password-placeholder": "Retype your password",
+        "phone": "PhonePhone",
+        "phone-placeholder": "Enter your phone number"
+    },
+    "detail-cofee-shop": {
+        "loading": "Loading...",
+        "error": "Error: ",
+        "cafe-detail": "Coffee details",
+        "like": "Add to favorite",
+        "liked": "Added to favorite",
+        "price-range": "Price range:",
+        "address": "Address:",
+        "open-from": "Open from:",
+        "featured-drink": "Featured drinks:",
+        "desc": "Description:"
     }
 }

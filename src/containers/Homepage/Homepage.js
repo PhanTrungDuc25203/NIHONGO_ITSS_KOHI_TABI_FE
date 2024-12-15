@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
+import { withRouter } from 'react-router-dom';
 import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
 import { FormattedMessage } from "react-intl";
 import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
-import { handleSearch } from '../../services/userService';
+import { handleSearch, handleGetCoffeeShopForYou } from '../../services/userService';
 
 const WaitingTime = {
     FIVE_MINUTES: '1',
@@ -31,7 +32,7 @@ const Amenity = {
 };
 
 class Homepage extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -48,8 +49,13 @@ class Homepage extends Component {
             closingStartHour: null,
             closingStartMinute: null,
             showSearchResults: false,
-            namesAndProvinces: [],
+            resultSearch: [],
+            resultForYou: [],
         };
+    }
+
+    componentDidMount() {
+        this.handleGetDataForYou();
     }
 
     handleLocationSelect = (event) => {
@@ -104,7 +110,7 @@ class Homepage extends Component {
         const numericValue = value.replace(/\D/g, "");
         this.setState({ minPrice: numericValue ? parseInt(numericValue, 10) : null });
     };
-    
+
     handleMaxPriceChange = (value) => {
         const numericValue = value.replace(/\D/g, "");
         this.setState({ maxPrice: numericValue ? parseInt(numericValue, 10) : null });
@@ -120,15 +126,12 @@ class Homepage extends Component {
             let response = await handleSearch(name, selectedLocation, selectedWaitingTime, openingStartHour + ':' + openingStartMinute + ':0', closingStartHour + ':' + closingStartMinute + ':0', minPrice, maxPrice, selectedStyle, selectedServiceTags[0], selectedAmenityTags[0]);
             console.log('Search data: ', response);
             const coffeeShops = response.coffeShops || [];
-            console.log('hihi:', coffeeShops);
-            const namesAndProvinces = coffeeShops.map(shop => ({
+            const resultSearch = coffeeShops.map(shop => ({
                 name: shop.name,
                 provinceVie: shop.province_vie,
                 provinceJap: shop.province_jap
             }));
-            console.log('Names and Provinces:', namesAndProvinces);
-            this.setState({namesAndProvinces});
-            console.log('haha: ', this.state.namesAndProvinces);
+            this.setState({ resultSearch });
         } catch (e) {
             console.log('Error searching: ', e);
         }
@@ -143,23 +146,46 @@ class Homepage extends Component {
     formatPrice = (value) => {
         if (!value) return "";
         return new Intl.NumberFormat().format(value);
-    };  
+    };
+
+    handleGetDataForYou = async () => {
+        console.log('Get data for you');
+        const email = this.props.userInfo.name.email;
+
+        try {
+            const response = await handleGetCoffeeShopForYou(email);
+            console.log('API response:', response.data);
+
+            const coffeeShops = response.coffeeShops || [];
+            console.log('Coffee Shops:', coffeeShops);
+
+            const resultForYou = coffeeShops.map(shop => ({
+                name: shop.name,
+                provinceVie: shop.province_vie,
+                provinceJap: shop.province_jap
+            }));
+
+            this.setState({ resultForYou });
+        } catch (error) {
+            console.error('Error fetching coffee shop data:', error);
+        }
+    };
 
     render() {
         const provinces = [
-                'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu', 'Bắc Ninh',
-                'Bến Tre', 'Bình Định', 'Bình Dương', 'Bình Phước', 'Bình Thuận', 'Cà Mau',
-                'Cần Thơ', 'Cao Bằng', 'Đà Nẵng', 'Đắk Lắk', 'Đắk Nông', 'Điện Biên', 'Đồng Nai',
-                'Đồng Tháp', 'Gia Lai', 'Hà Giang', 'Hà Nam', 'Hà Nội', 'Hà Tĩnh', 'Hải Dương',
-                'Hải Phòng', 'Hậu Giang', 'Hòa Bình', 'Hưng Yên', 'Khánh Hòa', 'Kiên Giang',
-                'Kon Tum', 'Lai Châu', 'Lâm Đồng', 'Lạng Sơn', 'Lào Cai', 'Long An', 'Nam Định',
-                'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên', 'Quảng Bình',
-                'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị', 'Sóc Trăng', 'Sơn La',
-                'Tây Ninh', 'Thái Bình', 'Thái Nguyên', 'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang',
-                'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
+            'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu', 'Bắc Ninh',
+            'Bến Tre', 'Bình Định', 'Bình Dương', 'Bình Phước', 'Bình Thuận', 'Cà Mau',
+            'Cần Thơ', 'Cao Bằng', 'Đà Nẵng', 'Đắk Lắk', 'Đắk Nông', 'Điện Biên', 'Đồng Nai',
+            'Đồng Tháp', 'Gia Lai', 'Hà Giang', 'Hà Nam', 'Hà Nội', 'Hà Tĩnh', 'Hải Dương',
+            'Hải Phòng', 'Hậu Giang', 'Hòa Bình', 'Hưng Yên', 'Khánh Hòa', 'Kiên Giang',
+            'Kon Tum', 'Lai Châu', 'Lâm Đồng', 'Lạng Sơn', 'Lào Cai', 'Long An', 'Nam Định',
+            'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên', 'Quảng Bình',
+            'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị', 'Sóc Trăng', 'Sơn La',
+            'Tây Ninh', 'Thái Bình', 'Thái Nguyên', 'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang',
+            'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
         ];
 
-        const { selectedLocation, isPasswordVisible, showSearchResults, namesAndProvinces = [] } = this.state;
+        const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou = [] } = this.state;
 
         return (
             <div className="homepage">
@@ -167,22 +193,30 @@ class Homepage extends Component {
                 <div className='homepage-container'>
                     <aside className="sidebar">
                         <div className="search">
-                            <input 
-                            type="text" 
-                            placeholder="Search by name" 
-                            value={this.state.name}
-                            onChange={(e) => this.setState({ name: e.target.value })}
-                            />
-                            <button className='homepage-btn' onClick={this.handleSearchClick}>Search</button>
+                            <FormattedMessage id="homepage.sidebar.search-box" >
+                                {
+                                    (placeholderText) => (
+                                        <input
+                                            type="text"
+                                            placeholder={placeholderText}
+                                            value={this.state.name}
+                                            onChange={(e) => this.setState({ name: e.target.value })}
+                                        />
+                                    )
+                                }
+                            </FormattedMessage>
+                            <button className='homepage-btn' onClick={this.handleSearchClick}><FormattedMessage id="homepage.sidebar.search" /></button>
                         </div>
                         <div className="filters">
                             <div className="filter-group select-container">
-                                <h4>Province</h4>
+                                <h4><FormattedMessage id="homepage.sidebar.filters.location" /></h4>
                                 <select
                                     value={selectedLocation || ''}
                                     onChange={this.handleLocationSelect}
                                 >
-                                    <option value="">Select a province</option>
+                                    <option value="">
+                                        {this.props.language === languages.JA ? '都市を選んでください' : 'Select a province'}
+                                    </option>
                                     {provinces.map((province, index) => (
                                         <option key={index} value={province}>{province}</option>
                                     ))}
@@ -229,10 +263,10 @@ class Homepage extends Component {
                                         placeholder="7"
                                         value={this.state.openingStartHour || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                            this.setState({ openingStartHour: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                                this.setState({ openingStartHour: value });
+                                            }
                                         }}
                                     />
                                     <p>:</p>
@@ -255,10 +289,10 @@ class Homepage extends Component {
                                         placeholder="21"
                                         value={this.state.closingStartHour || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
-                                            this.setState({ closingStartHour: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 1 && parseInt(value, 10) <= 24)) {
+                                                this.setState({ closingStartHour: value });
+                                            }
                                         }}
                                     />
                                     <p>:</p>
@@ -268,10 +302,10 @@ class Homepage extends Component {
                                         placeholder="30"
                                         value={this.state.closingStartMinute || ''}
                                         onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 60)) {
-                                            this.setState({ closingStartMinute: value });
-                                        }
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 60)) {
+                                                this.setState({ closingStartMinute: value });
+                                            }
                                         }}
                                     />
                                 </div>
@@ -357,30 +391,30 @@ class Homepage extends Component {
                     </aside>
                     <main className="content">
                         {showSearchResults && (
-                        <section className="card-section">
-                            <h4>Search Result</h4>
-                            <div className="cards">
-                            {namesAndProvinces.map((shop, idx) => (
-                                <Card
-                                    key={idx}
-                                    imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                    title={shop.name}
-                                    location={shop.provinceVie || shop.provinceJap}
-                                />
-                            ))}
-                            </div>
-                        </section>
+                            <section className="card-section">
+                                <h4>Search Result</h4>
+                                <div className="cards">
+                                    {resultSearch.map((shop, idx) => (
+                                        <Card
+                                            key={idx}
+                                            imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                            title={shop.name}
+                                            location={shop.provinceVie || shop.provinceJap}
+                                        />
+                                    ))}
+                                </div>
+                            </section>
                         )}
                         <section className="card-section">
                             <h4><FormattedMessage id="homepage.sidebar.filters.for-you" /></h4>
                             <div className="cards">
-                                {Array.from({ length: 8 }).map((_, idx) => (
-                                <Card
-                                    key={idx}
-                                    imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                    title="Đông Tây Cafe sách"
-                                    location="Hanoi"
-                                ></Card>
+                                {resultForYou.map((shop, idx) => (
+                                    <Card
+                                        key={idx}
+                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        title={shop.name}
+                                        location={shop.provinceVie || shop.provinceJap}
+                                    />
                                 ))}
                             </div>
                         </section>
@@ -388,12 +422,12 @@ class Homepage extends Component {
                             <h4><FormattedMessage id="homepage.sidebar.filters.recent" /></h4>
                             <div className="cards">
                                 {Array.from({ length: 6 }).map((_, idx) => (
-                                <Card
-                                key={idx}
-                                imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                title="Đông Tây Cafe sách"
-                                location="Hanoi"
-                            ></Card>
+                                    <Card
+                                        key={idx}
+                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        title="Đông Tây Cafe sách"
+                                        location="Hanoi"
+                                    ></Card>
                                 ))}
                             </div>
                         </section>
@@ -419,7 +453,9 @@ class Homepage extends Component {
 
 const mapStateToProps = state => {
     return {
-        lang: state.app.language
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
     };
 };
 
@@ -428,4 +464,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
+// export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Homepage));
