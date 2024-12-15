@@ -54,10 +54,6 @@ class Homepage extends Component {
         };
     }
 
-    componentDidMount() {
-        this.handleGetDataForYou();
-    }
-
     handleLocationSelect = (event) => {
         this.setState({ selectedLocation: event.target.value });
     };
