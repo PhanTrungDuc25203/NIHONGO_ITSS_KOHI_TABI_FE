@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import './DetailCoffeeShop.scss';
 import Header from '../../components/Users/Header';
@@ -8,7 +9,6 @@ import defaultCoffeeShop from '../../assets/images/coffee_shop/default.jpg';
 import defaultMap from '../../assets/images/map/default.png';
 import defaultDrink from '../../assets/images/drinks/default.png';
 import * as actions from "../../store/actions";
-
 
 class DetailCoffeeShop extends Component {
 
@@ -20,12 +20,12 @@ class DetailCoffeeShop extends Component {
             error: null,
             isFavorite: false,
         }
-
     }
 
     checkIfFavorite = async (coffeeShopId) => {
-        const logginUserId = 1; // Tạm fix cứng vì chưa đăng nhập được ???
-        return isFavoriteCoffeeShop(logginUserId, coffeeShopId)
+        const userId = this.props.isLoggedIn ? this.props.userInfo.id : 0;
+        const result = await isFavoriteCoffeeShop(userId, coffeeShopId);
+        return result.isFavorite; // Chỉ trả về giá trị boolean
     };
 
     async componentDidMount() {
@@ -36,16 +36,19 @@ class DetailCoffeeShop extends Component {
                 coffeeShop: res.data,
                 loading: false,
             });
-            if (this.checkIfFavorite(id)) {
-                this.setState({
-                    isFavorite: true,
-                });
-            }
+
+            let isFav = await this.checkIfFavorite(id);
+            this.setState({
+                isFavorite: isFav,
+            }, () => {
+                console.log("isFavorite sau khi cập nhật:", this.state.isFavorite);
+            });
         }
     }
 
     render() {
         let { coffeeShop, loading, error, isFavorite } = this.state;
+        let { isLoggedIn, userInfo } = this.props;
 
         if (loading) {
             return <div>Loading...</div>;
@@ -74,11 +77,13 @@ class DetailCoffeeShop extends Component {
                             <div className='info-header'>
                                 <h1>{coffeeShop && coffeeShop.name ? coffeeShop.name : 'Tên quán không có sẵn'}</h1>
                                 <div className='is-favorite-button'>
-                                    {isFavorite ? (
-                                        <button>Đã yêu thích</button>
-                                    ) : (
-                                        <button>Yêu thích</button>
-                                    )}
+                                    <div className='is-favorite-button'>
+                                        {isFavorite ? (
+                                            <button>Đã yêu thích</button>
+                                        ) : (
+                                            <button>Yêu thích</button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <div className='info-item'>
@@ -106,10 +111,7 @@ class DetailCoffeeShop extends Component {
                             <div className="description">
                                 <h2>Description:</h2>
                                 <p>{coffeeShop && coffeeShop.description_eng}</p>
-                                <p>{this.props.isLoggedIn ?
-                                    this.props.userInfo.name
-                                    :
-                                    'Mèo Béo'}</p>
+                                <p>{isLoggedIn && userInfo ? userInfo.name : 'Mèo Béo'}</p>
                             </div>
                         </div>
                     </div>
@@ -141,4 +143,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect()(DetailCoffeeShop);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DetailCoffeeShop));
