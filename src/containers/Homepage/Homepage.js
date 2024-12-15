@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
+import { withRouter } from 'react-router-dom'; 
 import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
 import { FormattedMessage } from "react-intl";
 import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
-import { handleSearch } from '../../services/userService';
+import { handleSearch, handleGetCoffeeShopForYou } from '../../services/userService';
 
 const WaitingTime = {
     FIVE_MINUTES: '1',
@@ -48,7 +49,8 @@ class Homepage extends Component {
             closingStartHour: null,
             closingStartMinute: null,
             showSearchResults: false,
-            namesAndProvinces: [],
+            resultSearch: [],
+            resultForYou: [],
         };
     }
 
@@ -120,15 +122,12 @@ class Homepage extends Component {
             let response = await handleSearch(name, selectedLocation, selectedWaitingTime, openingStartHour + ':' + openingStartMinute + ':0', closingStartHour + ':' + closingStartMinute + ':0', minPrice, maxPrice, selectedStyle, selectedServiceTags[0], selectedAmenityTags[0]);
             console.log('Search data: ', response);
             const coffeeShops = response.coffeShops || [];
-            console.log('hihi:', coffeeShops);
-            const namesAndProvinces = coffeeShops.map(shop => ({
+            const resultSearch = coffeeShops.map(shop => ({
                 name: shop.name,
                 provinceVie: shop.province_vie,
                 provinceJap: shop.province_jap
             }));
-            console.log('Names and Provinces:', namesAndProvinces);
-            this.setState({ namesAndProvinces });
-            console.log('haha: ', this.state.namesAndProvinces);
+            this.setState({ resultSearch });
         } catch (e) {
             console.log('Error searching: ', e);
         }
@@ -145,6 +144,29 @@ class Homepage extends Component {
         return new Intl.NumberFormat().format(value);
     };
 
+    handleGetDataForYou = async () => {
+        console.log('Get data for you');
+        const email = this.props.userInfo.name.email;
+    
+        try {
+            const response = await handleGetCoffeeShopForYou(email);
+            console.log('API response:', response.data);
+    
+            const coffeeShops = response.coffeeShops || [];
+            console.log('Coffee Shops:', coffeeShops);
+
+            const resultForYou = coffeeShops.map(shop => ({
+                name: shop.name,
+                provinceVie: shop.province_vie,
+                provinceJap: shop.province_jap
+            }));
+
+            this.setState({ resultForYou });
+        } catch (error) {
+            console.error('Error fetching coffee shop data:', error);
+        }
+    };
+
     render() {
         const provinces = [
             'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu', 'Bắc Ninh',
@@ -159,7 +181,7 @@ class Homepage extends Component {
             'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
         ];
 
-        const { selectedLocation, isPasswordVisible, showSearchResults, namesAndProvinces = [] } = this.state;
+        const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou = [] } = this.state;
 
         return (
             <div className="homepage">
@@ -362,7 +384,7 @@ class Homepage extends Component {
                             <section className="card-section">
                                 <h4>Search Result</h4>
                                 <div className="cards">
-                                    {namesAndProvinces.map((shop, idx) => (
+                                    {resultSearch.map((shop, idx) => (
                                         <Card
                                             key={idx}
                                             imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -376,13 +398,13 @@ class Homepage extends Component {
                         <section className="card-section">
                             <h4><FormattedMessage id="homepage.sidebar.filters.for-you" /></h4>
                             <div className="cards">
-                                {Array.from({ length: 8 }).map((_, idx) => (
+                                {resultForYou.map((shop, idx) => (
                                     <Card
                                         key={idx}
                                         imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                        title="Đông Tây Cafe sách"
-                                        location="Hanoi"
-                                    ></Card>
+                                        title={shop.name}
+                                        location={shop.provinceVie || shop.provinceJap}
+                                    />
                                 ))}
                             </div>
                         </section>
@@ -421,7 +443,9 @@ class Homepage extends Component {
 
 const mapStateToProps = state => {
     return {
-        lang: state.app.language
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
     };
 };
 
@@ -430,4 +454,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
+// export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Homepage));
