@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
-import { withRouter } from 'react-router-dom';
+import { withRouter , useNavigate } from 'react-router-dom';
 import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
@@ -133,6 +133,7 @@ class Homepage extends Component {
             console.log('Search data: ', response);
             const coffeeShops = response.coffeShops || [];
             const resultSearch = coffeeShops.map(shop => ({
+                cid: shop.cid,
                 name: shop.name,
                 provinceVie: shop.province_vie,
                 provinceJap: shop.province_jap
@@ -166,6 +167,7 @@ class Homepage extends Component {
             console.log('Coffee Shops:', coffeeShops);
 
             const resultForYou = coffeeShops.map(shop => ({
+                cid: shop.cid,
                 name: shop.name,
                 provinceVie: shop.province_vie,
                 provinceJap: shop.province_jap
@@ -406,6 +408,7 @@ class Homepage extends Component {
                                             imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                             title={shop.name}
                                             location={shop.provinceVie || shop.provinceJap}
+                                            onClick={() => navigate(`/detail-coffee-shop/${shop.id}`)}
                                         />
                                     ))}
                                 </div>
@@ -420,6 +423,7 @@ class Homepage extends Component {
                                         imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
+                                        onClick={() => navigate(`/detail-coffee-shop/${shop.id}`)}
                                     />
                                 ))}
                             </div>

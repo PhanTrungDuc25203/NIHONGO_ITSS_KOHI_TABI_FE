@@ -5,10 +5,10 @@ import './Card.scss';
 
 class Card extends Component {
     render() {
-        const { processLogout, imageUrl, title, location } = this.props;
+        const { processLogout, imageUrl, title, location, onClick } = this.props;
 
         return (
-            <div className="card">
+            <div className="card" onClick={onClick} style={{ cursor: 'pointer' }}>
                 <img src={imageUrl} alt={title} />
                 <div className='card-info'>
                     <h3>{title}</h3>
