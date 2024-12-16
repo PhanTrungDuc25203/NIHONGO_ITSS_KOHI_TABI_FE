@@ -27,7 +27,7 @@ class Profile extends Component {
 
     handleGetProfile = async () => {
         console.log('Get data profile');
-        const email = this.props.userInfo?.email;
+        const email = this.props.match.params.email;
 
         try {
             const response = await getUserProfileData(email);
