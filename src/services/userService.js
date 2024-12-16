@@ -49,7 +49,7 @@ const getUserProfileData = (email) => {
 }
 
 const updateUserProfileData = (email,phone,name,address) =>{
-    return axios.get('/api/saveuserdata',{ param: {email:email, phone: phone, name: name, address: address}});
+    return axios.get('/api/saveuserdata',{ params: {email:email, phone: phone, name: name, address: address}});
 }
 
 const addFavoriteCoffeeShop = (userId, coffeeShopId) => {
