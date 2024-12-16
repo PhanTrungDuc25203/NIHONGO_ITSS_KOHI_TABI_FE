@@ -34,11 +34,11 @@ class Profile extends Component {
             const user = response.user || [];
 
             this.setState({
-                username: user.username || '',
+                username: user.userName || '',
                 email: user.email || '',
                 name: user.name || '',
-                phone: user.phone || '',
-                addresses: user.addresses || [],
+                phone: user.phoneNumber || '',
+                addresses: user.address || [],
             });
         } catch (error) {
             console.error('Error fetching proflie data:', error);
