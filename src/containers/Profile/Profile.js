@@ -47,7 +47,7 @@ class Profile extends Component {
     handleUpdateProfile = async () => {
         const { email, phone, name, addresses } = this.state;
         try {
-            const response = await updateUserProfileData(email, phone, name, addresses);
+            const response = await updateUserProfileData(email, phone, name, addresses[0]);
             console.log('response:', response);
         } catch (error) {
             console.error('Error updating profile:', error);
