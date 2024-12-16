@@ -37,7 +37,7 @@ class Profile extends Component {
                 email: user.email || '',
                 name: user.name || '',
                 phone: user.phoneNumber || '',
-                addresses: [user.address] || [],
+                addresses: user.address ? user.address.split('.') : [],
             });
         } catch (error) {
             console.error('Error fetching proflie data:', error);
@@ -47,7 +47,8 @@ class Profile extends Component {
     handleUpdateProfile = async () => {
         const { email, phone, name, addresses } = this.state;
         try {
-            const response = await updateUserProfileData(email, phone, name, addresses[0]);
+            const formattedAddress = addresses.join('.');
+            const response = await updateUserProfileData(email, phone, name, formattedAddress);
             console.log('response:', response);
         } catch (error) {
             console.error('Error updating profile:', error);
