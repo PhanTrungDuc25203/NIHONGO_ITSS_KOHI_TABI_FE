@@ -81,4 +81,5 @@ export {
     addFavoriteCoffeeShop,
     removeFavoriteCoffeeShop,
     updateUserProfileData,
+    getListFavoriteCoffeeShop,
 };
