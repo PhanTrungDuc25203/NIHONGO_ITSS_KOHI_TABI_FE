@@ -34,10 +34,10 @@ class Profile extends Component {
             const user = response.user || [];
 
             this.setState({
-                username: user.username,
-                email: user.email,
-                name: user.name,
-                phone: user.phone,
+                username: user.username || '',
+                email: user.email || '',
+                name: user.name || '',
+                phone: user.phone || '',
                 addresses: user.addresses || [],
             });
         } catch (error) {

@@ -52,6 +52,20 @@ const updateUserProfileData = (email,phone,name,address) =>{
     return axios.get('/api/saveuserdata',{ param: {email:email, phone: phone, name: name, address: address}});
 }
 
+const addFavoriteCoffeeShop = (userId, coffeeShopId) => {
+    return axios.post('/api/add-favorite-coffee-shop', {
+        user_id: userId,
+        coffee_shop_id: coffeeShopId
+    });
+}
+
+const removeFavoriteCoffeeShop = (userId, coffeeShopId) => {
+    return axios.put('/api/remove-favorite-coffee-shop', {
+        user_id: userId,
+        coffee_shop_id: coffeeShopId
+    });
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -60,5 +74,7 @@ export {
     isFavoriteCoffeeShop,
     handleGetCoffeeShopForYou,
     getUserProfileData,
-    updateUserProfileData
+    addFavoriteCoffeeShop,
+    removeFavoriteCoffeeShop,
+    updateUserProfileData,
 };

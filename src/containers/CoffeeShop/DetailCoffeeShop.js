@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import './DetailCoffeeShop.scss';
 import Header from '../../components/Users/Header';
-import { fetchCoffeeShopDetail, isFavoriteCoffeeShop } from '../../services/userService';
+import { addFavoriteCoffeeShop, removeFavoriteCoffeeShop, fetchCoffeeShopDetail, isFavoriteCoffeeShop } from '../../services/userService';
 import defaultCoffeeShop from '../../assets/images/coffee_shop/default.jpg';
 import defaultMap from '../../assets/images/map/default.png';
 import defaultDrink from '../../assets/images/drinks/default.png';
@@ -47,16 +47,37 @@ class DetailCoffeeShop extends Component {
         }
     }
 
+    handleFavoriteButtonClick = async () => {
+        let { id } = this.props.match.params;
+        let userId = this.props.isLoggedIn ? this.props.userInfo.id : 0;
+
+        console.log("id = " + id);
+        console.log("userId = " + userId);
+
+        console.log("isFavorite trước khi cập nhật:", this.state.isFavorite);
+    
+        if (this.state.isFavorite) {
+            await removeFavoriteCoffeeShop(userId, id);
+        } else {
+            await addFavoriteCoffeeShop(userId, id);
+        }
+    
+        const isFav = await this.checkIfFavorite(id);
+        this.setState({
+            isFavorite: isFav,
+        });
+    };
+
     render() {
         let { coffeeShop, loading, error, isFavorite } = this.state;
         let { isLoggedIn, userInfo } = this.props;
 
         if (loading) {
-            return <div><FormattedMessage id="detail-cofee-shop.loading" /></div>;
+            return <div><FormattedMessage id="detail-coffee-shop.loading" /></div>;
         }
 
         if (error) {
-            return <div><FormattedMessage id="detail-cofee-shop.error" />{error}</div>;
+            return <div><FormattedMessage id="detail-coffee-shop.error" />{error}</div>;
         }
 
         return (
@@ -65,7 +86,7 @@ class DetailCoffeeShop extends Component {
                 <div className='content'>
                     <div className='navigation'>
                         <div className="back-button" onClick={() => this.props.history.goBack()}>&lt;</div>
-                        <div className='title'><FormattedMessage id="detail-cofee-shop.cafe-detail" /></div>
+                        <div className='title'><FormattedMessage id="detail-coffee-shop.cafe-detail" /></div>
                     </div>
                     <div className="coffee-shop-header">
                         <img
@@ -79,26 +100,30 @@ class DetailCoffeeShop extends Component {
                                 <h1>{coffeeShop && coffeeShop.name ? coffeeShop.name : 'Tên quán không có sẵn'}</h1>
                                 <div className='is-favorite-button'>
                                     {isFavorite ? (
-                                        <button><FormattedMessage id="detail-cofee-shop.like" /></button>
+                                        <button
+                                            onClick={this.handleFavoriteButtonClick}
+                                        ><FormattedMessage id="detail-coffee-shop.liked" /></button>
                                     ) : (
-                                        <button><FormattedMessage id="detail-cofee-shop.liked" /></button>
+                                        <button
+                                            onClick={this.handleFavoriteButtonClick}
+                                        ><FormattedMessage id="detail-coffee-shop.like" /></button>
                                     )}
                                 </div>
                             </div>
                             <div className='info-item'>
-                                <div><p><strong><FormattedMessage id="detail-cofee-shop.price-range" /></strong></p></div>
+                                <div><p><strong><FormattedMessage id="detail-coffee-shop.price-range" /></strong></p></div>
                                 <div><p> {coffeeShop && coffeeShop.min_price} - {coffeeShop && coffeeShop.max_price} VND</p></div>
-                                <div><p><strong><FormattedMessage id="detail-cofee-shop.address" /></strong></p></div>
+                                <div><p><strong><FormattedMessage id="detail-coffee-shop.address" /></strong></p></div>
                                 <div><p> {coffeeShop && coffeeShop.address}</p></div>
-                                <div><p><strong><FormattedMessage id="detail-cofee-shop.open-from" /></strong></p></div>
+                                <div><p><strong><FormattedMessage id="detail-coffee-shop.open-from" /></strong></p></div>
                                 <div><p> {coffeeShop && coffeeShop.open_hour} - {coffeeShop && coffeeShop.close_hour}</p></div>
                             </div>
                             <div className="featured-drinks">
-                                <h2><FormattedMessage id="detail-cofee-shop.featured-drink" /></h2>
+                                <h2><FormattedMessage id="detail-coffee-shop.featured-drink" /></h2>
                                 <div className="drink-list">
                                     <div className="drink-list" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
                                         {coffeeShop && coffeeShop.drinks && coffeeShop.drinks.map((drink, index) => (
-                                            <div className="drink-item" key={index} style={{ display: 'inline-block', marginRight: '10px' }}>
+                                            <div className="drink-item" key={index} style={{ display: 'inline-block', marginRight: '25px' }}>
                                                 <img src={drink.image || defaultDrink}
                                                     alt={drink.name_eng}
                                                     onError={(e) => { e.target.src = defaultDrink; }} />
@@ -110,7 +135,7 @@ class DetailCoffeeShop extends Component {
                                 </div>
                             </div>
                             <div className="description">
-                                <h2><FormattedMessage id="detail-cofee-shop.desc" /></h2>
+                                <h2><FormattedMessage id="detail-coffee-shop.desc" /></h2>
                                 <p>{coffeeShop && coffeeShop.description_eng}</p>
                                 {/* <p>{isLoggedIn && userInfo ? userInfo.name : 'Mèo Béo'}</p> */}
                             </div>
@@ -118,7 +143,7 @@ class DetailCoffeeShop extends Component {
                     </div>
 
                     <div>
-
+                        <button>Ấn vào đây để vào trang tìm đường</button>
                     </div>
 
                     <div className="map">
