@@ -26,7 +26,6 @@ class Profile extends Component {
     }
 
     handleGetProfile = async () => {
-        console.log('Get data profile');
         const email = this.props.match.params.email;
 
         try {
@@ -42,6 +41,16 @@ class Profile extends Component {
             });
         } catch (error) {
             console.error('Error fetching proflie data:', error);
+        }
+    };
+
+    handleUpdateProfile = async () => {
+        const { email, phone, name, addresses } = this.state;
+        try {
+            const response = await updateUserProfileData(email, phone, name, addresses);
+            console.log('response:', response);
+        } catch (error) {
+            console.error('Error updating profile:', error);
         }
     };
 
@@ -166,7 +175,7 @@ class Profile extends Component {
 
                             <div className="actions">
                                 <button className="btn discard-btn">Discard change</button>
-                                <button className="btn save-btn">Save</button>
+                                <button className="btn save-btn" onClick={this.handleUpdateProfile}>Save</button>
                             </div>
                         </div>
                     </div>
