@@ -37,7 +37,7 @@ class Profile extends Component {
                 email: user.email || '',
                 name: user.name || '',
                 phone: user.phoneNumber || '',
-                addresses: user.address || [],
+                addresses: [user.address] || [],
             });
         } catch (error) {
             console.error('Error fetching proflie data:', error);
