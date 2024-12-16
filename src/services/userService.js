@@ -66,6 +66,10 @@ const removeFavoriteCoffeeShop = (userId, coffeeShopId) => {
     });
 }
 
+const getListFavoriteCoffeeShop = (userId) => {
+    return axios.get('/api/get-list-favorite-coffee-shop/' + userId);
+}
+
 export {
     handleLogin,
     handleSearch,
