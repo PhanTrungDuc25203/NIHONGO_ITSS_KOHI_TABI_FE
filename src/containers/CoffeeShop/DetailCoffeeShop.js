@@ -11,7 +11,7 @@ import defaultMap from '../../assets/images/map/default.png';
 import defaultDrink from '../../assets/images/drinks/default.png';
 import * as actions from "../../store/actions";
 import { FormattedMessage } from "react-intl";
-import  likedHeart  from '../../assets/Icons/liked.png';
+import  likedHeart  from '../../assets/Icons/heart-liked.png';
 import  likeHeart  from '../../assets/Icons/like.png';
 
 class DetailCoffeeShop extends Component {
