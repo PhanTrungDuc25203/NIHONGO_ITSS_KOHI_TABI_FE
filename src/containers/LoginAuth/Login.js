@@ -42,6 +42,7 @@ class Login extends Component {
                 });
             }
             if (data && data.errCode === 0) {
+                console.log(data);
                 //cần sử dụng tới redux'
                 // console.log("CHeck user: ", data.user);
                 this.props.userLoginSuccess(data.user);

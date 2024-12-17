@@ -4,11 +4,10 @@ const handleLogin = (usernameOrEmail, password) => {
     return axios.post('/api/login', { usernameOrEmail: usernameOrEmail, password: password });
 }
 
-const handleSearch = (name, province, waiting_time, open_time, end_time, min_price, max_price, style, service, amenity) => {
+const handleSearch = (name, waiting_time, open_time, end_time, min_price, max_price, style, service, amenity) => {
     return axios.get('/api/search-coffeshop', {
         params: {
             name: name,
-            province: province,
             waiting_time: waiting_time,
             open_time: open_time,
             end_time: end_time,
@@ -67,6 +66,7 @@ const removeFavoriteCoffeeShop = (userId, coffeeShopId) => {
 }
 
 const getListFavoriteCoffeeShop = (userId) => {
+    console.log(`/api/get-list-favorite-coffee-shop/${userId}`);
     return axios.get('/api/get-list-favorite-coffee-shop/' + userId);
 }
 

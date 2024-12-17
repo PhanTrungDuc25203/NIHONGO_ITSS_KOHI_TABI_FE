@@ -9,7 +9,7 @@ import './../../components/Card/Card'
 import { FormattedMessage } from "react-intl";
 import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
-import { handleSearch, handleGetCoffeeShopForYou } from '../../services/userService';
+import { handleSearch, handleGetCoffeeShopForYou, getListFavoriteCoffeeShop } from '../../services/userService';
 
 const WaitingTime = {
     FIVE_MINUTES: '1',
@@ -53,16 +53,19 @@ class Homepage extends Component {
             showSearchResults: false,
             resultSearch: [],
             resultForYou: [],
+            resultFavorite: [],
         };
     }
 
     componentDidMount() {
         this.handleGetDataForYou();
+        this.handleGetDataFavorite();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.userInfo !== this.props.userInfo) {
             this.handleGetDataForYou();
+            this.handleGetDataFavorite();
         }
     }
 
@@ -125,14 +128,21 @@ class Homepage extends Component {
     };
 
     handleSearchClick = async () => {
-        console.log('Search clicked');
         this.setState((prevState) => ({
             showSearchResults: !prevState.showSearchResults,
         }));
-        const { name, selectedLocation, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
+        const { name, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
         try {
-            let response = await handleSearch(name, selectedLocation, selectedWaitingTime, openingStartHour + ':' + openingStartMinute + ':0', closingStartHour + ':' + closingStartMinute + ':0', minPrice, maxPrice, selectedStyle, selectedServiceTags[0], selectedAmenityTags[0]);
-            console.log('Search data: ', response);
+            let response = await handleSearch(
+                name, 
+                selectedWaitingTime, 
+                (openingStartHour === null || openingStartMinute === null) ? null : openingStartHour + ':' + openingStartMinute + ':0', 
+                (closingStartHour === null || closingStartMinute === null) ? null : closingStartHour + ':' + closingStartMinute + ':0', 
+                minPrice, 
+                maxPrice, 
+                selectedStyle, 
+                selectedServiceTags[0], 
+                selectedAmenityTags[0]);
             const coffeeShops = response.coffeShops || [];
             const resultSearch = coffeeShops.map(shop => ({
                 cid: shop.cid,
@@ -140,6 +150,7 @@ class Homepage extends Component {
                 provinceVie: shop.province_vie,
                 provinceJap: shop.province_jap
             }));
+            console.log(resultSearch);
             this.setState({ resultSearch });
         } catch (e) {
             console.log('Error searching: ', e);
@@ -158,15 +169,12 @@ class Homepage extends Component {
     };
 
     handleGetDataForYou = async () => {
-        console.log('Get data for you');
         const email = this.props.userInfo?.email;
 
         try {
             const response = await handleGetCoffeeShopForYou(email);
-            console.log('API response:', response.data);
 
             const coffeeShops = response.coffeeShops || [];
-            console.log('Coffee Shops:', coffeeShops);
 
             const resultForYou = coffeeShops.map(shop => ({
                 cid: shop.cid,
@@ -180,6 +188,31 @@ class Homepage extends Component {
             console.error('Error fetching coffee shop data:', error);
         }
     };
+
+    handleGetDataFavorite = async () => {
+        const id = this.props.userInfo.id;
+
+        try {
+            const response = await getListFavoriteCoffeeShop(id);
+            console.log('API response:', response.data);
+
+            const datas = response.data || [];
+
+            console.log(datas);
+
+            const resultFavorite = datas.map(data => ({
+                cid: data.coffeeShop.cid,
+                name: data.coffeeShop.name,
+                provinceVie: data.coffeeShop.province_vie,
+                provinceJap: data.coffeeShop.province_jap
+            }))
+
+            this.setState({ resultFavorite });
+        } catch (error) {
+            console.error('Error fetching coffee shop data:', error);
+        }
+    };
+
     handleNavigateToDetail(shopId) {
         // Use history.push() to navigate to another route
         this.props.history.push(`/detail-coffee-shop/${shopId}`);
@@ -202,7 +235,7 @@ class Homepage extends Component {
         ];
 
 
-        const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou = [] } = this.state;
+        const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou, resultFavorite = [] } = this.state;
 
         return (
             <div className="homepage">
@@ -440,7 +473,7 @@ class Homepage extends Component {
                         <section className="card-section">
                             <h4><FormattedMessage id="homepage.sidebar.filters.recent" /></h4>
                             <div className="cards">
-                                {Array.from({ length: 6 }).map((_, idx) => (
+                                {Array.from({ length: 5 }).map((_, idx) => (
                                     <Card
                                         key={idx}
                                         imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -453,13 +486,14 @@ class Homepage extends Component {
                         <section className="card-section">
                             <h4><FormattedMessage id="homepage.sidebar.filters.favorite" /></h4>
                             <div className="cards">
-                                {Array.from({ length: 5 }).map((_, idx) => (
+                                {resultFavorite.map((shop, idx) => (
                                     <Card
                                         key={idx}
                                         imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                        title="Đông Tây Cafe sách"
-                                        location="Hanoi"
-                                    ></Card>
+                                        title={shop.name}
+                                        location={shop.provinceVie || shop.provinceJap}
+                                        onClick={() => this.handleNavigateToDetail(shop.cid)}
+                                        />
                                 ))}
                             </div>
                         </section>
