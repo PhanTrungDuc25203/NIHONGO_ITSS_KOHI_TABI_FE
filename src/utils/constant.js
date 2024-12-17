@@ -12,7 +12,7 @@ export const path = {
     SIGNUP: '/signup',
     CAFE_DETAIL: '/detail-coffee-shop/:id',
     USER_PROFILE: '/user-profile/:email',
-    FIND_MAP: '/find-map/:id'
+    FIND_MAP: '/find-map/:id?'
 };
 
 export const languages = {
