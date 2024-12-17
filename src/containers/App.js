@@ -23,6 +23,7 @@ import Test from './Test/Test';
 import LandingPage from '../containers/LandingPage/LandingPage';
 import CafeDetail from '../containers/CoffeeShop/DetailCoffeeShop';
 import Profile from '../containers/Profile/Profile';
+import FindMap from '../containers/FindMap/FindMap'
 
 import ConfirmModal from '../components/ConfirmModal';
 import { CustomToastCloseButton } from '../components/CustomToast';
@@ -68,6 +69,7 @@ class App extends Component {
                                 <Route path={path.SIGNUP} component={Signup} />
                                 <Route path={path.USER_PROFILE} component={Profile} />
                                 <Route path={path.CAFE_DETAIL} component={CafeDetail} />
+                                <Route path={path.FIND_MAP} component={FindMap} />
                             </Switch>
                         </span>
 

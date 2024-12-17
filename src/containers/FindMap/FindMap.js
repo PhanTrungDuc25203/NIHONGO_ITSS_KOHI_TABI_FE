@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'; 
 import './FindMap.scss';
 import L from "leaflet";
 import "leaflet-routing-machine";
@@ -7,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import all_icons from "../../assets/Icons/all_icons";
 import Header from '../../components/Users/Header';
+import { fetchCoffeeShopDetail } from '../../services/userService';
 
 class FindMap extends Component {
     constructor(props) {
@@ -16,14 +18,27 @@ class FindMap extends Component {
             endPoint: null,
             startAddress: '',
             endAddress: '',
-            activeInput: null
+            activeInput: null,
+            coffeeShop: null,
         };
         this.mapRef = React.createRef();
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.initializeMap();
         this.handleGetCurrentLocation();
+
+        let { id } = this.props.match.params;
+        if (id !== "") {
+            let res = await fetchCoffeeShopDetail(id);
+            if (res.errCode === 0) {
+                this.setState({
+                    coffeeShop: res.data,
+                    // loading: false,
+                });
+            }
+            console.log(this.coffeeShop);
+        }
     }
 
     componentWillUnmount() {
@@ -238,10 +253,18 @@ class FindMap extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
-        lang: state.app.language,
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
     };
 };
 
-export default connect(mapStateToProps)(FindMap);
+const mapDispatchToProps = dispatch => {
+    return {
+        processLogout: () => dispatch(actions.processLogout()),
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FindMap));

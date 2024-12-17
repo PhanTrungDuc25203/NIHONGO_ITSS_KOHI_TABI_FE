@@ -218,6 +218,9 @@ class Homepage extends Component {
         this.props.history.push(`/detail-coffee-shop/${shopId}`);
     }
 
+    handleOpenMap() {
+        this.props.history.push(`/find-map/`);
+    }
 
 
     render() {
@@ -437,7 +440,9 @@ class Homepage extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button className='homepage-btn'><FormattedMessage id="homepage.sidebar.filters.open-map" /></button>
+                        <button className='homepage-btn'
+                            onClick={() => this.handleOpenMap()}
+                        ><FormattedMessage id="homepage.sidebar.filters.open-map" /></button>
                     </aside>
                     <main className="content">
                         {showSearchResults && (
@@ -517,5 +522,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Homepage));
