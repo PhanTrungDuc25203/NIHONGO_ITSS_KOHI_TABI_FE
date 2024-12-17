@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+import axios from 'axios'; 
+
 import './DetailCoffeeShop.scss';
 import Header from '../../components/Users/Header';
 import { addFavoriteCoffeeShop, removeFavoriteCoffeeShop, fetchCoffeeShopDetail, isFavoriteCoffeeShop } from '../../services/userService';
@@ -10,6 +11,8 @@ import defaultMap from '../../assets/images/map/default.png';
 import defaultDrink from '../../assets/images/drinks/default.png';
 import * as actions from "../../store/actions";
 import { FormattedMessage } from "react-intl";
+import  likedHeart  from '../../assets/Icons/liked.png';
+import  likeHeart  from '../../assets/Icons/like.png';
 
 class DetailCoffeeShop extends Component {
 
@@ -55,13 +58,13 @@ class DetailCoffeeShop extends Component {
         console.log("userId = " + userId);
 
         console.log("isFavorite trước khi cập nhật:", this.state.isFavorite);
-    
+
         if (this.state.isFavorite) {
             await removeFavoriteCoffeeShop(userId, id);
         } else {
             await addFavoriteCoffeeShop(userId, id);
         }
-    
+
         const isFav = await this.checkIfFavorite(id);
         this.setState({
             isFavorite: isFav,
@@ -102,11 +105,19 @@ class DetailCoffeeShop extends Component {
                                     {isFavorite ? (
                                         <button
                                             onClick={this.handleFavoriteButtonClick}
-                                        ><FormattedMessage id="detail-coffee-shop.liked" /></button>
+                                            className='liked-btn'
+                                        >
+                                            <img src={likedHeart} alt="liked" />
+                                            {/* <FormattedMessage id="detail-coffee-shop.liked" /> */}
+                                        </button>
                                     ) : (
                                         <button
                                             onClick={this.handleFavoriteButtonClick}
-                                        ><FormattedMessage id="detail-coffee-shop.like" /></button>
+                                            className='like-btn'
+                                        >
+                                            {/* <FormattedMessage id="detail-coffee-shop.like" /> */}
+                                            <img src={likeHeart} alt="like" />
+                                        </button>
                                     )}
                                 </div>
                             </div>

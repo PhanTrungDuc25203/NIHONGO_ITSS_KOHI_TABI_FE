@@ -7,11 +7,12 @@
     .navigation {
         display: flex;
         align-items: center;
-        position: relative; /* Để tiêu đề có thể căn giữa tuyệt đối */
-        
+        position: relative;
+        /* Để tiêu đề có thể căn giữa tuyệt đối */
+
         .back-button {
             color: #ffa16c !important;
-            font-size: 32px !important; 
+            font-size: 32px !important;
             cursor: pointer;
             margin-right: 10px;
             font-weight: bold !important;
@@ -20,9 +21,11 @@
         .title {
             font-size: 24px;
             font-weight: bold;
-            position: absolute; /* Căn giữa tuyệt đối */
+            position: absolute;
+            /* Căn giữa tuyệt đối */
             left: 50%;
-            transform: translateX(-50%); /* Dịch chuyển tiêu đề về giữa */
+            transform: translateX(-50%);
+            /* Dịch chuyển tiêu đề về giữa */
         }
     }
 
@@ -32,10 +35,10 @@
         gap: 5%;
 
         .main-image {
-            width: 40%;           
+            width: 40%;
             border-radius: 10px;
         }
-        
+
         h1 {
             margin-bottom: 8%;
         }
@@ -51,6 +54,21 @@
                 justify-content: space-between;
                 align-items: center;
                 margin-bottom: 10px;
+
+                .is-favorite-button {
+
+                    button {
+                        border: none;
+                        background-color: none !important;
+                    }
+
+                    button img {
+                        width: 20px;
+                        height: 20px;
+                    }
+
+
+                }
 
                 h1 {
                     margin: 0;
