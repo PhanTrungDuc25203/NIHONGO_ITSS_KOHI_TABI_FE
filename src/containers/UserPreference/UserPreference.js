@@ -4,6 +4,7 @@ import './UserPreference.scss';
 import { connect } from 'react-redux';
 import { FormattedMessage } from "react-intl";
 import { languages } from "../../utils";
+import {getDataForUserPreference} from '../../services/userService';
 
 class UserPreference extends Component {
     constructor(props) {
@@ -12,7 +13,22 @@ class UserPreference extends Component {
             preferences: this.getTranslatedPreferences(props.lang),
             distance: '',
             errMessage: '',
+            userPreferenceData: {},
         };
+    }
+
+    async componentDidMount() {
+        let response = await getDataForUserPreference();
+        if(response&&response.errCode === 0){
+            this.setState({userPreferenceData: response.data}, console.log(this.state.userPreferenceData));
+            
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.userInfo !== this.props.userInfo) {
+            getDataForUserPreference();
+        }
     }
 
     // Hàm dịch preferences dựa vào ngôn ngữ

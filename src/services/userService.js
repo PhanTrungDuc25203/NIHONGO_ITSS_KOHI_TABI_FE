@@ -70,6 +70,10 @@ const getListFavoriteCoffeeShop = (userId) => {
     return axios.get('/api/get-list-favorite-coffee-shop/' + userId);
 }
 
+const getDataForUserPreference = () => {
+    return axios.get('/api/get-data-for-select-box-user-preference-page');
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -82,4 +86,5 @@ export {
     removeFavoriteCoffeeShop,
     updateUserProfileData,
     getListFavoriteCoffeeShop,
+    getDataForUserPreference,
 };
