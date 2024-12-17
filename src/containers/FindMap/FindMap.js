@@ -260,7 +260,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        processLogout: () => dispatch(actions.processLogout()),
+        // processLogout: () => dispatch(actions.processLogout()),
     };
 };
 

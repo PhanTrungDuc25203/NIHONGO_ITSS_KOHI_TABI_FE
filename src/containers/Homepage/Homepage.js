@@ -10,6 +10,7 @@ import { FormattedMessage } from "react-intl";
 import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
 import { handleSearch, handleGetCoffeeShopForYou, getListFavoriteCoffeeShop } from '../../services/userService';
+import { path } from '../../utils';
 
 const WaitingTime = {
     FIVE_MINUTES: '1',
