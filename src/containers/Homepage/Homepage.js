@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
-import { withRouter , useNavigate } from 'react-router-dom';
+import { withRouter , useNavigate, useHistory } from 'react-router-dom';
 import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
@@ -30,6 +30,8 @@ const Amenity = {
     AIR_CONDITIONING: 3,
     RESTROOM: 4
 };
+
+
 
 class Homepage extends Component {
 
@@ -178,6 +180,12 @@ class Homepage extends Component {
             console.error('Error fetching coffee shop data:', error);
         }
     };
+    handleNavigateToDetail(shopId) {
+        // Use history.push() to navigate to another route
+        this.props.history.push(`/detail-coffee-shop/${shopId}`);
+    }
+
+
 
     render() {
         const provinces = [
@@ -192,6 +200,7 @@ class Homepage extends Component {
             'Tây Ninh', 'Thái Bình', 'Thái Nguyên', 'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang',
             'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
         ];
+
 
         const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou = [] } = this.state;
 
@@ -408,7 +417,7 @@ class Homepage extends Component {
                                             imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                             title={shop.name}
                                             location={shop.provinceVie || shop.provinceJap}
-                                            onClick={() => navigate(`/detail-coffee-shop/${shop.id}`)}
+                                            onClick={() => this.handleNavigateToDetail(shop.cid)}
                                         />
                                     ))}
                                 </div>
@@ -423,8 +432,8 @@ class Homepage extends Component {
                                         imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
-                                        onClick={() => navigate(`/detail-coffee-shop/${shop.id}`)}
-                                    />
+                                        onClick={() => this.handleNavigateToDetail(shop.cid)}
+                                        />
                                 ))}
                             </div>
                         </section>
