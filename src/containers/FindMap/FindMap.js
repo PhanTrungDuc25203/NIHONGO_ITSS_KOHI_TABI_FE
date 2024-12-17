@@ -52,7 +52,7 @@ class FindMap extends Component {
 
         L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
             attribution: "Leaflet &copy; " + mapLink + ", contribution",
-            maxZoom: 14,
+            maxZoom: 18,
         }).addTo(map);
 
         map.on("click", this.handleMapClick);

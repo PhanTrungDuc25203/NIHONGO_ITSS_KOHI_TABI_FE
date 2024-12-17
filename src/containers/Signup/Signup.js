@@ -6,6 +6,8 @@ import * as actions from "../../store/actions";
 import { KeyCodeUtils, LanguageUtils } from "../../utils";
 import './Signup.scss';
 import { FormattedMessage } from 'react-intl';
+import { withRouter , useNavigate, useHistory } from 'react-router-dom';
+
 
 class Signup extends Component {
     constructor(props) {
@@ -91,6 +93,10 @@ class Signup extends Component {
             }
         }
 
+    }
+    handleNavigateToLogin() {
+        // Use history.push() to navigate to another route
+        this.props.history.push(`/login`);
     }
 
     render() {
@@ -227,7 +233,10 @@ class Signup extends Component {
                             {this.state.errMessage}
                         </div>
                         <button className="login-button"
-                            onClick={() => { this.handleSignUpButtonClicked() }}
+                            onClick={() => { 
+                                this.handleSignUpButtonClicked();
+                                this.handleNavigateToLogin();
+                            }}
                         ><FormattedMessage id="signup-page.signup-text" /></button>
                     </div>
                 </div>
