@@ -219,7 +219,7 @@ class Homepage extends Component {
     }
 
     handleOpenMap() {
-        this.props.history.push(`/find-map/`);
+        this.props.history.push(path.FIND_MAP.replace('/:id?', ''));
     }
 
 

@@ -27,17 +27,14 @@ class FindMap extends Component {
     async componentDidMount() {
         this.initializeMap();
         this.handleGetCurrentLocation();
-
-        let { id } = this.props.match.params;
-        if (id !== "") {
+    
+        let { id } = this.props.match.params || {};
+        if (id) {
             let res = await fetchCoffeeShopDetail(id);
-            if (res.errCode === 0) {
-                this.setState({
-                    coffeeShop: res.data,
-                    // loading: false,
-                });
+            if (res && res.errCode === 0) {
+                this.setState({ coffeeShop: res.data });
             }
-            console.log(this.coffeeShop);
+            console.log("Fetched Coffee Shop:", this.state.coffeeShop);
         }
     }
 
