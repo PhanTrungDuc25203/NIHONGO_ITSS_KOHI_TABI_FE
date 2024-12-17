@@ -17,19 +17,45 @@ class UserPreference extends Component {
         };
     }
 
-    async componentDidMount() {
-        let response = await getDataForUserPreference();
-        if(response&&response.errCode === 0){
-            this.setState({userPreferenceData: response.data}, console.log(this.state.userPreferenceData));
+    // async componentDidMount() {
+    //     let response = await getDataForUserPreference();
+    //     if(response&&response.errCode === 0){
+    //         this.setState({userPreferenceData: response.data}, console.log(this.state.userPreferenceData));
             
-        }
+    //     }
+    // }
+
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     if (prevProps.userInfo !== this.props.userInfo) {
+    //         getDataForUserPreference();
+    //     }
+    // }
+
+    componentDidMount() {
+        this.handleGetUserPreference();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.userInfo !== this.props.userInfo) {
-            getDataForUserPreference();
+            this.handleGetUserPreference();
         }
     }
+    
+    handleGetUserPreference = async () => {
+        const email = this.props.userInfo?.email;
+
+        try {
+            const response = await getDataForUserPreference();
+
+            const userPreferenceData = response.data || {};
+
+            console.log(response.data);
+            this.setState({ userPreferenceData });
+        } catch (error) {
+            console.error('Error fetching coffee shop data:', error);
+        }
+    };
+
 
     // Hàm dịch preferences dựa vào ngôn ngữ
     getTranslatedPreferences(lang) {
