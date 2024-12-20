@@ -86,6 +86,10 @@ const adminDeleteCoffeeShop = (idShopToDelete) => {
     return axios.post('/api/delete-coffee-shop-by-admin', { cid: idShopToDelete });
 }
 
+const getMostFavoriteCoffeeShop = () => {
+    return axios.get('/api/get-most-favorite-shop');
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -102,4 +106,5 @@ export {
     adminChangePasswordService,
     getAllCoffeeShopData,
     adminDeleteCoffeeShop,
+    getMostFavoriteCoffeeShop,
 };

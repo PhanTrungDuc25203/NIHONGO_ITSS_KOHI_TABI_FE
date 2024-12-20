@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './CoffeeShopManage.scss';
-import { getAllCoffeeShopData, adminDeleteCoffeeShop } from '../../../services/userService';
+import { getAllCoffeeShopData, adminDeleteCoffeeShop, getMostFavoriteCoffeeShop } from '../../../services/userService';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from "../../../store/actions";
@@ -17,6 +17,7 @@ class CoffeeShopManage extends Component {
             searchFilter: 'name',
             showDeletePopup: false,
             shopToDelete: null,
+            mostFavoriteCoffeeShop: '',
         };
     }
 
@@ -33,6 +34,19 @@ class CoffeeShopManage extends Component {
             }
         } catch (error) {
             console.error('Error fetching coffee shop data:', error);
+        }
+
+        try {
+            let response = await getMostFavoriteCoffeeShop();
+            if (response.errCode === 0) {
+                this.setState({
+                    mostFavoriteCoffeeShop: response.favoriteShop.name,
+                })
+            } else {
+                console.error('Error fetching most favorite coffee shop data:', response.errMessage);
+            }
+        } catch (error) {
+            console.error('Error fetching most favorite coffee shop data:', error);
         }
     }
 
@@ -172,7 +186,7 @@ class CoffeeShopManage extends Component {
     }
 
     render() {
-        const { filteredShops, currentPage, itemsPerPage } = this.state;
+        const { filteredShops, currentPage, itemsPerPage, mostFavoriteCoffeeShop } = this.state;
         const startIndex = (currentPage - 1) * itemsPerPage;
         const currentCoffeeShops = filteredShops.slice(startIndex, startIndex + itemsPerPage);
 
@@ -211,7 +225,7 @@ class CoffeeShopManage extends Component {
                     </div>
                     <div className="summary-item">
                         <p>Most Favorited</p>
-                        <h3>Victoria Perez</h3>
+                        <h3>{mostFavoriteCoffeeShop && mostFavoriteCoffeeShop}</h3>
                     </div>
                     <div className="summary-item">
                         <p>Most Searched</p>
