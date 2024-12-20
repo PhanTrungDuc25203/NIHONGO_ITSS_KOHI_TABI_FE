@@ -6,12 +6,12 @@ class AdminPageSidebar extends Component {
         super(props);
         this.state = {
             activeItem: 'Dashboard', // Item mặc định được active
-        };
+        }
     }
 
     handleMenuClick = (menuName) => {
         this.setState({ activeItem: menuName });
-    };
+    }
 
     render() {
         const { activeItem } = this.state;
@@ -59,7 +59,7 @@ class AdminPageSidebar extends Component {
                         className={`menu-item ${activeItem === 'Settings' ? 'active' : ''}`}
                         onClick={() => this.handleMenuClick('Settings')}
                     >
-                        <a href="#" className="menu-link">
+                        <a href="/system/settings" className="menu-link">
                             <span className="icon">⚙️</span>
                             <span className="text">Settings</span>
                         </a>

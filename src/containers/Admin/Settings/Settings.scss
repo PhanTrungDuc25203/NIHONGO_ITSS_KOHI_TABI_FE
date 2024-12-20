@@ -1,0 +1,78 @@
+.settings-container {
+    margin-left: 400px;
+    font-family: Arial, sans-serif;
+    padding    : 20px;
+
+    .settings-title {
+        font-size    : 24px;
+        font-weight  : bold;
+        margin-bottom: 20px;
+    }
+
+    .settings-content {
+        display: flex;
+        gap    : 20px;
+
+        .interface-setting,
+        .change-password {
+            // border      : 1px solid #ccc;
+            padding     : 15px;
+            width       : 300px;
+            margin-right: 50px;
+
+            .section-title {
+                font-size    : 18px;
+                margin-bottom: 15px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+
+                .form-label {
+                    display      : block;
+                    margin-bottom: 5px;
+                }
+
+                .form-select,
+                .form-input {
+                    width        : 100%;
+                    padding      : 8px;
+                    border       : 1px solid #ccc;
+                    border-radius: 4px;
+                }
+            }
+        }
+    }
+
+    .logout-container {
+        margin-top: 20px;
+        padding-left: 15px;
+
+        .logout-button {
+            background-color: #fff;
+            border          : 1px solid #000;
+            padding         : 10px 20px;
+            cursor          : pointer;
+            border-radius   : 4px;
+            font-size       : 16px;
+
+            &:hover {
+                background-color: #000;
+                color           : #fff;
+            }
+        }
+    }
+
+    .submit-button {
+        background-color: #000;
+        color           : #fff;
+        border          : none;
+        padding         : 10px 20px;
+        border-radius   : 4px;
+        cursor          : pointer;
+
+        &:hover {
+            background-color: #444;
+        }
+    }
+}
