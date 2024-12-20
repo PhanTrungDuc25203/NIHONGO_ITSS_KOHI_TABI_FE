@@ -15,6 +15,8 @@ class CoffeeShopManage extends Component {
             itemsPerPage: 6,
             searchTerm: '',
             searchFilter: 'name',
+            showDeletePopup: false,
+            shopToDelete: null,
         };
     }
 
@@ -36,7 +38,7 @@ class CoffeeShopManage extends Component {
 
     handlePageChange = (page) => {
         this.setState({ currentPage: page });
-    };
+    }
 
     handleSearch = (event) => {
         const searchTerm = event?.target?.value?.toLowerCase();
@@ -53,12 +55,59 @@ class CoffeeShopManage extends Component {
             return false;
         });
 
-        this.setState({ searchTerm, filteredShops, currentPage: 1 });
-    };
+        this.setState({
+            searchTerm,
+            filteredShops,
+            currentPage: 1
+        });
+    }
 
     handleFilterChange = (event) => {
-        this.setState({ searchFilter: event.target.value }, this.handleSearch);
-    };
+        this.setState({
+            searchFilter: event.target.value
+        }, this.handleSearch);
+    }
+
+    handleDeleteClick = (shop) => {
+        this.setState({
+            showDeletePopup: true,
+            shopToDelete: shop
+        });
+    }
+
+    handleConfirmDelete = () => {
+        const { shopToDelete } = this.state;
+        alert(`Deleting shop: ${shopToDelete.name}`);
+        this.setState({
+            showDeletePopup: false,
+            shopToDelete: null
+        });
+    }
+
+    handleCancelDelete = () => {
+        this.setState({
+            showDeletePopup: false,
+            shopToDelete: null
+        });
+    }
+
+    renderDeletePopup = () => {
+        const { showDeletePopup, shopToDelete } = this.state;
+
+        if (!showDeletePopup || !shopToDelete) return null;
+
+        return (
+            <div className="popup-overlay">
+                <div className="popup">
+                    <p>Are you sure you want to delete <strong>{shopToDelete.name}</strong>?</p>
+                    <div className="popup-actions">
+                        <button onClick={this.handleConfirmDelete} className="confirm-button">Yes</button>
+                        <button onClick={this.handleCancelDelete} className="cancel-button">No</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     renderPagination = () => {
         const { filteredShops, currentPage, itemsPerPage } = this.state;
@@ -101,7 +150,7 @@ class CoffeeShopManage extends Component {
                 </button>
             </div>
         );
-    };
+    }
 
     render() {
         const { filteredShops, currentPage, itemsPerPage } = this.state;
@@ -169,7 +218,10 @@ class CoffeeShopManage extends Component {
                                     <td>{shop.description_eng}</td>
                                     <td>
                                         <button className="edit-button">✎</button>
-                                        <button className="delete-button">🗑</button>
+                                        <button
+                                            className="delete-button"
+                                            onClick={() => this.handleDeleteClick(shop)}
+                                        >🗑</button>
                                     </td>
                                 </tr>
                             ))}
@@ -178,6 +230,7 @@ class CoffeeShopManage extends Component {
                 </div>
 
                 {this.renderPagination()}
+                {this.renderDeletePopup()}
             </div>
         );
     }
