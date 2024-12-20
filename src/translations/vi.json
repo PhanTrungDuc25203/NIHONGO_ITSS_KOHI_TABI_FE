@@ -203,5 +203,20 @@
         "open-from": "Open from:",
         "featured-drink": "Featured drinks:",
         "desc": "Description:"
+    },
+    "admin": {
+        "settings-page": {
+            "title": "Setting",
+            "interface-section": "Interface setting",
+            "language": "Language Preferences:",
+            "theme": "Theme:",
+            "timezone": "Time Zone:",
+            "change-password": "Change password (admin)",
+            "old-pass": "Old Password:",
+            "new-pass": "New Password:",
+            "retype-pass": "Retype Password:",
+            "submit": "Submit",
+            "logout": "Logout"
+        }
     }
 }

@@ -203,5 +203,20 @@
         "open-from": "オープン:",
         "featured-drink": "おすすめのドリンク:",
         "desc": "説明:"
+    },
+    "admin": {
+        "settings-page": {
+            "title": "設定",
+            "interface-section": "インターフェイス設定",
+            "language": "言語設定：",
+            "theme": "テーマ：",
+            "timezone": "タイムゾーン：",
+            "change-password": "パスワード変更（管理者）",
+            "old-pass": "現在のパスワード：",
+            "new-pass": "新しいパスワード：",
+            "retype-pass": "パスワード再入力：",
+            "submit": "送信",
+            "logout": "ログアウト"
+        }
     }
 }
