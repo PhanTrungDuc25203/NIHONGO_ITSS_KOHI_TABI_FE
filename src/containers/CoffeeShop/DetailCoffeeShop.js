@@ -13,6 +13,11 @@ import * as actions from "../../store/actions";
 import { FormattedMessage } from "react-intl";
 import  likedHeart  from '../../assets/Icons/heart-liked.png';
 import  likeHeart  from '../../assets/Icons/like.png';
+import L from 'leaflet';
+import "leaflet-routing-machine";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import all_icons from '../../assets/Icons/all_icons';
 
 class DetailCoffeeShop extends Component {
 
@@ -23,7 +28,10 @@ class DetailCoffeeShop extends Component {
             loading: true,
             error: null,
             isFavorite: false,
+            point: null,
+            address: null,
         }
+        this.coffeeShopMapRef = React.createRef();
     }
 
     checkIfFavorite = async (coffeeShopId) => {
@@ -39,13 +47,17 @@ class DetailCoffeeShop extends Component {
             this.setState({
                 coffeeShop: res.data,
                 loading: false,
+                address: res.data.address,
             });
+
+            console.log("Address:", this.state.address);
+            await this.initializeMap(res.data.address);
 
             let isFav = await this.checkIfFavorite(id);
             this.setState({
                 isFavorite: isFav,
             }, () => {
-                console.log("isFavorite sau khi cập nhật:", this.state.isFavorite);
+                console.log("isFavorite:", this.state.isFavorite);
             });
         }
     }
@@ -53,11 +65,6 @@ class DetailCoffeeShop extends Component {
     handleFavoriteButtonClick = async () => {
         let { id } = this.props.match.params;
         let userId = this.props.isLoggedIn ? this.props.userInfo.id : 0;
-
-        console.log("id = " + id);
-        console.log("userId = " + userId);
-
-        console.log("isFavorite trước khi cập nhật:", this.state.isFavorite);
 
         if (this.state.isFavorite) {
             await removeFavoriteCoffeeShop(userId, id);
@@ -70,6 +77,59 @@ class DetailCoffeeShop extends Component {
             isFavorite: isFav,
         });
     };
+
+    componentWillUnmount() {
+        if(this.coffeeShopMap) {
+            this.coffeeShopMap.remove();
+        }
+    }
+
+    initializeMap = async (address) => {
+        let coordinates = [17.10, 5.2]; // Default coordinates
+        if (address) {
+            coordinates = await this.fetchCoordinates(address);
+        }
+
+        const coffeeShopMap = L.map("coffee-shop-map").setView(coordinates, 18);
+        this.coffeeShopMap = coffeeShopMap;
+
+        const mapLink = "<a href='http://openstreetmap.org'>OpenStreetMap</a>";
+        L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+            attribution: "Leaflet &copy; " + mapLink + ", contribution",
+            maxZoom: 25,
+        }).addTo(coffeeShopMap);
+
+        if (coordinates) {
+            const icon = L.icon({
+                iconUrl: all_icons.coffeeShop,
+                iconSize: [80, 80],
+            });
+            this.marker = L.marker(coordinates, { icon }).addTo(coffeeShopMap);
+        }
+    
+    };
+
+    fetchCoordinates = async (address) => {
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`          
+            );
+
+            if (!response.ok) throw new Error("Failed to fetch geocoding data");
+            const data = await response.json();
+
+            if (data.length > 0) {
+
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+                return [lat, lon];
+
+            }
+        } catch (error) {
+            console.error('Error fetching coordinates:', error);
+            return [17.10, 5.2];
+        }
+    }
 
     render() {
         let { coffeeShop, loading, error, isFavorite } = this.state;
@@ -139,7 +199,7 @@ class DetailCoffeeShop extends Component {
                                                     alt={drink.name_eng}
                                                     onError={(e) => { e.target.src = defaultDrink; }} />
                                                 <p>{drink.name_eng}</p>
-                                                <p>{drink.price} VND</p>
+                                                <p>{drink.Include_drink.price} VND</p>
                                             </div>
                                         ))}
                                     </div>
@@ -153,12 +213,17 @@ class DetailCoffeeShop extends Component {
                         </div>
                     </div>
 
-                    <div>
-                        <button>Ấn vào đây để vào trang tìm đường</button>
-                    </div>
 
-                    <div className="map">
-                        <img src={defaultMap} alt="Map" />
+                    <div className="coffee-shop-map">
+                        <div className='address-content'>
+                            <input
+                                type="text"
+                                value={this.state.address}
+                            />
+                        </div>
+                        <div id="coffee-shop-map" className='coffee-shop-map-container'>
+                            
+                        </div>
                     </div>
                 </div>
             </div>

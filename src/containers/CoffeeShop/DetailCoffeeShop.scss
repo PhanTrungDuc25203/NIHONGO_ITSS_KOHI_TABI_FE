@@ -64,8 +64,8 @@
                     }
 
                     button img {
-                        width: 20px;
-                        height: 20px;
+                        width: 30px;
+                        height: 30px;
                     }
 
 
@@ -112,18 +112,24 @@
         line-height: 1.6;
     }
 
-    .map {
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .coffee-shop-map {
         margin-top: 20px;
-        display: none;
-
-        img {
-            width: 70%;
-            border-radius: 10px;
-            margin: 0 auto;
+        margin-bottom: 20px;
+        .address-content {
+            margin-bottom: 10px;
+            input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            display: none;
+        }
+        .coffee-shop-map-container {
+            width: 100%;
+            height: 500px; /* Đảm bảo rằng phần tử bản đồ có kích thước */
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
     }
 }
