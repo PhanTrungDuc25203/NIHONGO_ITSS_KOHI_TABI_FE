@@ -1,7 +1,32 @@
 import React, { Component } from 'react';
 import './Settings.scss';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import * as actions from "../../../store/actions";
+import { LanguageUtils, languages } from "../../../utils";
 
 class Settings extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedLanguage: ''
+        }
+    }
+
+    handleLanguageChange = (event) => {
+        const selectedValue = event.target.value;
+        if (selectedValue === "en") {
+            this.changeLanguage(languages.EN);
+        } else if (selectedValue === "ja") {
+            this.changeLanguage(languages.JA);
+        }
+    }
+
+    changeLanguage(language) {
+        this.props.switchLanguageOfWebsite(language);
+    }
+
     render() {
         return (
             <div className="settings-container">
@@ -12,9 +37,14 @@ class Settings extends Component {
                         <h2 className="section-title">Interface setting</h2>
                         <div className="form-group">
                             <label className="form-label" htmlFor="language">Language Preferences:</label>
-                            <select className="form-select" id="language">
+                            <select
+                                className="form-select"
+                                id="language"
+                                onChange={this.handleLanguageChange}
+                                value={this.props.language}
+                            >
                                 <option value="en">English</option>
-                                <option value="vi">Vietnamese</option>
+                                <option value="ja">Japanese</option>
                             </select>
                         </div>
                         <div className="form-group">
@@ -60,5 +90,18 @@ class Settings extends Component {
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
+    };
+};
 
-export default Settings;
+const mapDispatchToProps = dispatch => {
+    return {
+        switchLanguageOfWebsite: (language) => dispatch(actions.switchLanguageOfWebsite(language)),
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Settings));

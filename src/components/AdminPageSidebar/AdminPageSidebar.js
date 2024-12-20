@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './AdminPageSidebar.scss';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import * as actions from "../../store/actions";
 
 class AdminPageSidebar extends Component {
     constructor(props) {
@@ -70,4 +73,18 @@ class AdminPageSidebar extends Component {
     }
 }
 
-export default AdminPageSidebar;
+const mapStateToProps = state => {
+    return {
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        switchLanguageOfWebsite: (language) => dispatch(actions.switchLanguageOfWebsite(language)),
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminPageSidebar));
