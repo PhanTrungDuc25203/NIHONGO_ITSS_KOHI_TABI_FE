@@ -4,20 +4,55 @@ import { connect } from 'react-redux';
 
 class Home extends Component {
 
-    render() {
-        const { isLoggedIn } = this.props;
-        let linkToRedirect = isLoggedIn ? '/system/user-manage' : '/login';
+    constructor(props) {
+        super(props);
+        this.state = {
+            redirectTo: null,
+        };
+    }
 
-        return (
-            <Redirect to={linkToRedirect} />
-        );
+    componentDidMount() {
+        this.redirectUser();
+    }
+
+    componentDidUpdate(prevProps) {
+        // Kiểm tra nếu props liên quan đến trạng thái đăng nhập hoặc thông tin người dùng thay đổi
+        if (prevProps.isLoggedIn !== this.props.isLoggedIn || prevProps.userInfo !== this.props.userInfo) {
+            this.redirectUser();
+        }
+        if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
+            this.redirectUser();
+        }
+    }
+
+    redirectUser = () => {
+        const { isLoggedIn, userInfo } = this.props;
+        console.log("check role: ", userInfo.role);
+        console.log("check logged in: ", isLoggedIn);
+        if (isLoggedIn) {
+            // Kiểm tra vai trò người dùng và thiết lập liên kết điều hướng
+            const linkToRedirect = userInfo.role === '1' ? '/homepage' : '/system';
+            this.setState({ redirectTo: linkToRedirect });
+        } else {
+            this.setState({ redirectTo: '/homepage' });
+        }
+    };
+
+    render() {
+        const { redirectTo } = this.state;
+        if (redirectTo) {
+            return <Redirect to={redirectTo} />;
+        }
+
+        return null;
     }
 
 }
 
 const mapStateToProps = state => {
     return {
-        isLoggedIn: state.admin.isLoggedIn
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
     };
 };
 
