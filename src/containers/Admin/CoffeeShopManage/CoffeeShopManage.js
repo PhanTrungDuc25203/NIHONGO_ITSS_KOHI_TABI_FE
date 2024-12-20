@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './CoffeeShopManage.scss';
-import { getAllCoffeeShopData } from '../../../services/userService';
+import { getAllCoffeeShopData, adminDeleteCoffeeShop } from '../../../services/userService';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from "../../../store/actions";
@@ -75,13 +75,32 @@ class CoffeeShopManage extends Component {
         });
     }
 
-    handleConfirmDelete = () => {
-        const { shopToDelete } = this.state;
-        alert(`Deleting shop: ${shopToDelete.name}`);
-        this.setState({
-            showDeletePopup: false,
-            shopToDelete: null
-        });
+    handleConfirmDelete = async () => {
+        const { shopToDelete, coffeeShops } = this.state;
+
+        if (!shopToDelete) return;
+
+        try {
+            const response = await adminDeleteCoffeeShop(shopToDelete.cid);
+
+            if (response.errCode === 0) {
+                const updatedShops = coffeeShops.filter(shop => shop.cid !== shopToDelete.cid);
+
+                this.setState({
+                    coffeeShops: updatedShops,
+                    filteredShops: updatedShops,
+                    showDeletePopup: false,
+                    shopToDelete: null,
+                });
+
+                alert(`Successfully deleted shop: ${shopToDelete.name}`);
+            } else {
+                alert(`Error deleting shop: ${response.data.errMessage}`);
+            }
+        } catch (error) {
+            console.error('Error deleting coffee shop:', error);
+            alert('An unexpected error occurred while trying to delete the coffee shop.');
+        }
     }
 
     handleCancelDelete = () => {
@@ -159,7 +178,8 @@ class CoffeeShopManage extends Component {
 
         return (
             <div className="coffee-shop-manage">
-                <div className="title">Coffee Shop Management</div>
+                <div className="title">Coffee Management</div>
+                <div className="sub-title">Coffee list</div>
 
                 <div className="header">
                     <div className="search-bar">
@@ -178,6 +198,9 @@ class CoffeeShopManage extends Component {
                             <option value="id">Cafe ID</option>
                             <option value="address">Address</option>
                         </select>
+                    </div>
+                    <div className="add-button-container">
+                        <button>Add new +</button>
                     </div>
                 </div>
 

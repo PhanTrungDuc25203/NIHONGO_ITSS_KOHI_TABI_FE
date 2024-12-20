@@ -82,6 +82,10 @@ const getAllCoffeeShopData = () => {
     return axios.get('/api/get-all-coffee-shops');
 }
 
+const adminDeleteCoffeeShop = (idShopToDelete) => {
+    return axios.post('/api/delete-coffee-shop-by-admin', { cid: idShopToDelete });
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -97,4 +101,5 @@ export {
     getDataForUserPreference,
     adminChangePasswordService,
     getAllCoffeeShopData,
+    adminDeleteCoffeeShop,
 };
