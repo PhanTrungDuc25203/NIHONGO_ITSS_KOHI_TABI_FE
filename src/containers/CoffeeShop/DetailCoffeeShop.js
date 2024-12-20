@@ -105,6 +105,7 @@ class DetailCoffeeShop extends Component {
                 iconSize: [80, 80],
             });
             this.marker = L.marker(coordinates, { icon }).addTo(coffeeShopMap);
+            this.marker.on('click', this.handleIconClick); // Thêm sự kiện click vào icon
         }
     
     };
@@ -129,6 +130,11 @@ class DetailCoffeeShop extends Component {
             console.error('Error fetching coordinates:', error);
             return [17.10, 5.2];
         }
+    }
+
+    handleIconClick = () => {
+        let { id } = this.props.match.params;
+        this.props.history.push('/find-map/' + id);
     }
 
     render() {
