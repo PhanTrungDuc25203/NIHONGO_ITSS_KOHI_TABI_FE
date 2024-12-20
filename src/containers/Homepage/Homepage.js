@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
-import { withRouter , useNavigate, useHistory } from 'react-router-dom';
+import { withRouter, useNavigate, useHistory } from 'react-router-dom';
 import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
@@ -135,14 +135,14 @@ class Homepage extends Component {
         const { name, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
         try {
             let response = await handleSearch(
-                name, 
-                selectedWaitingTime, 
-                (openingStartHour === null || openingStartMinute === null) ? null : openingStartHour + ':' + openingStartMinute + ':0', 
-                (closingStartHour === null || closingStartMinute === null) ? null : closingStartHour + ':' + closingStartMinute + ':0', 
-                minPrice, 
-                maxPrice, 
-                selectedStyle, 
-                selectedServiceTags[0], 
+                name,
+                selectedWaitingTime,
+                (openingStartHour === null || openingStartMinute === null) ? null : openingStartHour + ':' + openingStartMinute + ':0',
+                (closingStartHour === null || closingStartMinute === null) ? null : closingStartHour + ':' + closingStartMinute + ':0',
+                minPrice,
+                maxPrice,
+                selectedStyle,
+                selectedServiceTags[0],
                 selectedAmenityTags[0]);
             const coffeeShops = response.coffeShops || [];
             const resultSearch = coffeeShops.map(shop => ({
@@ -191,7 +191,7 @@ class Homepage extends Component {
     };
 
     handleGetDataFavorite = async () => {
-        const id = this.props.userInfo.id;
+        const id = this.props.userInfo?.id;
 
         try {
             const response = await getListFavoriteCoffeeShop(id);
@@ -460,7 +460,7 @@ class Homepage extends Component {
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
-                                        />
+                                    />
                                 ))}
                             </div>
                         </section>
@@ -487,7 +487,7 @@ class Homepage extends Component {
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
-                                        />
+                                    />
                                 ))}
                             </div>
                         </section>

@@ -1,0 +1,54 @@
+.admin-sidebar {
+    position        : fixed;
+    /* Đặt sidebar cố định */
+    top             : 0;
+    /* Căn phía trên màn hình */
+    left            : 0;
+    /* Căn phía bên trái màn hình */
+    width           : 250px;
+    /* Chiều rộng sidebar */
+    height          : 100vh;
+    /* Chiều cao chiếm toàn bộ màn hình */
+    background-color: #f4f4f4;
+    /* Màu nền */
+    box-shadow      : 2px 0 5px rgba(0, 0, 0, 0.1);
+    /* Hiệu ứng bóng */
+    display         : flex;
+    flex-direction  : column;
+    padding         : 20px;
+
+    .menu {
+        list-style: none;
+        padding   : 0;
+        margin    : 0;
+
+        .menu-item {
+            margin-bottom: 10px;
+
+            .menu-link {
+                display        : flex;
+                align-items    : center;
+                padding        : 10px 15px;
+                text-decoration: none;
+                color          : #555;
+                border-radius  : 4px;
+                transition     : background-color 0.3s ease, color 0.3s ease;
+
+                .icon {
+                    margin-right: 10px;
+                }
+
+                &:hover {
+                    background-color: #e0e0e0;
+                    color           : #000;
+                }
+            }
+
+            &.active .menu-link {
+                background-color: #dcdcdc;
+                color           : #000;
+                font-weight     : 500;
+            }
+        }
+    }
+}
