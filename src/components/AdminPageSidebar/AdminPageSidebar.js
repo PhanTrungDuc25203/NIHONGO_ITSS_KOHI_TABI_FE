@@ -35,7 +35,7 @@ class AdminPageSidebar extends Component {
                         className={`menu-item ${activeItem === 'Cafe List' ? 'active' : ''}`}
                         onClick={() => this.handleMenuClick('Cafe List')}
                     >
-                        <a href="#" className="menu-link">
+                        <a href="/system/coffee-shop-manage" className="menu-link">
                             <span className="icon">📋</span>
                             <span className="text">Cafe List</span>
                         </a>

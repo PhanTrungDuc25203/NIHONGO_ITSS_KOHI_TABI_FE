@@ -6,6 +6,7 @@ import AdminPageSidebar from '../components/AdminPageSidebar/AdminPageSidebar';
 import ProductManage from '../containers/System/ProductManage';
 import RegisterPackageGroupOrAcc from '../containers/System/RegisterPackageGroupOrAcc';
 import Settings from '../containers/Admin/Settings/Settings';
+import CoffeeShopManage from '../containers/Admin/CoffeeShopManage/CoffeeShopManage';
 
 class System extends Component {
     render() {
@@ -21,6 +22,7 @@ class System extends Component {
                             <Route path="/system/register-package-group-or-account" component={RegisterPackageGroupOrAcc} />
 
                             <Route path="/system/settings" component={Settings} />
+                            <Route path="/system/coffee-shop-manage" component={CoffeeShopManage} />
                             <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                         </Switch>
                     </div>
