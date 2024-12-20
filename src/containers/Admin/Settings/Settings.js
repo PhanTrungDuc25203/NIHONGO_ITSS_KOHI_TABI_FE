@@ -5,14 +5,21 @@ import { withRouter } from 'react-router-dom';
 import * as actions from "../../../store/actions";
 import { LanguageUtils, languages } from "../../../utils";
 import { FormattedMessage } from "react-intl";
+import { adminChangePasswordService } from "../../../services/userService";
 
 class Settings extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            selectedLanguage: ''
-        }
+            selectedLanguage: '',
+            oldPassword: '',
+            newPassword: '',
+            retypePassword: '',
+            showOldPassword: false,
+            showNewPassword: false,
+            showRetypePassword: false,
+        };
     }
 
     handleLanguageChange = (event) => {
@@ -28,7 +35,43 @@ class Settings extends Component {
         this.props.switchLanguageOfWebsite(language);
     }
 
+    handleInputChange = (event) => {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
+    }
+
+    togglePasswordVisibility = (field) => {
+        this.setState(prevState => ({
+            [field]: !prevState[field]
+        }))
+    }
+
+    handleChangePassword = async () => {
+        const { oldPassword, newPassword, retypePassword } = this.state;
+
+        // Check if newPassword and retypePassword match
+        if (newPassword !== retypePassword) {
+            alert(this.props.language === languages.EN ? "New Password and Retype Password do not match!" : "新しいパスワードと再入力したパスワードが一致しません！");
+            return;
+        }
+
+        try {
+            const response = await adminChangePasswordService(
+                this.props.userInfo.email,
+                oldPassword,
+                newPassword
+            );
+            if (response && response.data) {
+                alert(this.props.language === languages.EN ? "Password changed successfully!" : "パスワードが正常に変更されました！");
+            }
+        } catch (error) {
+            alert(this.props.language === languages.EN ? "Failed to change password. Please try again." : "パスワードの変更に失敗しました。再試行してください。");
+        }
+    }
+
     render() {
+        let { showOldPassword, showNewPassword, showRetypePassword } = this.state;
         return (
             <div className="settings-container">
                 <h1 className="settings-title"><FormattedMessage id="admin.settings-page.title" /></h1>
@@ -69,17 +112,37 @@ class Settings extends Component {
                         <h2 className="section-title"><FormattedMessage id="admin.settings-page.change-password" /></h2>
                         <div className="form-group">
                             <label className="form-label" htmlFor="old-password"><FormattedMessage id="admin.settings-page.old-pass" /></label>
-                            <input className="form-input" type="password" id="old-password" />
+                            <input
+                                className="form-input"
+                                type="password"
+                                id="oldPassword"
+                                value={this.state.oldPassword}
+                                onChange={this.handleInputChange}
+                            />
                         </div>
                         <div className="form-group">
                             <label className="form-label" htmlFor="new-password"><FormattedMessage id="admin.settings-page.new-pass" /></label>
-                            <input className="form-input" type="password" id="new-password" />
+                            <input
+                                className="form-input"
+                                type="password"
+                                id="newPassword"
+                                value={this.state.newPassword}
+                                onChange={this.handleInputChange}
+                            />
                         </div>
                         <div className="form-group">
                             <label className="form-label" htmlFor="retype-password"><FormattedMessage id="admin.settings-page.retype-pass" /></label>
-                            <input className="form-input" type="password" id="retype-password" />
+                            <input
+                                className="form-input"
+                                type="password"
+                                id="retypePassword"
+                                value={this.state.retypePassword}
+                                onChange={this.handleInputChange}
+                            />
                         </div>
-                        <button className="submit-button"><FormattedMessage id="admin.settings-page.submit" /></button>
+                        <button className="submit-button" onClick={this.handleChangePassword}>
+                            <FormattedMessage id="admin.settings-page.submit" />
+                        </button>
                     </div>
                 </div>
 
@@ -91,6 +154,7 @@ class Settings extends Component {
         );
     }
 }
+
 const mapStateToProps = state => {
     return {
         language: state.app.language,

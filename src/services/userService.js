@@ -44,11 +44,11 @@ const handleGetCoffeeShopForYou = (email) => {
 }
 
 const getUserProfileData = (email) => {
-    return axios.get('/api/getuserdata',{ params: {email: email}});
+    return axios.get('/api/getuserdata', { params: { email: email } });
 }
 
-const updateUserProfileData = (email,phone,name,address) =>{
-    return axios.get('/api/saveuserdata',{ params: {email:email, phone: phone, name: name, address: address}});
+const updateUserProfileData = (email, phone, name, address) => {
+    return axios.get('/api/saveuserdata', { params: { email: email, phone: phone, name: name, address: address } });
 }
 
 const addFavoriteCoffeeShop = (userId, coffeeShopId) => {
@@ -74,6 +74,10 @@ const getDataForUserPreference = () => {
     return axios.get('/api/get-data-for-select-box-user-preference-page');
 }
 
+const adminChangePasswordService = (email, oldPassword, newPassword) => {
+    return axios.post('/api/admin-change-password', { email: email, oldPassword: oldPassword, newPassword: newPassword });
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -87,4 +91,5 @@ export {
     updateUserProfileData,
     getListFavoriteCoffeeShop,
     getDataForUserPreference,
+    adminChangePasswordService,
 };
