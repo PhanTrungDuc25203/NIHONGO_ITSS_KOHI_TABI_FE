@@ -6,6 +6,7 @@ import * as actions from "../../../store/actions";
 import { LanguageUtils, languages } from "../../../utils";
 import { FormattedMessage } from "react-intl";
 import { adminChangePasswordService } from "../../../services/userService";
+import { toast } from 'react-toastify';
 
 class Settings extends Component {
 
@@ -62,12 +63,19 @@ class Settings extends Component {
                 oldPassword,
                 newPassword
             );
-            if (response && response.data) {
-                alert(this.props.language === languages.EN ? "Password changed successfully!" : "パスワードが正常に変更されました！");
+            if (response && response.errCode && response.errCode === 0) {
+                toast.success("Change password successfully!");
+            } else if (response && response.errCode && response.errCode === 2) {
+                alert(this.props.language === languages.EN ? "Old password is incorrect!" : "古いパスワードが間違っています！");
             }
         } catch (error) {
             alert(this.props.language === languages.EN ? "Failed to change password. Please try again." : "パスワードの変更に失敗しました。再試行してください。");
         }
+    }
+
+    handleLoginForUser = () => {
+        this.props.processLogout();
+        this.props.history.push(`/login`);
     }
 
     render() {
@@ -148,7 +156,7 @@ class Settings extends Component {
 
                 {/* Logout */}
                 <div className="logout-container">
-                    <button className="logout-button"><FormattedMessage id="admin.settings-page.logout" /></button>
+                    <button className="logout-button" onClick={this.handleLoginForUser}><FormattedMessage id="admin.settings-page.logout" /></button>
                 </div>
             </div>
         );
@@ -166,6 +174,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         switchLanguageOfWebsite: (language) => dispatch(actions.switchLanguageOfWebsite(language)),
+        processLogout: () => dispatch(actions.processLogout()),
     };
 };
 
