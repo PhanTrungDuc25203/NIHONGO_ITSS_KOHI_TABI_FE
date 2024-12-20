@@ -78,6 +78,10 @@ const adminChangePasswordService = (email, oldPassword, newPassword) => {
     return axios.post('/api/admin-change-password', { email: email, oldPassword: oldPassword, newPassword: newPassword });
 }
 
+const getAllCoffeeShopData = () => {
+    return axios.get('/api/get-all-coffee-shops');
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -92,4 +96,5 @@ export {
     getListFavoriteCoffeeShop,
     getDataForUserPreference,
     adminChangePasswordService,
+    getAllCoffeeShopData,
 };

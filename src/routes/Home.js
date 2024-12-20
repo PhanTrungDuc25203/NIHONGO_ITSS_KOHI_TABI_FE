@@ -27,8 +27,6 @@ class Home extends Component {
 
     redirectUser = () => {
         const { isLoggedIn, userInfo } = this.props;
-        console.log("check role: ", userInfo.role);
-        console.log("check logged in: ", isLoggedIn);
         if (isLoggedIn) {
             // Kiểm tra vai trò người dùng và thiết lập liên kết điều hướng
             const linkToRedirect = userInfo.role === '1' ? '/homepage' : '/system';
