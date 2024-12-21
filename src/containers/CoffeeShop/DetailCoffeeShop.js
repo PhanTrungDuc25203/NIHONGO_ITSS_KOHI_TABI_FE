@@ -205,7 +205,7 @@ class DetailCoffeeShop extends Component {
                                                     alt={drink.name_eng}
                                                     onError={(e) => { e.target.src = defaultDrink; }} />
                                                 <p>{drink.name_eng}</p>
-                                                <p>{drink.Include_drink.price} VND</p>
+                                                <p>{drink?.Include_drink?.price} VND</p>
                                             </div>
                                         ))}
                                     </div>
