@@ -33,6 +33,7 @@ class FindMap extends Component {
             let res = await fetchCoffeeShopDetail(id);
             if (res && res.errCode === 0) {
                 this.setState({ coffeeShop: res.data });
+                this.setState({ endAddress: res.data.address });
             }
             console.log("Fetched Coffee Shop:", this.state.coffeeShop);
         }
