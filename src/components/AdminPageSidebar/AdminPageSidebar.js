@@ -8,7 +8,27 @@ class AdminPageSidebar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeItem: 'Dashboard', // Item mặc định được active
+            activeItem: this.getActiveItemFromUrl(props.location.pathname),
+        };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.location.pathname !== this.props.location.pathname) {
+            this.setState({ activeItem: this.getActiveItemFromUrl(this.props.location.pathname) });
+        }
+    }
+
+    getActiveItemFromUrl = (pathname) => {
+        if (pathname.includes('/system/coffee-shop-manage')) {
+            return 'Cafe List';
+        } else if (pathname.includes('/system/settings')) {
+            return 'Settings';
+        } else if (pathname.includes('/system/reports')) {
+            return 'Reports';
+        } else if (pathname.includes('/system/users')) {
+            return 'Users';
+        } else {
+            return 'Dashboard';
         }
     }
 
