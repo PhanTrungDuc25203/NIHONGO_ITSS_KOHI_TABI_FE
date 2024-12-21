@@ -130,7 +130,7 @@ class Homepage extends Component {
 
     handleSearchClick = async () => {
         this.setState((prevState) => ({
-            showSearchResults: !prevState.showSearchResults,
+            showSearchResults: true,
         }));
         const { name, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
         try {

@@ -217,6 +217,13 @@
             "retype-pass": "パスワード再入力：",
             "submit": "送信",
             "logout": "ログアウト"
+        },
+        "side-bar": {
+            "dashboard": "ダッシュボード",
+            "Cafe List": "コーヒーリスト",
+            "users": "ユーザー",
+            "reports": "レポート",
+            "settings": "設定"
         }
     }
 }
