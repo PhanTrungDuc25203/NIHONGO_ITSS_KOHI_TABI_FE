@@ -33,7 +33,9 @@ class FindMap extends Component {
             let res = await fetchCoffeeShopDetail(id);
             if (res && res.errCode === 0) {
                 this.setState({ coffeeShop: res.data });
-                this.setState({ endAddress: res.data.address });
+                this.setState({ endAddress: res.data.address }, () => {
+                    this.handleAddressChangeDirect(res.data.address, "endAddress", "endPoint", "endMarker");
+                });
             }
             console.log("Fetched Coffee Shop:", this.state.coffeeShop);
         }
@@ -83,6 +85,34 @@ class FindMap extends Component {
             });
         }
     };    
+
+    handleAddressChangeDirect = async (address, addressKey, pointKey, markerKey) => {
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
+            );
+            if (!response.ok) throw new Error("Failed to fetch geocoding data");
+            const data = await response.json();
+    
+            if (data.length > 0) {
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+    
+                this.setState({ [pointKey]: [lat, lon] });
+    
+                const icon = L.icon({
+                    iconUrl: addressKey === "startAddress" ? all_icons.start : all_icons.end,
+                    iconSize: [30, 30],
+                });
+    
+                if (this[markerKey]) this.map.removeLayer(this[markerKey]);
+                this[markerKey] = L.marker([lat, lon], { icon }).addTo(this.map);
+            }
+        } catch (error) {
+            console.error("Geocoding error:", error);
+        }
+    };
+    
 
     handleAddressChange = async (e, addressKey, pointKey, markerKey) => {
         const value = e.target.value;
