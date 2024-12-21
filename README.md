@@ -1,6 +1,11 @@
 # NIHONGO_ITSS_KOHI_TABI_FE
 日本語　アイティエスエスのプロジェクトである　KOHI TABI と　言う。
 
+# hướng dẫn code component cho admin
+- có thể khai báo url cho trang web của mình trong constant.js, hoặc có thể fix luôn đường link trong routes/System.js cx được, đường link của admin sẽ có đoạn /system/ ở đầu, sau đó cho component muốn render vào
+- đường link vừa khai báo tiếp theo được ghi trong components/AdminPageSidebar để Sidebar navigate đến link đó
+- component của admin để ở trong containers/Admin
+
 # hướng dẫn cách chạy dự án này:
 - tương tự như bên BE, NodeJS được sử dùng là ở phiên bản 14.18.0
 - tạo một file .env với nội dung tương tự file .env.example, điền thông tin mình muốn vào
