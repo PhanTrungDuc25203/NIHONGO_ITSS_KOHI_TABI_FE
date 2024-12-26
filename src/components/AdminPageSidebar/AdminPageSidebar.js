@@ -3,6 +3,8 @@ import './AdminPageSidebar.scss';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from "../../store/actions";
+import { FormattedMessage } from "react-intl";
+import Header from '../../components/Users/Header';
 
 class AdminPageSidebar extends Component {
     constructor(props) {
@@ -40,55 +42,58 @@ class AdminPageSidebar extends Component {
         const { activeItem } = this.state;
 
         return (
-            <div className="admin-sidebar">
-                <ul className="menu">
-                    <li
-                        className={`menu-item ${activeItem === 'Dashboard' ? 'active' : ''}`}
-                        onClick={() => this.handleMenuClick('Dashboard')}
-                    >
-                        <a href="#" className="menu-link">
-                            <span className="icon">🏠</span>
-                            <span className="text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li
-                        className={`menu-item ${activeItem === 'Cafe List' ? 'active' : ''}`}
-                        onClick={() => this.handleMenuClick('Cafe List')}
-                    >
-                        <a href="/system/coffee-shop-manage" className="menu-link">
-                            <span className="icon">📋</span>
-                            <span className="text">Cafe List</span>
-                        </a>
-                    </li>
-                    <li
-                        className={`menu-item ${activeItem === 'Users' ? 'active' : ''}`}
-                        onClick={() => this.handleMenuClick('Users')}
-                    >
-                        <a href="#" className="menu-link">
-                            <span className="icon">🧑‍🤝‍🧑</span>
-                            <span className="text">Users</span>
-                        </a>
-                    </li>
-                    <li
-                        className={`menu-item ${activeItem === 'Reports' ? 'active' : ''}`}
-                        onClick={() => this.handleMenuClick('Reports')}
-                    >
-                        <a href="#" className="menu-link">
-                            <span className="icon">📝</span>
-                            <span className="text">Reports</span>
-                        </a>
-                    </li>
-                    <li
-                        className={`menu-item ${activeItem === 'Settings' ? 'active' : ''}`}
-                        onClick={() => this.handleMenuClick('Settings')}
-                    >
-                        <a href="/system/settings" className="menu-link">
-                            <span className="icon">⚙️</span>
-                            <span className="text">Settings</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <>
+                <Header></Header>
+                <div className="admin-sidebar">
+                    <ul className="menu">
+                        <li
+                            className={`menu-item ${activeItem === 'Dashboard' ? 'active' : ''}`}
+                            onClick={() => this.handleMenuClick('Dashboard')}
+                        >
+                            <a href="#" className="menu-link">
+                                <span className="icon">🏠</span>
+                                <span className="text"><FormattedMessage id="admin.side-bar.dashboard" /></span>
+                            </a>
+                        </li>
+                        <li
+                            className={`menu-item ${activeItem === 'Cafe List' ? 'active' : ''}`}
+                            onClick={() => this.handleMenuClick('Cafe List')}
+                        >
+                            <a href="/system/coffee-shop-manage" className="menu-link">
+                                <span className="icon">📋</span>
+                                <span className="text"><FormattedMessage id="admin.side-bar.coffee-list" /></span>
+                            </a>
+                        </li>
+                        <li
+                            className={`menu-item ${activeItem === 'Users' ? 'active' : ''}`}
+                            onClick={() => this.handleMenuClick('Users')}
+                        >
+                            <a href="#" className="menu-link">
+                                <span className="icon">🧑‍🤝‍🧑</span>
+                                <span className="text"><FormattedMessage id="admin.side-bar.users" /></span>
+                            </a>
+                        </li>
+                        <li
+                            className={`menu-item ${activeItem === 'Reports' ? 'active' : ''}`}
+                            onClick={() => this.handleMenuClick('Reports')}
+                        >
+                            <a href="#" className="menu-link">
+                                <span className="icon">📝</span>
+                                <span className="text"><FormattedMessage id="admin.side-bar.reports" /></span>
+                            </a>
+                        </li>
+                        <li
+                            className={`menu-item ${activeItem === 'Settings' ? 'active' : ''}`}
+                            onClick={() => this.handleMenuClick('Settings')}
+                        >
+                            <a href="/system/settings" className="menu-link">
+                                <span className="icon">⚙️</span>
+                                <span className="text"><FormattedMessage id="admin.side-bar.settings" /></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </>
         );
     }
 }
