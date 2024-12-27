@@ -1,0 +1,79 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Chiều cao 100% của viewport */;
+}
+
+.layout-header {
+    flex-shrink: 0; /* Không co lại */
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1; /* Đảm bảo header luôn ở trên cùng */
+}
+
+.layout-main {
+    display: flex;
+    flex: 1; /* Chiếm toàn bộ không gian còn lại */
+    overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài */
+    padding-top: 100px;
+}
+
+.layout-navbar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    height: 100%; /* Chiều cao 100% của layout-main */
+    overflow-y: auto; /* Thêm thanh cuộn nếu nội dung quá dài */
+}
+
+.layout-navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.layout-navbar li {
+    margin-bottom: 20px;
+}
+
+.layout-navbar a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    padding: 10px 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.layout-navbar a:hover {
+    background-color: #eee;
+}
+
+.layout-navbar .icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.layout-navbar .text {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.layout-navbar a.active {
+    background-color: #ffe4c4;
+    color: #ff5722;
+}
+
+.layout-content {
+    flex: 1; /* Chiếm toàn bộ không gian còn lại */
+    padding: 20px;
+    overflow-y: auto; /* Thêm thanh cuộn nếu nội dung quá dài */
+    margin-top: -100px;
+    margin-left: 50px;
+}
+
+.admin-sidebar {
+    padding-top: 100px;
+}
