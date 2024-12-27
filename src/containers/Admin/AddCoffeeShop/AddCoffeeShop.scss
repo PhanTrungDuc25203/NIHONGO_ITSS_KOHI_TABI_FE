@@ -1,0 +1,161 @@
+.add-coffee-shop {
+    display: flex;
+    flex-direction: column;
+    background-color: #ececec;
+    padding: 20px;
+
+    .back-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        button {
+            background: none;
+            border: none;
+            color: #f56a2d;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        h5 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+    }
+
+    .add-coffee-shop-content {
+        margin-top: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-gap: 25px;
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .image-upload {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+
+                img {
+                    width: 150px;
+                    height: 150px;
+                    border: 2px dashed #ccc;
+                    border-radius: 8px;
+                }
+
+                .upload-button {
+                    background-color: #f56a2d;
+                    color: #fff;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .right-panel {
+            .add-coffee-shop-form {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                label {
+                    font-size: 14px;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+
+                input, textarea {
+                    width: 100%;
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    font-size: 14px;
+                }
+
+                textarea {
+                    resize: none;
+                    height: 100px;
+                }
+
+                .range-input, .time-input {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .featured-drinks {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+
+                    .image-upload {
+                        img {
+                            width: 80px;
+                            height: 80px;
+                        }
+                    }
+
+                    .drink-input {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+
+                        input {
+                            width: calc(100% - 20px);
+                        }
+                    }
+                }
+
+                .tags {
+                    display: flex;
+                    gap: 10px;
+
+                    .tag-button {
+                        background-color: #f56a2d;
+                        color: white;
+                        border: none;
+                        padding: 6px 12px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                    }
+                }
+
+                .add-button {
+                    background-color: #f56a2d;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    align-self: flex-end;
+                }
+            }
+        }
+    }
+
+    .add-button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+
+        button {
+            background-color: #f56a2d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    }
+
+}

@@ -6,6 +6,7 @@ import diamond from "./diamond.png";
 import start from "./startIcon.png";
 import end from "./endIcon.png";
 import coffeeShop from "./coffee-shop.png";
+import imageUp from "./ImageUp.png"
 
 const all_icons = {
     t1_icon,
@@ -15,7 +16,8 @@ const all_icons = {
     diamond,
     start,
     end,
-    coffeeShop
+    coffeeShop,
+    imageUp
 };
 
 export default all_icons;
