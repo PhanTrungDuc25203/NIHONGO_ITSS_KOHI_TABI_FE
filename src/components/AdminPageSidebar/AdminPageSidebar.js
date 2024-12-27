@@ -50,7 +50,7 @@ class AdminPageSidebar extends Component {
                             className={`menu-item ${activeItem === 'Dashboard' ? 'active' : ''}`}
                             onClick={() => this.handleMenuClick('Dashboard')}
                         >
-                            <a href="#" className="menu-link">
+                            <a href="/system/test-page" className="menu-link">
                                 <span className="icon">🏠</span>
                                 <span className="text"><FormattedMessage id="admin.side-bar.dashboard" /></span>
                             </a>
