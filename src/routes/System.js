@@ -8,6 +8,7 @@ import RegisterPackageGroupOrAcc from '../containers/System/RegisterPackageGroup
 import Settings from '../containers/Admin/Settings/Settings';
 import CoffeeShopManage from '../containers/Admin/CoffeeShopManage/CoffeeShopManage';
 import Dashboard from '../containers/Admin/Dashboard/Dashboard';
+import UsersManagement from '../containers/Admin/UsersManagement/UsersManagement';
 import TestPage from '../containers/Admin/TestPage/TestPage';
 
 class System extends Component {
@@ -26,6 +27,7 @@ class System extends Component {
                             <Route path="/system/settings" component={Settings} />
                             <Route path="/system/coffee-shop-manage" component={CoffeeShopManage} />
                             <Route path="/system/dashboard" component={Dashboard} />
+                            <Route path="/system/users-management" component={UsersManagement} />
                             <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                         </Switch>
                     </div>

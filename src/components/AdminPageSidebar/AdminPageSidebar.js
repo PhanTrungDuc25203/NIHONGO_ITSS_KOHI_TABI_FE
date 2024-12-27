@@ -68,7 +68,7 @@ class AdminPageSidebar extends Component {
                             className={`menu-item ${activeItem === 'Users' ? 'active' : ''}`}
                             onClick={() => this.handleMenuClick('Users')}
                         >
-                            <a href="#" className="menu-link">
+                            <a href="/system/users-management" className="menu-link">
                                 <span className="icon">🧑‍🤝‍🧑</span>
                                 <span className="text"><FormattedMessage id="admin.side-bar.users" /></span>
                             </a>
