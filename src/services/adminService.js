@@ -13,6 +13,9 @@ const adminService = {
     login(loginBody) {
         return axios.post(`/admin/login`, loginBody)
     },
+    getAllUser() {
+        return axios.get('/api/getalluser');
+    }
 
 };
 

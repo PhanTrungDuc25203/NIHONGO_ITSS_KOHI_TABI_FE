@@ -220,7 +220,7 @@
         },
         "side-bar": {
             "dashboard": "ダッシュボード",
-            "Cafe List": "コーヒーリスト",
+            "coffee-list": "コーヒーリスト",
             "users": "ユーザー",
             "reports": "レポート",
             "settings": "設定"

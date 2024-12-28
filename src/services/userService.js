@@ -91,6 +91,7 @@ const getMostFavoriteCoffeeShop = () => {
     return axios.get('/api/get-most-favorite-shop');
 }
 
+
 const addCoffeeShop = (coffeeShopData) => {
     return axios.post('/api/add-coffee-shop', coffeeShopData);
 }
@@ -117,6 +118,10 @@ const addService = (serviceData) => {
 
 const addServiceToCoffeeShop = (serviceData) => {
     return axios.post('/api/add-service-to-coffee-shop', serviceData);
+
+const getAllUser = () => {
+    return axios.get('/api/getalluser');
+
 }
 
 export {
@@ -143,4 +148,5 @@ export {
     addAmenityToCoffeeShop,
     addService,
     addServiceToCoffeeShop,
+    getAllUser,
 };
