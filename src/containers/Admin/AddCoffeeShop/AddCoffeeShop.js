@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
 import './AddCoffeeShop.scss';
 import all_icons from '../../../assets/Icons/all_icons';
-import { addCoffeeShop } from '../../../services/userService';
+import { addCoffeeShop, getMaxCoffeeShopId, addDrinkToCoffeeShop } from '../../../services/userService';
 import { Cloudinary } from 'cloudinary-core';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 
@@ -37,23 +37,25 @@ class AddCoffeeShop extends Component {
             description_en: '',
             description_jp: '',
             style: '',
-            picture: ''
+            picture: '',
+            drinkNameVi: '',
+            drinkNameEng: '',
+            drinkNameJa: '',
+            drinkPrice: '',
+            drinkPicture: ''
         };
     }
 
     handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === 'province_id' || name === 'style') {
-            this.setState({ [name]: parseInt(value) });
-        } else {
-            this.setState({ [name]: value });
-        }
+        this.setState({ [name]: value });
     }
 
     handleAddCoffeeShop = async () => {
         const {
             name, province_id, address, open_hour, close_hour,
-            min_price, max_price, description_en, description_jp, style, picture
+            min_price, max_price, description_en, description_jp, style, picture,
+            drinkNameVi, drinkNameEng, drinkNameJa, drinkPrice, drinkPicture
         } = this.state;
 
         const coffeeShopData = {
@@ -73,32 +75,46 @@ class AddCoffeeShop extends Component {
         try {
             const response = await addCoffeeShop(coffeeShopData);
             if (response.errCode === 0) {
-                alert('Coffee shop added successfully!');
-                this.props.history.push('/system/coffee-shop-manage');
+                let cid = await getMaxCoffeeShopId();
+                const drinkData = {
+                    cid: cid.maxId,
+                    name_vi: drinkNameVi,
+                    name_eng: drinkNameEng,
+                    name_ja: drinkNameJa,
+                    price: drinkPrice,
+                    picture: drinkPicture
+                };
+                const responseDrink = await addDrinkToCoffeeShop(drinkData);
+                if (responseDrink.errCode === 0) {
+                    alert('Coffee shop and drink added successfully!');
+                    this.props.history.push('/system/coffee-shop-manage');
+                } else {
+                    alert('Failed to add drink: ' + responseDrink.errMessage);
+                }
             } else {
                 alert('Failed to add coffee shop: ' + response.errMessage);
             }
         } catch (error) {
-            console.error('Error adding coffee shop:', error);
-            alert('An error occurred while adding the coffee shop.');
+            console.error('Error adding coffee shop and drink:', error);
+            alert('An error occurred while adding the coffee shop and drink.');
         }
     }
 
-    handleUploadImage = async (files) => {
+    handleUploadImage = async (files, type) => {
         if (!files || files.length === 0) {
             alert('Please select an image to upload.');
             return;
         }
-
+    
         const file = files[0];
-
+    
         // Kiểm tra định dạng file
         const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
         if (!validFormats.includes(file.type)) {
             alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
             return;
         }
-
+    
         // Kiểm tra kích thước file (giới hạn 5MB)
         const maxSize = 5 * 1024 * 1024; // 5MB
         if (file.size > maxSize) {
@@ -111,80 +127,21 @@ class AddCoffeeShop extends Component {
         formData.append('upload_preset', 'kohitabi'); // Replace with your upload preset
 
         try {
-            // Hiển thị thông báo đang tải lên
-            this.setState({ isLoading: true });
-
             const response = await fetch(`https://api.cloudinary.com/v1_1/digakeefg/image/upload`, {
                 method: 'POST',
                 body: formData
             });
-
             const data = await response.json();
-
-            if (response.ok) {
+            if (type === 'shop') {
                 this.setState({ picture: data.secure_url });
-                alert('Image uploaded successfully!');
-            } else {
-                console.error('Error uploading image:', data);
-                alert(`Error: ${data.error.message}`);
+            } else if (type === 'drink') {
+                this.setState({ drinkPicture: data.secure_url });
             }
         } catch (error) {
             console.error('Error uploading image:', error);
             alert('An error occurred while uploading the image.');
-        } finally {
-            // Tắt trạng thái loading
-            this.setState({ isLoading: false });
         }
-    };
-
-    handleUploadImage = async (files) => {
-        if (!files || files.length === 0) {
-            alert('Please select an image to upload.');
-            return;
-        }
-
-        const file = files[0];
-
-        const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
-        if (!validFormats.includes(file.type)) {
-            alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
-            return;
-        }
-
-        const maxSize = 5 * 1024 * 1024; // 5MB
-        if (file.size > maxSize) {
-            alert('File size exceeds 5MB. Please choose a smaller image.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'kohitabi'); // Replace with your upload preset
-
-        try {
-            this.setState({ isLoading: true });
-
-            const response = await fetch(`https://api.cloudinary.com/v1_1/digakeefg/image/upload`, {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                this.setState({ picture: data.secure_url });
-                alert('Image uploaded successfully!');
-            } else {
-                console.error('Error uploading image:', data);
-                alert(`Error: ${data.error.message}`);
-            }
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            alert('An error occurred while uploading the image.');
-        } finally {
-            this.setState({ isLoading: false });
-        }
-    };
+    }
 
     render() {
         return (
@@ -198,7 +155,7 @@ class AddCoffeeShop extends Component {
                     </div>
                     <div className="add-coffee-shop-content">
                         <div className="left-panel">
-                        <ImageUpload onUpload={this.handleUploadImage} uploadedImage={this.state.picture} />
+                            <ImageUpload onUpload={(files) => this.handleUploadImage(files, 'shop')} imageUrl={this.state.picture} />
                         </div>
                         <div className="right-panel">
                             <div className="add-coffee-shop-form">
@@ -278,13 +235,44 @@ class AddCoffeeShop extends Component {
                                 <div>
                                     <label>Featured drinks</label>
                                     <div className="featured-drinks">
-                                        <div className="image-upload">
-                                            <img src={all_icons.imageUp} alt="Placeholder" />
-                                            <button className="upload-button">Upload Image</button>
-                                        </div>
+                                        <ImageUpload onUpload={(files) => this.handleUploadImage(files, 'drink')} imageUrl={this.state.drinkPicture} />
                                         <div className="drink-input">
-                                            <input type="text" placeholder="New drink" />
-                                            <input type="text" placeholder="Price" />
+                                            <input
+                                                type="text"
+                                                name="drinkNameVi"
+                                                placeholder="New drink (Vietnamese)"
+                                                value={this.state.drinkNameVi}
+                                                onChange={this.handleChange}
+                                            />
+                                            <input
+                                                type="text"
+                                                name="drinkNameEng"
+                                                placeholder="New drink (English)"
+                                                value={this.state.drinkNameEng}
+                                                onChange={this.handleChange}
+                                            />
+                                            <input
+                                                type="text"
+                                                name="drinkNameJa"
+                                                placeholder="New drink (Japanese)"
+                                                value={this.state.drinkNameJa}
+                                                onChange={this.handleChange}
+                                            />
+                                            <input
+                                                type="text"
+                                                name="drinkPrice"
+                                                placeholder="Price"
+                                                value={this.state.drinkPrice}
+                                                onChange={this.handleChange}
+                                            />
+                                            <input
+                                                type="text"
+                                                name="drinkPicture"
+                                                placeholder="Drink Picture URL"
+                                                value={this.state.drinkPicture}
+                                                onChange={this.handleChange}
+                                                className="coffee-shop-picture-url"
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -319,7 +307,7 @@ class AddCoffeeShop extends Component {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='coffee-shop-picture-url'>
+                                <div>
                                     <label>Picture URL</label>
                                     <input
                                         type="text"
@@ -327,6 +315,7 @@ class AddCoffeeShop extends Component {
                                         placeholder="Picture URL"
                                         value={this.state.picture}
                                         onChange={this.handleChange}
+                                        className="coffee-shop-picture-url"
                                     />
                                 </div>
                                 <div className='add-button-container'>

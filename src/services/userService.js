@@ -95,6 +95,14 @@ const addCoffeeShop = (coffeeShopData) => {
     return axios.post('/api/add-coffee-shop', coffeeShopData);
 }
 
+const getMaxCoffeeShopId = () => {
+    return axios.get('/api/get-max-coffee-shop-id');
+}
+
+const addDrinkToCoffeeShop = (drinkData) => {
+    return axios.post('/api/add-drink-to-coffee-shop', drinkData);
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -113,4 +121,6 @@ export {
     adminDeleteCoffeeShop,
     getMostFavoriteCoffeeShop,
     addCoffeeShop,
+    getMaxCoffeeShopId,
+    addDrinkToCoffeeShop,
 };

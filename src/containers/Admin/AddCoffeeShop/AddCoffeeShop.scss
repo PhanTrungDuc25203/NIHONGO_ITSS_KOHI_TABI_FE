@@ -1,11 +1,15 @@
 .add-coffee-shop {
+
+    background-color: #ececec;
+
     .back-header {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
         justify-content: space-between;
         padding: 10px 20px;
-        background-color: #f4f4f4;
-        border-bottom: 1px solid #ddd;
+        background-color: #ececec;
 
         .back-button {
             background: none;
@@ -23,22 +27,27 @@
 
     .add-coffee-shop-content {
         display: flex;
-        padding: 20px;
+        background-color: #ffffff;
+        margin: 0 20px 0 20px;
+        padding: 20px 20px 0 0;
 
         .left-panel {
             flex: 1;
+
             .image-upload {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+
                 img {
                     width: 100px;
                     height: 100px;
                     object-fit: cover;
                     margin-bottom: 10px;
                 }
+
                 .upload-button {
-                    background-color: #007bff;
+                    background-color: #FFA16C;
                     color: #fff;
                     border: none;
                     padding: 10px 20px;
@@ -63,7 +72,9 @@
                         margin-bottom: 5px;
                     }
 
-                    input, select, textarea {
+                    input,
+                    select,
+                    textarea {
                         width: 100%;
                         padding: 10px;
                         border: 1px solid #ddd;
@@ -94,15 +105,38 @@
 
                     .featured-drinks {
                         display: flex;
-                        align-items: center;
+                        align-items: flex-start;
+                        flex-direction: column;
 
                         .image-upload {
                             margin-right: 20px;
                         }
 
+                        .coffee-image-upload {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+
+                            img {
+                                width: 100px;
+                                height: 100px;
+                                object-fit: cover;
+                                margin-bottom: 10px;
+                            }
+
+                            .upload-button {
+                                background-color: #FFA16C;
+                                color: #fff;
+                                border: none;
+                                padding: 10px 20px;
+                                cursor: pointer;
+                            }
+                        }
+
                         .drink-input {
                             display: flex;
                             flex-direction: column;
+                            width: 150px;
 
                             input {
                                 margin-bottom: 10px;
@@ -120,7 +154,7 @@
                     flex-wrap: wrap;
 
                     .tag-button {
-                        background-color: #007bff;
+                        background-color: #FFA16C;
                         color: #fff;
                         border: none;
                         padding: 10px 20px;
@@ -139,32 +173,16 @@
 
     .add-button-container {
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         padding: 20px;
         background-color: #f4f4f4;
-        border-top: 1px solid #ddd;
 
         .add-button {
-            background-color: #007bff;
+            background-color: #FFA16C;
             color: #fff;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
         }
     }
-}
-
-.image-upload {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.uploaded-image {
-    max-width: 100%;
-    max-height: 200px;
-    border-radius: 10px;
-    margin-bottom: 10px;
 }
