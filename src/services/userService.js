@@ -118,6 +118,7 @@ const addService = (serviceData) => {
 
 const addServiceToCoffeeShop = (serviceData) => {
     return axios.post('/api/add-service-to-coffee-shop', serviceData);
+}
 
 const getAllUser = () => {
     return axios.get('/api/getalluser');
