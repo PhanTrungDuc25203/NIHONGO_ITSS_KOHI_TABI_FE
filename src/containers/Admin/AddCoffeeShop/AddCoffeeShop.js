@@ -338,6 +338,17 @@ class AddCoffeeShop extends Component {
                                         onChange={this.handleChange}
                                     />
                                 </div>
+                                <div className='tag-container'>
+                                    <div>
+                                        <label>Tag</label>
+                                    </div>
+                                    <div>
+                                        <button>+ New Amenity</button>
+                                    </div>
+                                    <div>
+                                        <button>+ New Service</button>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
