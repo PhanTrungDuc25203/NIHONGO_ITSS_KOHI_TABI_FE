@@ -90,6 +90,10 @@ const getMostFavoriteCoffeeShop = () => {
     return axios.get('/api/get-most-favorite-shop');
 }
 
+const getAllUser = () => {
+    return axios.get('/api/getalluser');
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -107,4 +111,5 @@ export {
     getAllCoffeeShopData,
     adminDeleteCoffeeShop,
     getMostFavoriteCoffeeShop,
+    getAllUser
 };
