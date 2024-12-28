@@ -1,3 +1,4 @@
+import { add } from 'lodash';
 import axios from '../axios';
 
 const handleLogin = (usernameOrEmail, password) => {
@@ -90,6 +91,10 @@ const getMostFavoriteCoffeeShop = () => {
     return axios.get('/api/get-most-favorite-shop');
 }
 
+const addCoffeeShop = (coffeeShopData) => {
+    return axios.post('/api/add-coffee-shop', coffeeShopData);
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -107,4 +112,5 @@ export {
     getAllCoffeeShopData,
     adminDeleteCoffeeShop,
     getMostFavoriteCoffeeShop,
+    addCoffeeShop,
 };

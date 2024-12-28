@@ -1,143 +1,133 @@
 .add-coffee-shop {
-    display: flex;
-    flex-direction: column;
-    background-color: #ececec;
-    padding: 20px;
-
     .back-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding: 10px 20px;
+        background-color: #f4f4f4;
+        border-bottom: 1px solid #ddd;
 
-        button {
+        .back-button {
             background: none;
             border: none;
-            color: #f56a2d;
-            font-size: 16px;
             cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
         }
 
         h5 {
             margin: 0;
-            font-size: 20px;
-            color: #333;
         }
     }
 
     .add-coffee-shop-content {
-        margin-top: 20px;
-        background-color: #ffffff;
-        border-radius: 8px;
+        display: flex;
         padding: 20px;
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        grid-gap: 25px;
 
         .left-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
+            flex: 1;
             .image-upload {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 10px;
-
                 img {
-                    width: 150px;
-                    height: 150px;
-                    border: 2px dashed #ccc;
-                    border-radius: 8px;
+                    width: 100px;
+                    height: 100px;
+                    object-fit: cover;
+                    margin-bottom: 10px;
                 }
-
                 .upload-button {
-                    background-color: #f56a2d;
+                    background-color: #007bff;
                     color: #fff;
                     border: none;
-                    padding: 8px 16px;
-                    border-radius: 4px;
+                    padding: 10px 20px;
                     cursor: pointer;
                 }
             }
         }
 
         .right-panel {
+            flex: 2;
+            padding-left: 20px;
+
             .add-coffee-shop-form {
                 display: flex;
                 flex-direction: column;
-                gap: 20px;
 
-                label {
-                    font-size: 14px;
-                    font-weight: bold;
-                    margin-bottom: 5px;
-                }
+                div {
+                    margin-bottom: 15px;
 
-                input, textarea {
-                    width: 100%;
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    font-size: 14px;
+                    label {
+                        display: block;
+                        margin-bottom: 5px;
+                    }
+
+                    input, select, textarea {
+                        width: 100%;
+                        padding: 10px;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                    }
+
+                    .range-input {
+                        display: flex;
+                        align-items: center;
+
+                        input {
+                            width: auto;
+                            flex: 1;
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .time-input {
+                        display: flex;
+                        align-items: center;
+
+                        input {
+                            width: auto;
+                            flex: 1;
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .featured-drinks {
+                        display: flex;
+                        align-items: center;
+
+                        .image-upload {
+                            margin-right: 20px;
+                        }
+
+                        .drink-input {
+                            display: flex;
+                            flex-direction: column;
+
+                            input {
+                                margin-bottom: 10px;
+                            }
+                        }
+                    }
                 }
 
                 textarea {
-                    resize: none;
                     height: 100px;
-                }
-
-                .range-input, .time-input {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-
-                .featured-drinks {
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-
-                    .image-upload {
-                        img {
-                            width: 80px;
-                            height: 80px;
-                        }
-                    }
-
-                    .drink-input {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 10px;
-
-                        input {
-                            width: calc(100% - 20px);
-                        }
-                    }
                 }
 
                 .tags {
                     display: flex;
-                    gap: 10px;
+                    flex-wrap: wrap;
 
                     .tag-button {
-                        background-color: #f56a2d;
-                        color: white;
+                        background-color: #007bff;
+                        color: #fff;
                         border: none;
-                        padding: 6px 12px;
-                        border-radius: 4px;
+                        padding: 10px 20px;
+                        margin-right: 10px;
+                        margin-bottom: 10px;
                         cursor: pointer;
                     }
-                }
-
-                .add-button {
-                    background-color: #f56a2d;
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    align-self: flex-end;
                 }
             }
         }
@@ -145,17 +135,17 @@
 
     .add-button-container {
         display: flex;
-        justify-content: flex-end;
-        margin-top: 20px;
+        justify-content: center;
+        padding: 20px;
+        background-color: #f4f4f4;
+        border-top: 1px solid #ddd;
 
-        button {
-            background-color: #f56a2d;
-            color: white;
+        .add-button {
+            background-color: #007bff;
+            color: #fff;
             border: none;
             padding: 10px 20px;
-            border-radius: 4px;
             cursor: pointer;
         }
     }
-
 }
