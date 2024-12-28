@@ -1,5 +1,4 @@
 .add-coffee-shop {
-
     background-color: #ececec;
 
     .back-header {
@@ -37,7 +36,7 @@
             .image-upload {
                 display: flex;
                 flex-direction: column;
-                align-items: center; 
+                align-items: center;
                 cursor: pointer;
 
                 img {
@@ -107,14 +106,40 @@
 
                     .featured-drinks {
                         display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        overflow-x: auto;
                         align-items: flex-start;
-                        flex-direction: column;
-                        cursor: pointer;
 
-                        .image-upload {  
+                        .drink {
+                            display: flex;
+                            flex-direction: row;
+                            overflow-x: scroll;
+                            /* Hoặc overflow-x: scroll */
+                            white-space: nowrap;
+                            /* Đảm bảo các phần tử không xuống dòng */
+                            max-width: 1010px;
+                        }
 
+                        .drink-item {
+                            display: flex;
+                            flex-direction: column;
                             margin-right: 20px;
+                            margin-bottom: 20px;
 
+                            .image-upload {
+                                margin-bottom: 10px;
+                            }
+
+                            .drink-input {
+                                display: flex;
+                                flex-direction: column;
+                                width: 150px;
+
+                                input {
+                                    margin-bottom: 10px;
+                                }
+                            }
                         }
 
                         .coffee-image-upload {
@@ -123,7 +148,8 @@
                             align-items: center;
                             cursor: pointer;
 
-                            .upload-image-container, .uploaded-image-container {
+                            .upload-image-container,
+                            .uploaded-image-container {
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
@@ -162,16 +188,6 @@
                                 display: none;
                             }
                         }
-
-                        .drink-input {
-                            display: flex;
-                            flex-direction: column;
-                            width: 150px;
-
-                            input {
-                                margin-bottom: 10px;
-                            }
-                        }
                     }
                 }
 
@@ -195,7 +211,7 @@
                 }
 
                 .coffee-shop-picture-url {
-                     display: none;
+                    display: none;
                 }
             }
         }
