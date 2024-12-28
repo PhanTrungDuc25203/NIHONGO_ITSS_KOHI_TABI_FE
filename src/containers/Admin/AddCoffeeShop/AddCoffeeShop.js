@@ -38,7 +38,8 @@ class AddCoffeeShop extends Component {
             description_jp: '',
             style: '',
             picture: '',
-            drinks: []
+            drinks: [],
+            amenities: []
         };
     }
 
@@ -60,21 +61,34 @@ class AddCoffeeShop extends Component {
         }));
     }
 
+    handleAmenityChange = (index, e) => {
+        const { name, value } = e.target;
+        const amenities = [...this.state.amenities];
+        amenities[index][name] = value;
+        this.setState({ amenities });
+    }
+
+    handleAddAmenity = () => {
+        this.setState((prevState) => ({
+            amenities: [...prevState.amenities, { name_eng: '', name_jap: '', price: '' }]
+        }));
+    }
+
     handleUploadImage = async (files, type, index) => {
         if (!files || files.length === 0) {
             alert('Please select an image to upload.');
             return;
         }
-
+    
         const file = files[0];
-
+    
         // Kiểm tra định dạng file
         const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
         if (!validFormats.includes(file.type)) {
             alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
             return;
         }
-
+    
         // Kiểm tra kích thước file (giới hạn 5MB)
         const maxSize = 5 * 1024 * 1024; // 5MB
         if (file.size > maxSize) {
@@ -108,7 +122,7 @@ class AddCoffeeShop extends Component {
     handleAddCoffeeShop = async () => {
         const {
             name, province_id, address, open_hour, close_hour,
-            min_price, max_price, description_en, description_jp, style, picture, drinks
+            min_price, max_price, description_en, description_jp, style, picture, drinks, amenities
         } = this.state;
 
         const coffeeShopData = {
@@ -248,53 +262,50 @@ class AddCoffeeShop extends Component {
                                 <div>
                                     <label>Featured drinks</label>
                                     <div className="featured-drinks">
-                                        <div className='drink'>
-                                            {this.state.drinks.map((drink, index) => (
-                                                <div key={index} className="drink-item">
-                                                    <ImageUpload onUpload={(files) => this.handleUploadImage(files, 'drink', index)} uploadedImage={drink.picture} />
-                                                    <div className="drink-input">
-                                                        <input
-                                                            type="text"
-                                                            name="name_vi"
-                                                            placeholder="New drink (Vietnamese)"
-                                                            value={drink.name_vi}
-                                                            onChange={(e) => this.handleDrinkChange(index, e)}
-                                                        />
-                                                        <input
-                                                            type="text"
-                                                            name="name_eng"
-                                                            placeholder="New drink (English)"
-                                                            value={drink.name_eng}
-                                                            onChange={(e) => this.handleDrinkChange(index, e)}
-                                                        />
-                                                        <input
-                                                            type="text"
-                                                            name="name_ja"
-                                                            placeholder="New drink (Japanese)"
-                                                            value={drink.name_ja}
-                                                            onChange={(e) => this.handleDrinkChange(index, e)}
-                                                        />
-                                                        <input
-                                                            type="text"
-                                                            name="price"
-                                                            placeholder="Price"
-                                                            value={drink.price}
-                                                            onChange={(e) => this.handleDrinkChange(index, e)}
-                                                        />
-                                                        <input
-                                                            type="text"
-                                                            name="picture"
-                                                            placeholder="Drink Picture URL"
-                                                            value={drink.picture}
-                                                            onChange={(e) => this.handleDrinkChange(index, e)}
-                                                            className="coffee-shop-picture-url"
-                                                        />
-                                                    </div>
+                                        {this.state.drinks.map((drink, index) => (
+                                            <div key={index} className="drink-item">
+                                                <ImageUpload onUpload={(files) => this.handleUploadImage(files, 'drink', index)} uploadedImage={drink.picture} />
+                                                <div className="drink-input">
+                                                    <input
+                                                        type="text"
+                                                        name="name_vi"
+                                                        placeholder="New drink (Vietnamese)"
+                                                        value={drink.name_vi}
+                                                        onChange={(e) => this.handleDrinkChange(index, e)}
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        name="name_eng"
+                                                        placeholder="New drink (English)"
+                                                        value={drink.name_eng}
+                                                        onChange={(e) => this.handleDrinkChange(index, e)}
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        name="name_ja"
+                                                        placeholder="New drink (Japanese)"
+                                                        value={drink.name_ja}
+                                                        onChange={(e) => this.handleDrinkChange(index, e)}
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        name="price"
+                                                        placeholder="Price"
+                                                        value={drink.price}
+                                                        onChange={(e) => this.handleDrinkChange(index, e)}
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        name="picture"
+                                                        placeholder="Drink Picture URL"
+                                                        value={drink.picture}
+                                                        onChange={(e) => this.handleDrinkChange(index, e)}
+                                                        className="coffee-shop-picture-url"
+                                                    />
                                                 </div>
-                                            ))}
-                                        </div>
+                                            </div>
+                                        ))}
                                         <button type="button" onClick={this.handleAddDrink}>+ Add Drink</button>
-
                                     </div>
                                 </div>
                                 <div>
@@ -343,18 +354,41 @@ class AddCoffeeShop extends Component {
                                         <label>Tag</label>
                                     </div>
                                     <div>
-                                        <button>+ New Amenity</button>
+                                        <button type="button" onClick={this.handleAddAmenity}>+ New Amenity</button>
                                     </div>
-                                    <div>
-                                        <button>+ New Service</button>
+                                    <div className="amenities">
+                                        {this.state.amenities.map((amenity, index) => (
+                                            <div key={index} className="amenity-item">
+                                                <input
+                                                    type="text"
+                                                    name="name_eng"
+                                                    placeholder="Amenity (English)"
+                                                    value={amenity.name_eng}
+                                                    onChange={(e) => this.handleAmenityChange(index, e)}
+                                                />
+                                                <input
+                                                    type="text"
+                                                    name="name_jap"
+                                                    placeholder="Amenity (Japanese)"
+                                                    value={amenity.name_jap}
+                                                    onChange={(e) => this.handleAmenityChange(index, e)}
+                                                />
+                                                <input
+                                                    type="text"
+                                                    name="price"
+                                                    placeholder="Price"
+                                                    value={amenity.price}
+                                                    onChange={(e) => this.handleAmenityChange(index, e)}
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-
+                                <div className='add-button-container'>
+                                    <button className="add-button" onClick={this.handleAddCoffeeShop}>+ Add</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className='add-button-container'>
-                        <button className="add-button" onClick={this.handleAddCoffeeShop}>+ Add</button>
                     </div>
                 </div>
             </Layout>

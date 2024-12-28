@@ -227,6 +227,19 @@
                         cursor: pointer;
                     }
 
+                    .amenities {
+                        display: flex;
+                        flex-direction: row;
+                        max-width: 800px;
+                        overflow-x: scroll;
+                        
+                        .amenity-item {
+                            width: 200px;
+                            flex-shrink: 0;
+                        }
+
+                    }
+
                 }
 
             }
