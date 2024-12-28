@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
 import './AddCoffeeShop.scss';
 import all_icons from '../../../assets/Icons/all_icons';
-import { addCoffeeShop, getMaxCoffeeShopId, addDrinkToCoffeeShop } from '../../../services/userService';
+import { addCoffeeShop, getMaxCoffeeShopId, addDrinkToCoffeeShop, addAmenity, addAmenityToCoffeeShop } from '../../../services/userService';
 import { Cloudinary } from 'cloudinary-core';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 
@@ -159,14 +159,35 @@ class AddCoffeeShop extends Component {
                         return;
                     }
                 }
-                alert('Coffee shop and drinks added successfully!');
+                for (const amenity of amenities) {
+                    const amenityData1 = {
+                        name_eng: amenity.name_eng,
+                        name_jap: amenity.name_jap
+                    };
+                    const responseAmenity1 = await addAmenity(amenityData1);
+                    if (responseAmenity1.errCode !== 0) {
+                        alert('Failed to add amenity: ' + responseAmenity1.errMessage);
+                        return;
+                    }
+                    const amenityData2 = {
+                        cid: cid,
+                        aid: responseAmenity1.newAmenity.aid,
+                        price: amenity.price
+                    };
+                    const responseAmenity2 = await addAmenityToCoffeeShop(amenityData2);
+                    if (responseAmenity2.errCode !== 0) {
+                        alert("Failed to add amenity to coffee shop: " + responseAmenity2.errMessage);
+                        return;
+                    }
+                }
+                alert('Coffee shop, drinks, and amenities added successfully!');
                 this.props.history.push('/system/coffee-shop-manage');
             } else {
                 alert('Failed to add coffee shop: ' + response.errMessage);
             }
         } catch (error) {
-            console.error('Error adding coffee shop and drinks:', error);
-            alert('An error occurred while adding the coffee shop and drinks.');
+            console.error('Error adding coffee shop, drinks, and amenities:', error);
+            alert('An error occurred while adding the coffee shop, drinks, and amenities.');
         }
     }
 
@@ -339,24 +360,9 @@ class AddCoffeeShop extends Component {
                                         ))}
                                     </select>
                                 </div>
-                                <div className="coffee-shop-picture-url">
-                                    <label>Picture URL</label>
-                                    <input
-                                        type="text"
-                                        name="picture"
-                                        placeholder="Picture URL"
-                                        value={this.state.picture}
-                                        onChange={this.handleChange}
-                                    />
-                                </div>
-                                <div className='tag-container'>
-                                    <div>
-                                        <label>Tag</label>
-                                    </div>
-                                    <div>
-                                        <button type="button" onClick={this.handleAddAmenity}>+ New Amenity</button>
-                                    </div>
-                                    <div className="amenities">
+                                <div className="amenities">
+                                    <label>Amenities</label>
+                                    <div className="amenities-list">
                                         {this.state.amenities.map((amenity, index) => (
                                             <div key={index} className="amenity-item">
                                                 <input
@@ -382,7 +388,18 @@ class AddCoffeeShop extends Component {
                                                 />
                                             </div>
                                         ))}
+                                        <button type="button" onClick={this.handleAddAmenity}>+ Add Amenity</button>
                                     </div>
+                                </div>
+                                <div className="coffee-shop-picture-url">
+                                    <label>Picture URL</label>
+                                    <input
+                                        type="text"
+                                        name="picture"
+                                        placeholder="Picture URL"
+                                        value={this.state.picture}
+                                        onChange={this.handleChange}
+                                    />
                                 </div>
                                 <div className='add-button-container'>
                                     <button className="add-button" onClick={this.handleAddCoffeeShop}>+ Add</button>

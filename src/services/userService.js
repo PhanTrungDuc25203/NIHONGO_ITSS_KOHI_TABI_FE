@@ -103,6 +103,14 @@ const addDrinkToCoffeeShop = (drinkData) => {
     return axios.post('/api/add-drink-to-coffee-shop', drinkData);
 }
 
+const addAmenity = (amenityData) => {
+    return axios.post('/api/add-amenity', amenityData);
+}
+
+const addAmenityToCoffeeShop = (amenityData) => {
+    return axios.post('/api/add-amenity-to-coffee-shop', amenityData);
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -123,4 +131,6 @@ export {
     addCoffeeShop,
     getMaxCoffeeShopId,
     addDrinkToCoffeeShop,
+    addAmenity,
+    addAmenityToCoffeeShop,
 };
