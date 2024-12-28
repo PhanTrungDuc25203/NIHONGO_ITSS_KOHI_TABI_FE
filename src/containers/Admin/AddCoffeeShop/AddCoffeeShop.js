@@ -3,7 +3,10 @@ import Layout from '../Layout/Layout';
 import './AddCoffeeShop.scss';
 import all_icons from '../../../assets/Icons/all_icons';
 import { addCoffeeShop } from '../../../services/userService';
-import e from 'cors';
+import { Cloudinary } from 'cloudinary-core';
+import ImageUpload from '../../../components/ImageUpload/ImageUpload';
+
+const cloudinary = new Cloudinary({ cloud_name: 'digakeefg', secure: true });
 
 const provinces = [
     'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu', 'Bắc Ninh',
@@ -72,16 +75,116 @@ class AddCoffeeShop extends Component {
             if (response.errCode === 0) {
                 alert('Coffee shop added successfully!');
                 this.props.history.push('/system/coffee-shop-manage');
-                // Redirect or clear form
             } else {
                 alert('Failed to add coffee shop: ' + response.errMessage);
-                console.log(response);
             }
         } catch (error) {
             console.error('Error adding coffee shop:', error);
             alert('An error occurred while adding the coffee shop.');
         }
     }
+
+    handleUploadImage = async (files) => {
+        if (!files || files.length === 0) {
+            alert('Please select an image to upload.');
+            return;
+        }
+
+        const file = files[0];
+
+        // Kiểm tra định dạng file
+        const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validFormats.includes(file.type)) {
+            alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
+            return;
+        }
+
+        // Kiểm tra kích thước file (giới hạn 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            alert('File size exceeds 5MB. Please choose a smaller image.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'kohitabi'); // Replace with your upload preset
+
+        try {
+            // Hiển thị thông báo đang tải lên
+            this.setState({ isLoading: true });
+
+            const response = await fetch(`https://api.cloudinary.com/v1_1/digakeefg/image/upload`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                this.setState({ picture: data.secure_url });
+                alert('Image uploaded successfully!');
+            } else {
+                console.error('Error uploading image:', data);
+                alert(`Error: ${data.error.message}`);
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            alert('An error occurred while uploading the image.');
+        } finally {
+            // Tắt trạng thái loading
+            this.setState({ isLoading: false });
+        }
+    };
+
+    handleUploadImage = async (files) => {
+        if (!files || files.length === 0) {
+            alert('Please select an image to upload.');
+            return;
+        }
+
+        const file = files[0];
+
+        const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validFormats.includes(file.type)) {
+            alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
+            return;
+        }
+
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            alert('File size exceeds 5MB. Please choose a smaller image.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'kohitabi'); // Replace with your upload preset
+
+        try {
+            this.setState({ isLoading: true });
+
+            const response = await fetch(`https://api.cloudinary.com/v1_1/digakeefg/image/upload`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                this.setState({ picture: data.secure_url });
+                alert('Image uploaded successfully!');
+            } else {
+                console.error('Error uploading image:', data);
+                alert(`Error: ${data.error.message}`);
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            alert('An error occurred while uploading the image.');
+        } finally {
+            this.setState({ isLoading: false });
+        }
+    };
 
     render() {
         return (
@@ -95,10 +198,7 @@ class AddCoffeeShop extends Component {
                     </div>
                     <div className="add-coffee-shop-content">
                         <div className="left-panel">
-                            <div className="image-upload">
-                                <img src={all_icons.imageUp} alt="Placeholder" />
-                                <button className="upload-button">Upload Image</button>
-                            </div>
+                        <ImageUpload onUpload={this.handleUploadImage} uploadedImage={this.state.picture} />
                         </div>
                         <div className="right-panel">
                             <div className="add-coffee-shop-form">
@@ -219,7 +319,7 @@ class AddCoffeeShop extends Component {
                                         ))}
                                     </select>
                                 </div>
-                                <div>
+                                <div className='coffee-shop-picture-url'>
                                     <label>Picture URL</label>
                                     <input
                                         type="text"
