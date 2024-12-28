@@ -1,0 +1,261 @@
+.add-coffee-shop {
+    background-color: #ececec;
+
+    .back-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background-color: #ececec;
+
+        .back-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        h5 {
+            margin: 0;
+        }
+    }
+
+    .add-coffee-shop-content {
+        display: flex;
+        background-color: #ffffff;
+        margin: 0 20px 0 20px;
+        padding: 20px 20px 0 0;
+
+        .left-panel {
+            flex: 1;
+
+            .image-upload {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                cursor: pointer;
+
+                img {
+                    width: 200px;
+                    height: 200px;
+                    object-fit: cover;
+                    margin-bottom: 10px;
+                }
+
+                .upload-button {
+                    background-color: #FFA16C;
+                    color: #fff;
+                    border: none;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    display: none;
+                }
+            }
+        }
+
+        .right-panel {
+            flex: 2;
+            padding-left: 20px;
+
+            .add-coffee-shop-form {
+                display: flex;
+                flex-direction: column;
+
+                div {
+                    margin-bottom: 15px;
+
+                    label {
+                        display: block;
+                        margin-bottom: 5px;
+                    }
+
+                    input,
+                    select,
+                    textarea {
+                        width: 100%;
+                        padding: 10px;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                    }
+
+                    .range-input {
+                        display: flex;
+                        align-items: center;
+
+                        input {
+                            width: auto;
+                            flex: 1;
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .time-input {
+                        display: flex;
+                        align-items: center;
+
+                        input {
+                            width: auto;
+                            flex: 1;
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .featured-drinks {
+                        display: flex;
+                        flex-direction: row;
+                        overflow-x: scroll;
+                        max-width: 4040px;
+
+                        .drink-item {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            max-width: 1010px;
+                            flex-shrink: 0;
+
+                            img {
+                                width: 100px;
+                                height: 100px;
+                                object-fit: cover;
+                                margin-bottom: 10px;
+                            }
+
+                            .drink-input {
+                                max-width: 200px;
+                                padding: 10px;
+                                border: 1px solid #ddd;
+                                border-radius: 4px;
+                                margin-bottom: 10px;
+                            }
+
+                        }
+
+                        .coffee-image-upload {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            cursor: pointer;
+
+                            .upload-image-container,
+                            .uploaded-image-container {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                cursor: pointer;
+
+                                img {
+                                    width: 100px;
+                                    height: 100px;
+                                    object-fit: cover;
+                                    margin-bottom: 10px;
+                                }
+
+                                .upload-button {
+                                    background-color: #FFA16C;
+                                    color: #fff;
+                                    border: none;
+                                    padding: 10px 20px;
+                                    cursor: pointer;
+                                    display: none;
+                                }
+                            }
+
+                            img {
+                                width: 100px;
+                                height: 100px;
+                                object-fit: cover;
+                                margin-bottom: 10px;
+                            }
+
+                            .upload-button {
+                                background-color: #FFA16C;
+                                color: #fff;
+                                border: none;
+                                padding: 10px 20px;
+                                cursor: pointer;
+                                display: none;
+                            }
+                        }
+                    }
+                }
+
+                textarea {
+                    height: 100px;
+                }
+
+                .tags {
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    .tag-button {
+                        background-color: #FFA16C;
+                        color: #fff;
+                        border: none;
+                        padding: 10px 20px;
+                        margin-right: 10px;
+                        margin-bottom: 10px;
+                        cursor: pointer;
+                    }
+                }
+
+                .coffee-shop-picture-url {
+                    display: none;
+                }
+
+                .tag-container {
+                    display: flex;
+                    flex-direction: column;
+
+                    button {
+                        background-color: #ffffff;
+                        border: 1px solid black;
+                        border-radius: 40px;
+                        padding: 10px 20px;
+                        margin-bottom: 10px;
+                        cursor: pointer;
+                    }
+
+                }
+
+                .amenities, .services {
+                    display: flex;
+                    flex-direction: column;
+
+                    .amenities-list, .services-list {
+
+                        display: flex;
+                        flex-direction: row;
+                        max-width: 800px;
+                        overflow-x: scroll;
+
+                        .amenity-item, .service-item {
+                            width: 200px;
+                            flex-shrink: 0;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    .add-button-container {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px;
+        background-color: #f4f4f4;
+
+        .add-button {
+            background-color: #FFA16C;
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    }
+}

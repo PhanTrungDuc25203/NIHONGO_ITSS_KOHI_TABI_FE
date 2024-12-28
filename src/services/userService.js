@@ -1,3 +1,4 @@
+import { add } from 'lodash';
 import axios from '../axios';
 
 const handleLogin = (usernameOrEmail, password) => {
@@ -90,8 +91,37 @@ const getMostFavoriteCoffeeShop = () => {
     return axios.get('/api/get-most-favorite-shop');
 }
 
+
+const addCoffeeShop = (coffeeShopData) => {
+    return axios.post('/api/add-coffee-shop', coffeeShopData);
+}
+
+const getMaxCoffeeShopId = () => {
+    return axios.get('/api/get-max-coffee-shop-id');
+}
+
+const addDrinkToCoffeeShop = (drinkData) => {
+    return axios.post('/api/add-drink-to-coffee-shop', drinkData);
+}
+
+const addAmenity = (amenityData) => {
+    return axios.post('/api/add-amenity', amenityData);
+}
+
+const addAmenityToCoffeeShop = (amenityData) => {
+    return axios.post('/api/add-amenity-to-coffee-shop', amenityData);
+}
+
+const addService = (serviceData) => {
+    return axios.post('/api/add-service', serviceData);
+}
+
+const addServiceToCoffeeShop = (serviceData) => {
+    return axios.post('/api/add-service-to-coffee-shop', serviceData);
+
 const getAllUser = () => {
     return axios.get('/api/getalluser');
+
 }
 
 export {
@@ -111,5 +141,12 @@ export {
     getAllCoffeeShopData,
     adminDeleteCoffeeShop,
     getMostFavoriteCoffeeShop,
-    getAllUser
+    addCoffeeShop,
+    getMaxCoffeeShopId,
+    addDrinkToCoffeeShop,
+    addAmenity,
+    addAmenityToCoffeeShop,
+    addService,
+    addServiceToCoffeeShop,
+    getAllUser,
 };
