@@ -75,9 +75,10 @@ class AddCoffeeShop extends Component {
         try {
             const response = await addCoffeeShop(coffeeShopData);
             if (response.errCode === 0) {
-                let cid = await getMaxCoffeeShopId();
+                let cidResponse = await getMaxCoffeeShopId();
+                let cid = cidResponse.maxId;
                 const drinkData = {
-                    cid: cid.maxId,
+                    cid: cid,
                     name_vi: drinkNameVi,
                     name_eng: drinkNameEng,
                     name_ja: drinkNameJa,
@@ -105,16 +106,16 @@ class AddCoffeeShop extends Component {
             alert('Please select an image to upload.');
             return;
         }
-    
+
         const file = files[0];
-    
+
         // Kiểm tra định dạng file
         const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
         if (!validFormats.includes(file.type)) {
             alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
             return;
         }
-    
+
         // Kiểm tra kích thước file (giới hạn 5MB)
         const maxSize = 5 * 1024 * 1024; // 5MB
         if (file.size > maxSize) {
@@ -155,7 +156,7 @@ class AddCoffeeShop extends Component {
                     </div>
                     <div className="add-coffee-shop-content">
                         <div className="left-panel">
-                            <ImageUpload onUpload={(files) => this.handleUploadImage(files, 'shop')} imageUrl={this.state.picture} />
+                            <ImageUpload onUpload={(files) => this.handleUploadImage(files, 'shop')} uploadedImage={this.state.picture} />
                         </div>
                         <div className="right-panel">
                             <div className="add-coffee-shop-form">
@@ -235,7 +236,7 @@ class AddCoffeeShop extends Component {
                                 <div>
                                     <label>Featured drinks</label>
                                     <div className="featured-drinks">
-                                        <ImageUpload onUpload={(files) => this.handleUploadImage(files, 'drink')} imageUrl={this.state.drinkPicture} />
+                                        <ImageUpload onUpload={(files) => this.handleUploadImage(files, 'drink')} uploadedImage={this.state.drinkPicture} />
                                         <div className="drink-input">
                                             <input
                                                 type="text"
@@ -307,7 +308,7 @@ class AddCoffeeShop extends Component {
                                         ))}
                                     </select>
                                 </div>
-                                <div>
+                                <div className="coffee-shop-picture-url">
                                     <label>Picture URL</label>
                                     <input
                                         type="text"
@@ -315,14 +316,16 @@ class AddCoffeeShop extends Component {
                                         placeholder="Picture URL"
                                         value={this.state.picture}
                                         onChange={this.handleChange}
-                                        className="coffee-shop-picture-url"
+
                                     />
                                 </div>
-                                <div className='add-button-container'>
-                                    <button className="add-button" onClick={this.handleAddCoffeeShop}>+ Add</button>
-                                </div>
+
                             </div>
+
                         </div>
+                    </div>
+                    <div className='add-button-container'>
+                        <button className="add-button" onClick={this.handleAddCoffeeShop}>+ Add</button>
                     </div>
                 </div>
             </Layout>
