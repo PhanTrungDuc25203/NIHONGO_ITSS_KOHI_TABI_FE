@@ -1,22 +1,17 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTable, usePagination } from "react-table";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import * as actions from "../../../store/actions";
+import { FormattedMessage } from "react-intl";
+import { toast } from 'react-toastify';
+import { adminChangePasswordService } from "../../../services/userService";
 import "./UsersManagement.scss";
+import adminService from '../../../services/adminService';
 
-const UsersManagement = () => {
-    // Dữ liệu mẫu
-    const data = useMemo(
-        () =>
-            Array.from({ length: 50 }).map((_, index) => ({
-                name: "Victoria Perez",
-                userId: `LA-023${index}`,
-                email: "abc@gmail.com",
-                address: "Lorem Ipsum",
-                phone: "0123456789",
-            })),
-        []
-    );
+const UsersManagement = (props) => {
+    const { switchLanguageOfWebsite, processLogout, language } = props;
 
-    // Cấu hình cột
     const columns = useMemo(
         () => [
             { Header: "Name", accessor: "name" },
@@ -39,11 +34,33 @@ const UsersManagement = () => {
         []
     );
 
-    // Các trạng thái tìm kiếm
+    const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchColumn, setSearchColumn] = useState("name");
 
-    // Hàm lọc dữ liệu
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await adminService.getAllUser();
+                if (response && response.users) {
+                    const formattedData = response.users.map((user) => ({
+                        name: user.name,
+                        userId: `ID-${user.id}`,
+                        email: user.email,
+                        address: user.address,
+                        phone: user.phoneNumber,
+                        role: user.role,
+                    }));
+                    setData(formattedData);
+                }
+            } catch (error) {
+                toast.error("Failed to fetch user data!");
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
+
     const filteredData = useMemo(() => {
         if (!searchTerm) return data;
 
@@ -77,20 +94,15 @@ const UsersManagement = () => {
         usePagination
     );
 
-    // Xử lý xóa
     const handleDelete = (userId) => {
-        alert(`Deleted user with ID: ${userId}`);
-        // Thực hiện logic xóa tại đây
+        toast.success(`Deleted user with ID: ${userId}`);
     };
 
     return (
         <div className="users-management-container">
-            {/* <div className="header"> */}
-                <h1 className="users-management-title">User Management</h1>
-                <p className="users-management-title-info">User list</p>
-            {/* </div> */}
-            
-            {/* Tìm kiếm */}
+            <h1 className="users-management-title">
+                <FormattedMessage id="userManagement.title" defaultMessage="User Management" />
+            </h1>
             <div className="search-container">
                 <input
                     type="text"
@@ -109,7 +121,6 @@ const UsersManagement = () => {
                     ))}
                 </select>
             </div>
-            
             <table {...getTableProps()} className="user-table">
                 <thead>
                     {headerGroups.map((headerGroup) => (
@@ -133,8 +144,6 @@ const UsersManagement = () => {
                     })}
                 </tbody>
             </table>
-
-            {/* Pagination */}
             <div className="pagination">
                 <span>
                     Items per page:
@@ -169,4 +178,15 @@ const UsersManagement = () => {
     );
 };
 
-export default UsersManagement;
+const mapStateToProps = (state) => ({
+    language: state.app.language,
+    isLoggedIn: state.user.isLoggedIn,
+    userInfo: state.user.userInfo,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    switchLanguageOfWebsite: (language) => dispatch(actions.switchLanguageOfWebsite(language)),
+    processLogout: () => dispatch(actions.processLogout()),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UsersManagement));
