@@ -201,7 +201,7 @@ class DetailCoffeeShop extends Component {
                                     <div className="drink-list" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
                                         {coffeeShop && coffeeShop.drinks && coffeeShop.drinks.map((drink, index) => (
                                             <div className="drink-item" key={index} style={{ display: 'inline-block', marginRight: '25px' }}>
-                                                <img src={drink?.image || defaultDrink}
+                                                <img src={drink?.picture || defaultDrink}
                                                     alt={drink?.name_eng}
                                                     onError={(e) => { e.target.src = defaultDrink; }} />
                                                 <p>{drink?.name_eng}</p>
