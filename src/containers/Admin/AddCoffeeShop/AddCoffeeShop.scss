@@ -221,18 +221,18 @@
 
                 }
 
-                .amenities {
+                .amenities, .services {
                     display: flex;
                     flex-direction: column;
 
-                    .amenities-list {
+                    .amenities-list, .services-list {
 
                         display: flex;
                         flex-direction: row;
                         max-width: 800px;
                         overflow-x: scroll;
 
-                        .amenity-item {
+                        .amenity-item, .service-item {
                             width: 200px;
                             flex-shrink: 0;
                         }

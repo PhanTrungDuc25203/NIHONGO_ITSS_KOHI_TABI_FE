@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
 import './AddCoffeeShop.scss';
 import all_icons from '../../../assets/Icons/all_icons';
-import { addCoffeeShop, getMaxCoffeeShopId, addDrinkToCoffeeShop, addAmenity, addAmenityToCoffeeShop } from '../../../services/userService';
+import { addCoffeeShop, getMaxCoffeeShopId, addDrinkToCoffeeShop, addAmenity, addAmenityToCoffeeShop, addService, addServiceToCoffeeShop } from '../../../services/userService';
 import { Cloudinary } from 'cloudinary-core';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 
@@ -39,7 +39,8 @@ class AddCoffeeShop extends Component {
             style: '',
             picture: '',
             drinks: [],
-            amenities: []
+            amenities: [],
+            services: [],
         };
     }
 
@@ -71,6 +72,19 @@ class AddCoffeeShop extends Component {
     handleAddAmenity = () => {
         this.setState((prevState) => ({
             amenities: [...prevState.amenities, { name_eng: '', name_jap: '', price: '' }]
+        }));
+    }
+
+    handleServiceChange = (index, e) => {
+        const {name, value} = e.target;
+        const services = [...this.state.services];
+        services[index][name] = value;
+        this.setState({ services });
+    }
+
+    handleAddService = () => {
+        this.setState((prevState) => ({
+            services: [...prevState.services, { name_eng: '', name_jap: '', price: '' }]
         }));
     }
 
@@ -122,7 +136,7 @@ class AddCoffeeShop extends Component {
     handleAddCoffeeShop = async () => {
         const {
             name, province_id, address, open_hour, close_hour,
-            min_price, max_price, description_en, description_jp, style, picture, drinks, amenities
+            min_price, max_price, description_en, description_jp, style, picture, drinks, amenities, services
         } = this.state;
 
         const coffeeShopData = {
@@ -180,14 +194,37 @@ class AddCoffeeShop extends Component {
                         return;
                     }
                 }
-                alert('Coffee shop, drinks, and amenities added successfully!');
+
+                for (const service of services) {
+                    const serviceData1 = {
+                        name_eng: service.name_eng,
+                        name_jap: service.name_jap,
+                    }
+                    const responseService1 = await addService(serviceData1);
+                    if (responseService1.errCode !== 0) {
+                        alert('Failed to add service: ' + responseService1.errMessage);
+                        return;
+                    }
+                    const serviceData2 = {
+                        cid: cid,
+                        sid: responseService1.newService.sid,
+                        price: service.price
+                    }
+                    const responseService2 = await addServiceToCoffeeShop(serviceData2);
+                    if (responseService2.errCode !== 0) {
+                        alert("Failed to add service to coffee shop: " + responseService2.errMessage);
+                        return;
+                    }
+                }
+
+                alert('Coffee shop, drinks, amenities and services added successfully!');
                 this.props.history.push('/system/coffee-shop-manage');
             } else {
                 alert('Failed to add coffee shop: ' + response.errMessage);
             }
         } catch (error) {
-            console.error('Error adding coffee shop, drinks, and amenities:', error);
-            alert('An error occurred while adding the coffee shop, drinks, and amenities.');
+            console.error('Error adding coffee shop, drinks, amenities and services:', error);
+            alert('An error occurred while adding the coffee shop, drinks, amenities and services.');
         }
     }
 
@@ -389,6 +426,37 @@ class AddCoffeeShop extends Component {
                                             </div>
                                         ))}
                                         <button type="button" onClick={this.handleAddAmenity}>+ Add Amenity</button>
+                                    </div>
+                                </div>
+                                <div className="services">
+                                    <label>Services</label>
+                                    <div className="services-list">
+                                        {this.state.services.map((service, index) => (
+                                            <div key={index} className="service-item">
+                                                <input
+                                                    type="text"
+                                                    name="name_eng"
+                                                    placeholder="Service (English)"
+                                                    value={service.name_eng}
+                                                    onChange={(e) => this.handleServiceChange(index, e)}
+                                                />
+                                                <input
+                                                    type="text"
+                                                    name="name_jap"
+                                                    placeholder="Service (Japanese)"
+                                                    value={service.name_jap}
+                                                    onChange={(e) => this.handleServiceChange(index, e)}
+                                                />
+                                                <input
+                                                    type="text"
+                                                    name="price"
+                                                    placeholder="Price"
+                                                    value={service.price}
+                                                    onChange={(e) => this.handleServiceChange(index, e)}
+                                                />
+                                            </div>
+                                        ))}
+                                        <button type="button" onClick={this.handleAddService}>+ Add Service</button>
                                     </div>
                                 </div>
                                 <div className="coffee-shop-picture-url">

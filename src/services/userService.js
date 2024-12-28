@@ -111,6 +111,14 @@ const addAmenityToCoffeeShop = (amenityData) => {
     return axios.post('/api/add-amenity-to-coffee-shop', amenityData);
 }
 
+const addService = (serviceData) => {
+    return axios.post('/api/add-service', serviceData);
+}
+
+const addServiceToCoffeeShop = (serviceData) => {
+    return axios.post('/api/add-service-to-coffee-shop', serviceData);
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -133,4 +141,6 @@ export {
     addDrinkToCoffeeShop,
     addAmenity,
     addAmenityToCoffeeShop,
+    addService,
+    addServiceToCoffeeShop,
 };
