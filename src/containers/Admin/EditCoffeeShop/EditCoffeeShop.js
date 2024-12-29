@@ -280,6 +280,10 @@ class EditCoffeeShop extends Component {
         }));
     };
 
+    handleBackButtonClick = () => {
+        this.props.history.push('/system/coffee-shop-manage');
+    };
+
     render() {
         const { id } = this.props.match.params;
         const { coffeeShopData, loading, error, drinks, amenities, services } = this.state;
@@ -298,11 +302,16 @@ class EditCoffeeShop extends Component {
                     <div className="edit-coffee-shop">
                         <div className="edit-header">
                             <div>
-                                <h2>Edit Coffee Shop {id}</h2>
+                                <button className='back-btn'onClick={this.handleBackButtonClick}> 
+                                &lt; Back to CafeList 
+                                </button>
+                                <div className='title'>
+                                    <h5>New Cafe</h5>
+                                </div>
                             </div>
                         </div>
                         <div className='edit-content'>
-                            <div className='coffee-shop-image'>
+                            <div className='coffee-shop-image image-upload'>
                                 <ImageUpload
                                     onUpload={(files) => this.handleUploadImage(files, 'shop')}
                                     uploadedImage={coffeeShopData.data.picture}
@@ -398,11 +407,11 @@ class EditCoffeeShop extends Component {
                                     <div className='drink-list'>
                                         {drinks.map((drink, index) => (
                                             <div key={index} className='drink-item'>
-                                                <div>
+                                                <div className='id-input-container'>
                                                     <label>Drink ID</label>
                                                     <input className='id-input' type='text' value={drink.did} readOnly />
                                                 </div>
-                                                <div>
+                                                <div className='image-upload'>
                                                     <ImageUpload
                                                         onUpload={(files) => this.handleUploadImage(files, 'drink', index)}
                                                         uploadedImage={drink.picture}
@@ -477,7 +486,7 @@ class EditCoffeeShop extends Component {
                                     <div className='amenity-list'>
                                         {amenities.map((amenity, index) => (
                                             <div key={index} className='amenity-item'>
-                                                <input type='text' value={amenity.aid} readOnly />
+                                                <input className='id-input-container' type='text' value={amenity.aid} readOnly />
                                                 <input type='text' placeholder='English' value={amenity.name_eng} onChange={(e) => this.handleInputChange(e, 'name_eng', index, 'amenity')} />
                                                 <input type='text' placeholder='Japanese' value={amenity.name_jap} onChange={(e) => this.handleInputChange(e, 'name_jap', index, 'amenity')} />
                                                 <input type='text' placeholder='Price' value={amenity.Include_amenity.price} onChange={(e) => this.handleInputChange(e, 'Include_amenity.price', index, 'amenity')} />
@@ -501,7 +510,7 @@ class EditCoffeeShop extends Component {
                                     <div className='service-list'>
                                         {services.map((service, index) => (
                                             <div key={index} className='service-item'>
-                                                <input type='text' value={service.sid} readOnly />
+                                                <input className='id-input-container' type='text' value={service.sid} readOnly />
                                                 <input type='text' placeholder='English' value={service.name_eng} onChange={(e) => this.handleInputChange(e, 'name_eng', index, 'service')} />
                                                 <input type='text' placeholder='Japanese' value={service.name_jap} onChange={(e) => this.handleInputChange(e, 'name_jap', index, 'service')} />
                                                 <input type='text' placeholder='Price' value={service.Include_service.price} onChange={(e) => this.handleInputChange(e, 'Include_service.price', index, 'service')} />
