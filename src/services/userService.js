@@ -198,7 +198,10 @@ const updateCoffeeShop = async (coffeeShopData) => {
             const responseAmenity1 = await addAmenity(amenityData1);
             if (responseAmenity1.errCode !== 0) {
                 console.log('Failed to add amenity: ' + responseAmenity1.errMessage);
-                return;
+                return {
+                    errCode: 0,
+                    newCoffeeShop,
+                }
             }
             console.log("resAmenity1: ", responseAmenity1);
 
@@ -213,10 +216,13 @@ const updateCoffeeShop = async (coffeeShopData) => {
             const responseAmenity2 = await addAmenityToCoffeeShop(amenityData2);
             if (responseAmenity2.errCode !== 0) {
                 console.log("Failed to add amenity to coffee shop: " + responseAmenity2.errMessage);
-                return;
+                return {
+                    errCode: 0,
+                    newCoffeeShop,
+                }
             }
 
-            
+
         } else {
             console.log("Hoặc là sửa tiện ích cũ!");
             axios.put('/api/update-amenity', amenity);
@@ -228,6 +234,56 @@ const updateCoffeeShop = async (coffeeShopData) => {
     for (const amenity of deleteAmenities) {
         axios.put('/api/remove-included-amenity', {
             aid: amenity,
+            cid: coffeeShopData.cid,
+        });
+    }
+
+    for (const service of services) {
+        const response = await axios.get('/api/get-max-service-id');
+        const maxId = response.maxId;
+        console.log("maxServiceId", maxId);
+        console.log("serviceId", service.sid);
+
+        if (service.sid > maxId) {
+            console.log("Tạo dịch vụ mới nè!");
+
+            const serviceData1 = {
+                name_eng: service.name_eng,
+                name_jap: service.name_jap
+            }
+            const responseService1 = await addService(serviceData1);
+            if (responseService1.errCode !== 0) {
+                console.log('Failed to add service: ' + responseService1.errMessage);
+                return {
+                    errCode: 0,
+                    newCoffeeShop,
+                }
+            }
+            const serviceData2 = {
+                cid: coffeeShopData.cid,
+                sid: responseService1.newService.sid,
+                price: service.Include_service.price,
+            }
+            const responseService2 = await addServiceToCoffeeShop(serviceData2);
+            if (responseService2 !== 0) {
+                console.log("Failed to add service to coffee shop: " + responseService2.errMessage);
+                return {
+                    errCode: 0,
+                    newCoffeeShop,
+                }
+            }
+        } else {
+            console.log("Hoặc là sửa dịch vụ cũ!");
+            axios.put('/api/update-service', service);
+        }
+
+    }
+
+    const deleteServices = coffeeShopData.deleteServices;
+    console.log("deleteServices", deleteServices);
+    for (const service of deleteServices) {
+        axios.put('/api/remove-included-service', {
+            sid: service,
             cid: coffeeShopData.cid,
         });
     }
