@@ -31,7 +31,10 @@ class EditCoffeeShop extends Component {
             error: null,
             drinks: [],
             amenities: [],
-            services: []
+            services: [],
+            deleteDrinks: [],
+            deleteAmenities: [],
+            deleteServices: []
         };
     }
 
@@ -84,7 +87,10 @@ class EditCoffeeShop extends Component {
             picture,
             drinks: this.state.drinks,
             amenities: this.state.amenities,
-            services: this.state.services
+            services: this.state.services,
+            deleteDrinks: this.state.deleteDrinks,
+            deleteAmenities: this.state.deleteAmenities,
+            deleteServices: this.state.deleteServices
         };
 
         console.log('updatedData:', updatedData);
@@ -123,8 +129,9 @@ class EditCoffeeShop extends Component {
     handleDeleteDrink = (index) => {
         this.setState((prevState) => {
             const updatedDrinks = [...prevState.drinks];
+            const deleteDrinks = [...prevState.deleteDrinks, updatedDrinks[index].did];
             updatedDrinks.splice(index, 1);
-            return { drinks: updatedDrinks };
+            return { drinks: updatedDrinks, deleteDrinks };
         });
     };
 
@@ -147,8 +154,9 @@ class EditCoffeeShop extends Component {
     handleDeleteAmenity = (index) => {
         this.setState((prevState) => {
             const updatedAmenities = [...prevState.amenities];
+            const deleteAmenities = [...prevState.deleteAmenities, updatedAmenities[index].aid];
             updatedAmenities.splice(index, 1);
-            return { amenities: updatedAmenities };
+            return { amenities: updatedAmenities, deleteAmenities };
         });
     };
 
@@ -171,8 +179,9 @@ class EditCoffeeShop extends Component {
     handleDeleteService = (index) => {
         this.setState((prevState) => {
             const updatedServices = [...prevState.services];
+            const deleteServices = [...prevState.deleteServices, updatedServices[index].sid];
             updatedServices.splice(index, 1);
-            return { services: updatedServices };
+            return { services: updatedServices, deleteServices };
         });
     };
 

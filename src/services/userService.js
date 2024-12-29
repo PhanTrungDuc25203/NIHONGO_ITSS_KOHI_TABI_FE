@@ -170,6 +170,14 @@ const updateCoffeeShop = async (coffeeShopData) => {
             axios.put('/api/update-drink', drink);
         }
     }
+    const deleteDrinks = coffeeShopData.deleteDrinks;
+    console.log("deleteDrinks", deleteDrinks);
+    for (const drink of deleteDrinks) {
+        axios.put('/api/remove-included-drink', {
+            did: drink,
+            cid: coffeeShopData.cid,
+        });
+    }
     return {
         errCode: 0,
         newCoffeeShop,
