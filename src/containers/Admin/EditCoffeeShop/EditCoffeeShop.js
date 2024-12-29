@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
 import { getCoffeeShopData } from '../../../services/userService';
+import all_icons from '../../../assets/Icons/all_icons';
 
 import './EditCoffeeShop.scss';
 
@@ -41,9 +42,94 @@ class EditCoffeeShop extends Component {
         }
     }
 
+    handleAddDrink = () => {
+        const newDrink = {
+            name_vi: '',
+            name_eng: '',
+            name_ja: '',
+            price: '',
+            picture: ''
+        };
+        this.setState((prevState) => ({
+            coffeeShopData: {
+                ...prevState.coffeeShopData,
+                data: {
+                    ...prevState.coffeeShopData.data,
+                    drinks: [...prevState.coffeeShopData.data.drinks, newDrink]
+                }
+            }
+        }));
+    };
+
+    handleAddAmenity = () => {
+        const newAmenity = {
+            name_eng: '',
+            name_jap: '',
+            Include_amenity: { price: '' }
+        };
+        this.setState((prevState) => ({
+            coffeeShopData: {
+                ...prevState.coffeeShopData,
+                data: {
+                    ...prevState.coffeeShopData.data,
+                    amenities: [...prevState.coffeeShopData.data.amenities, newAmenity]
+                }
+            }
+        }));
+    };
+
+    handleAddService = () => {
+        const newService = {
+            name_eng: '',
+            name_jap: '',
+            Include_service: { price: '' }
+        };
+        this.setState((prevState) => ({
+            coffeeShopData: {
+                ...prevState.coffeeShopData,
+                data: {
+                    ...prevState.coffeeShopData.data,
+                    services: [...prevState.coffeeShopData.data.services, newService]
+                }
+            }
+        }))
+    }
+
+    handleDeleteAmenity = (index) => {
+        this.setState((prevState) => {
+            const updatedAmenities = [...prevState.coffeeShopData.data.amenities];
+            updatedAmenities.splice(index, 1);
+            return {
+                coffeeShopData: {
+                    ...prevState.coffeeShopData,
+                    data: {
+                        ...prevState.coffeeShopData.data,
+                        amenities: updatedAmenities
+                    }
+                }
+            };
+        });
+    };
+
+    handleDeleteService = (index) => {
+        this.setState((prevState) => {
+            const updatedServices = [...prevState.coffeeShopData.data.services];
+            updatedServices.splice(index, 1);
+            return {
+                coffeeShopData: {
+                    ...prevState.coffeeShopData,
+                    data: {
+                        ...prevState.coffeeShopData.data,
+                        services: updatedServices
+                    }
+                }
+            };
+        });
+    };
+
     render() {
         const { id } = this.props.match.params;
-        const { loading, error } = this.state;
+        const { coffeeShopData, loading, error } = this.state;
 
         if (loading) {
             return <div>Loading...</div>;
@@ -107,7 +193,10 @@ class EditCoffeeShop extends Component {
                                     <input type="text" value={this.state.coffeeShopData.data.close_hour} />
                                 </div>
                                 <div className='featured-drinks'>
-                                    <label>Featured Drinks:</label>
+                                    <div className='featured-drinks-header'>
+                                        <label>Featured Drinks:</label>
+                                        <button onClick={this.handleAddDrink}>+ New Drink</button>
+                                    </div>
                                     <div className='drink-list'>
                                         {this.state.coffeeShopData.data.drinks.map((drink, index) => (
                                             <div key={index} className='drink-item'>
@@ -116,7 +205,7 @@ class EditCoffeeShop extends Component {
                                                     <input className='id-input' type='text' value={drink.did} />
                                                 </div>
                                                 <div>
-                                                    <img src={drink.picture} alt='drink' />
+                                                    <img src={drink.picture ? drink.picture : all_icons.imageUp} alt='drink' />
                                                 </div>
                                                 <div>
                                                     {/* <label>Drink Name (Vietnamese)</label> */}
@@ -166,7 +255,11 @@ class EditCoffeeShop extends Component {
                                 <div className='amenities'>
                                     <div className='amenities-header'>
                                         <label>Amenities:</label>
-                                        <button className='amenity-item'>+ New Amenity</button>
+                                        <button
+                                            className='amenity-item'
+                                            onClick={this.handleAddAmenity}>
+                                            + New Amenity
+                                        </button>
                                     </div>
                                     <div className='amenity-list'>
                                         {this.state.coffeeShopData.data.amenities.map((amenity, index) => (
@@ -174,7 +267,10 @@ class EditCoffeeShop extends Component {
                                                 <input type='text' value={amenity.name_eng} />
                                                 <input type='text' value={amenity.name_jap} />
                                                 <input type='text' value={amenity.Include_amenity.price} />
-                                                <button className='delete-btn'>−</button>
+                                                <button
+                                                    className='delete-btn'
+                                                    onClick={() => this.handleDeleteAmenity(index)}
+                                                >−</button>
                                             </div>
                                         ))}
                                     </div>
@@ -182,7 +278,11 @@ class EditCoffeeShop extends Component {
                                 <div className='services'>
                                     <div className='services-header'>
                                         <label>Services:</label>
-                                        <button className='service-item'>+ New Service</button>
+                                        <button
+                                            className='service-item'
+                                            onClick={this.handleAddService}>
+                                            + New Service
+                                        </button>
                                     </div>
                                     <div className='service-list'>
                                         {this.state.coffeeShopData.data.services.map((service, index) => (
@@ -190,7 +290,11 @@ class EditCoffeeShop extends Component {
                                                 <input type='text' value={service.name_eng} />
                                                 <input type='text' value={service.name_jap} />
                                                 <input type='text' value={service.Include_service.price} />
-                                                <button className='delete-btn'>−</button>
+                                                <button 
+                                                    className='delete-btn'
+                                                    onClick={() => this.handleDeleteService(index)}
+                                                    >−
+                                                </button>
                                             </div>
                                         ))}
 
