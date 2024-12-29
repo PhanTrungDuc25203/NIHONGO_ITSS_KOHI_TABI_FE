@@ -129,7 +129,7 @@ const getAllUser = () => {
 
 }
 
-const getMaxDrinkId = () => {
+const getMaxDrinkId = async () => {
     return axios.get('/api/get-max-drink-id');
 }
 
@@ -141,8 +141,39 @@ const getMaxServiceId = () => {
     return axios.get('/api/get-max-service-id');
 }
 
-const updateCoffeeShop = (coffeeShopData) => {
-    return axios.put('/api/update-coffee-shop', coffeeShopData);
+const updateCoffeeShop = async (coffeeShopData) => {
+    const newCoffeeShop = axios.put('/api/update-coffee-shop', coffeeShopData);
+    const drinks = coffeeShopData.drinks;
+    const amenityData = coffeeShopData.amenities;
+    const serviceData = coffeeShopData.services
+    for (const drink of drinks) {
+
+        const response = await axios.get('/api/get-max-drink-id');
+        const maxId = response.maxId;
+        console.log("maxDrinkId", maxId);
+        console.log("drinkId", drink.did);
+
+        if (drink.did > maxId) {
+            console.log("Tạo đồ uống mới nè!");
+            const drinkData = {
+                did: drink.did,
+                name_vi: drink.name_vi,
+                name_eng: drink.name_eng,
+                name_ja: drink.name_ja,
+                price: drink.price,
+                picture: drink.picture,
+                cid: coffeeShopData.cid,
+            };
+            axios.post('/api/add-drink-to-coffee-shop', drinkData);
+        } else {
+            console.log("Hoặc là sửa drink cũ!");
+            axios.put('/api/update-drink', drink);
+        }
+    }
+    return {
+        errCode: 0,
+        newCoffeeShop,
+    }
 }
 
 export {
