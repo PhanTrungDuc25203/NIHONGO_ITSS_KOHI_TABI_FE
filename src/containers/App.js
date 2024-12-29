@@ -26,6 +26,7 @@ import Profile from '../containers/Profile/Profile';
 import FindMap from '../containers/FindMap/FindMap'
 import Layout from '../containers/Admin/Layout/Layout'
 import AddCoffeeShop from './Admin/AddCoffeeShop/AddCoffeeShop';
+import EditCoffeeShop from './Admin/EditCoffeeShop/EditCoffeeShop';
 
 import ConfirmModal from '../components/ConfirmModal';
 import { CustomToastCloseButton } from '../components/CustomToast';
@@ -74,6 +75,7 @@ class App extends Component {
                                 <Route path={path.FIND_MAP} component={FindMap} />
                                 <Route path={path.ADMIN_LAYOUT} component={Layout} />
                                 <Route path={path.ADMIN_ADD_COFFEE_SHOP} component={AddCoffeeShop} />
+                                <Route path={path.ADMIN_EDIT_COFFEE_SHOP} component={EditCoffeeShop} />
                             </Switch>
                         </span>
 

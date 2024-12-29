@@ -57,6 +57,7 @@
     font-family: 'Inter', sans-serif;
     font-weight: normal;
     font-size: 24px;
+    cursor: pointer;
 }
 
 .userAvatar {
@@ -101,6 +102,7 @@
     margin-right: 5px; /* Thêm khoảng cách giữa các nút */
     cursor: pointer; /* Biến con trỏ thành hình bàn tay khi di chuột vào nút */
     font-size: 12px;
+    display: none;
 }
 
 .userInfo:hover .languageButtons {

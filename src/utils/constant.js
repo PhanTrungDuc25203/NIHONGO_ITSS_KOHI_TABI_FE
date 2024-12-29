@@ -15,6 +15,7 @@ export const path = {
     FIND_MAP: '/find-map/:id?',
     ADMIN_LAYOUT: '/admin/layout',
     ADMIN_ADD_COFFEE_SHOP: '/admin/add-coffee-shop',
+    ADMIN_EDIT_COFFEE_SHOP: '/admin/edit-coffee-shop/:id',
 };
 
 export const languages = {

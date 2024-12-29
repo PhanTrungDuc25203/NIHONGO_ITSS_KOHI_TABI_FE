@@ -89,6 +89,10 @@ class CoffeeShopManage extends Component {
         });
     }
 
+    handleEditClick = (shop) => {
+        this.props.history.push('/admin/edit-coffee-shop/' + shop.cid);
+    }
+
     handleConfirmDelete = async () => {
         const { shopToDelete, coffeeShops } = this.state;
 
@@ -185,6 +189,10 @@ class CoffeeShopManage extends Component {
         );
     }
 
+    handleAddNewCoffeeShop = () => {
+        this.props.history.push('/admin/add-coffee-shop');
+    }
+
     render() {
         const { filteredShops, currentPage, itemsPerPage, mostFavoriteCoffeeShop } = this.state;
         const startIndex = (currentPage - 1) * itemsPerPage;
@@ -214,7 +222,7 @@ class CoffeeShopManage extends Component {
                         </select>
                     </div>
                     <div className="add-button-container">
-                        <button>Add new +</button>
+                        <button onClick={this.handleAddNewCoffeeShop}>Add new +</button>
                     </div>
                 </div>
 
@@ -254,7 +262,9 @@ class CoffeeShopManage extends Component {
                                     <td>{`${shop.min_price} - ${shop.max_price}`}</td>
                                     <td>{shop.description_eng}</td>
                                     <td>
-                                        <button className="edit-button">✎</button>
+                                        <button 
+                                        onClick={() => this.handleEditClick(shop)} 
+                                        className="edit-button">✎</button>
                                         <button
                                             className="delete-button"
                                             onClick={() => this.handleDeleteClick(shop)}
