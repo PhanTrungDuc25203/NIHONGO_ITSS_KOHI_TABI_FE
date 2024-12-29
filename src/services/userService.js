@@ -141,6 +141,10 @@ const getMaxServiceId = () => {
     return axios.get('/api/get-max-service-id');
 }
 
+const updateCoffeeShop = (coffeeShopData) => {
+    return axios.put('/api/update-coffee-shop', coffeeShopData);
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -170,4 +174,5 @@ export {
     getMaxDrinkId,
     getMaxAmenityId,
     getMaxServiceId,
+    updateCoffeeShop,
 };

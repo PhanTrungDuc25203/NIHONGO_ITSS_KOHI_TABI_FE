@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
-import { getCoffeeShopData, getMaxDrinkId, getMaxAmenityId, getMaxServiceId } from '../../../services/userService';
+import { getCoffeeShopData, getMaxDrinkId, getMaxAmenityId, getMaxServiceId, updateCoffeeShop } from '../../../services/userService';
 import all_icons from '../../../assets/Icons/all_icons';
 
 import './EditCoffeeShop.scss';
@@ -26,7 +26,10 @@ class EditCoffeeShop extends Component {
         this.state = {
             coffeeShopData: null,
             loading: true,
-            error: null
+            error: null,
+            drinks: [],
+            amenities: [],
+            services: []
         };
     }
 
@@ -41,6 +44,53 @@ class EditCoffeeShop extends Component {
             this.setState({ error, loading: false });
         }
     }
+
+
+    handleSaveButtonClick = async () => {
+        const {
+            cid,
+            name,
+            province_vie,
+            address,
+            open_hour,
+            close_hour,
+            min_price,
+            max_price,
+            description_eng,
+            description_jap,
+            style,
+            picture
+        } = this.state.coffeeShopData.data;
+
+        const updatedData = {
+            cid,
+            name,
+            province_id: province_vie,
+            address,
+            open_hour,
+            close_hour,
+            min_price,
+            max_price,
+            description_en: description_eng,
+            description_jp: description_jap,
+            style,
+            picture
+        };
+
+        console.log('updatedData:', updatedData);
+
+        try {
+            const response = await updateCoffeeShop(updatedData);
+            if (response.errCode === 0) {
+                alert('Coffee shop updated successfully');
+            } else {
+                alert('Failed to update coffee shop: ' + response.errMessage);
+            }
+        } catch (error) {
+            console.error('Error updating coffee shop:', error);
+            alert('Error updating coffee shop: ' + error.message);
+        }
+    };
 
     handleAddDrink = async () => {
 
@@ -189,11 +239,18 @@ class EditCoffeeShop extends Component {
                             <div className='coffee-shop-info'>
                                 <div className='coffee-shop-id'>
                                     <label>Cafe ID:</label>
-                                    <input type='text' className='id-input' readOnly value={this.state.coffeeShopData.data.cid} />
+                                    <input type='text' className='id-input' value={this.state.coffeeShopData.data.cid} readOnly />
                                 </div>
                                 <div className="coffee-shop-name">
                                     <label>Name:</label>
-                                    <input type="text" value={this.state.coffeeShopData.data.name} />
+                                    <input
+                                        type="text"
+                                        onChange={(e) => {
+                                            const updatedData = { ...this.state.coffeeShopData };
+                                            updatedData.data.name = e.target.value;
+                                            this.setState({ coffeeShopData: updatedData });
+                                        }}
+                                        value={this.state.coffeeShopData.data.name} />
                                 </div>
                                 <div className="coffee-shop-province">
                                     <label>Province:</label>
@@ -201,7 +258,7 @@ class EditCoffeeShop extends Component {
                                         value={this.state.coffeeShopData.data.province_vie || ''}
                                         onChange={(e) => {
                                             const updatedData = { ...this.state.coffeeShopData };
-                                            updatedData.data.province = e.target.value;
+                                            updatedData.data.province_vie = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
                                         }}
                                     >
@@ -212,19 +269,54 @@ class EditCoffeeShop extends Component {
                                 </div>
                                 <div className="coffee-shop-address">
                                     <label>Address:</label>
-                                    <input type="text" value={this.state.coffeeShopData.data.address} />
+                                    <input 
+                                        type="text" 
+                                        value={this.state.coffeeShopData.data.address} 
+                                        onChange={(e) => {
+                                            const updatedData = { ...this.state.coffeeShopData };
+                                            updatedData.data.address = e.target.value;
+                                            this.setState({ coffeeShopData: updatedData });
+                                        }}/>
                                 </div>
                                 <div className="price-range">
                                     <label>Price Range:</label>
-                                    <input type="text" value={this.state.coffeeShopData.data.min_price} />
+                                    <input 
+                                        type="text" 
+                                        value={this.state.coffeeShopData.data.min_price} 
+                                        onChange={(e) => {
+                                            const updatedData = { ...this.state.coffeeShopData };
+                                            updatedData.data.min_price = e.target.value;
+                                            this.setState({ coffeeShopData: updatedData });
+                                        }}/>
                                     <span>to</span>
-                                    <input type="text" value={this.state.coffeeShopData.data.max_price} />
+                                    <input 
+                                        type="text" 
+                                        value={this.state.coffeeShopData.data.max_price} 
+                                        onChange={(e) => {
+                                            const updatedData = { ...this.state.coffeeShopData };
+                                            updatedData.data.max_price = e.target.value;
+                                            this.setState({ coffeeShopData: updatedData });
+                                        }}/>
                                 </div>
                                 <div className="open-from">
                                     <label>Open From:</label>
-                                    <input type="text" value={this.state.coffeeShopData.data.open_hour} />
+                                    <input 
+                                        type="text" 
+                                        value={this.state.coffeeShopData.data.open_hour} 
+                                        onChange={(e) => {
+                                            const updatedData = { ...this.state.coffeeShopData };
+                                            updatedData.data.open_hour = e.target.value;
+                                            this.setState({ coffeeShopData: updatedData });
+                                        }}/>
                                     <span>to</span>
-                                    <input type="text" value={this.state.coffeeShopData.data.close_hour} />
+                                    <input 
+                                        type="text" 
+                                        value={this.state.coffeeShopData.data.close_hour} 
+                                        onChange={(e) => {
+                                            const updatedData = { ...this.state.coffeeShopData };
+                                            updatedData.data.close_hour = e.target.value;
+                                            this.setState({ coffeeShopData: updatedData });
+                                        }}/>
                                 </div>
                                 <div className='featured-drinks'>
                                     <div className='featured-drinks-header'>
@@ -236,7 +328,7 @@ class EditCoffeeShop extends Component {
                                             <div key={index} className='drink-item'>
                                                 <div>
                                                     <label>Drink ID</label>
-                                                    <input className='id-input' type='text' value={drink.did} readOnly/>
+                                                    <input className='id-input' type='text' value={drink.did} readOnly />
                                                 </div>
                                                 <div>
                                                     <img src={drink.picture ? drink.picture : all_icons.imageUp} alt='drink' />
@@ -267,11 +359,23 @@ class EditCoffeeShop extends Component {
                                 </div>
                                 <div className='coffee-shop-description_eng'>
                                     <label>Description (English):</label>
-                                    <textarea value={this.state.coffeeShopData.data.description_eng} />
+                                    <textarea                            
+                                        value={this.state.coffeeShopData.data.description_eng} 
+                                        onChange={(e) => {
+                                            const updatedData = { ...this.state.coffeeShopData };
+                                            updatedData.data.description_eng = e.target.value;
+                                            this.setState({ coffeeShopData: updatedData });
+                                        }}/>
                                 </div>
                                 <div className='coffee-shop-description_jap'>
                                     <label>Description (Japanese):</label>
-                                    <textarea value={this.state.coffeeShopData.data.description_jap} />
+                                    <textarea 
+                                        value={this.state.coffeeShopData.data.description_jap} 
+                                        onChange={(e) => {
+                                            const updatedData = { ...this.state.coffeeShopData };
+                                            updatedData.data.description_jap = e.target.value;
+                                            this.setState({ coffeeShopData: updatedData });
+                                        }}/>
                                 </div>
 
                                 <div className="coffee-shop-style">
@@ -280,7 +384,7 @@ class EditCoffeeShop extends Component {
                                         value={this.state.coffeeShopData.data.style || ''}
                                         onChange={(e) => {
                                             const updatedData = { ...this.state.coffeeShopData };
-                                            updatedData.data.styles = e.target.value;
+                                            updatedData.data.style = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
                                         }}
                                     >
@@ -302,7 +406,7 @@ class EditCoffeeShop extends Component {
                                     <div className='amenity-list'>
                                         {this.state.coffeeShopData.data.amenities.map((amenity, index) => (
                                             <div key={index} className='amenity-item'>
-                                                <input type='text' value={amenity.aid} readOnly/>
+                                                <input type='text' value={amenity.aid} readOnly />
                                                 <input type='text' placeholder='English' value={amenity.name_eng} />
                                                 <input type='text' placeholder='Japanese' value={amenity.name_jap} />
                                                 <input type='text' placeholder='Price' value={amenity.Include_amenity.price} />
@@ -326,14 +430,14 @@ class EditCoffeeShop extends Component {
                                     <div className='service-list'>
                                         {this.state.coffeeShopData.data.services.map((service, index) => (
                                             <div key={index} className='service-item'>
-                                                <input type='text' value={service.sid} readOnly/>
+                                                <input type='text' value={service.sid} readOnly />
                                                 <input type='text' placeholder='English' value={service.name_eng} />
                                                 <input type='text' placeholder='Japanese' value={service.name_jap} />
                                                 <input type='text' placeholder='Price' value={service.Include_service.price} />
-                                                <button 
+                                                <button
                                                     className='delete-btn'
                                                     onClick={() => this.handleDeleteService(index)}
-                                                    >−
+                                                >−
                                                 </button>
                                             </div>
                                         ))}
@@ -345,7 +449,7 @@ class EditCoffeeShop extends Component {
 
                         </div>
                         <div className='save-button-container'>
-                            <button>Save</button>
+                            <button onClick={this.handleSaveButtonClick}>Save</button>
                         </div>
                     </div>
                 </Layout>
