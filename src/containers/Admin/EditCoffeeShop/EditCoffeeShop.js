@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
-import { getCoffeeShopData } from '../../../services/userService';
+import { getCoffeeShopData, getMaxDrinkId, getMaxAmenityId, getMaxServiceId } from '../../../services/userService';
 import all_icons from '../../../assets/Icons/all_icons';
 
 import './EditCoffeeShop.scss';
@@ -42,8 +42,14 @@ class EditCoffeeShop extends Component {
         }
     }
 
-    handleAddDrink = () => {
+    handleAddDrink = async () => {
+
+        const drinkId = await getMaxDrinkId();
+        const maxExistingId = Math.max(...this.state.coffeeShopData.data.drinks.map(drink => drink.did), 0);
+        const newId = Math.max(drinkId.maxId, maxExistingId) + 1;
+
         const newDrink = {
+            did: newId,
             name_vi: '',
             name_eng: '',
             name_ja: '',
@@ -77,8 +83,14 @@ class EditCoffeeShop extends Component {
         });
     };
 
-    handleAddAmenity = () => {
+    handleAddAmenity = async () => {
+
+        const amenityId = await getMaxAmenityId();
+        const maxExistingId = Math.max(...this.state.coffeeShopData.data.amenities.map(amenity => amenity.aid), 0);
+        const newId = Math.max(amenityId.maxId, maxExistingId) + 1;
+
         const newAmenity = {
+            aid: newId,
             name_eng: '',
             name_jap: '',
             Include_amenity: { price: '' }
@@ -94,8 +106,14 @@ class EditCoffeeShop extends Component {
         }));
     };
 
-    handleAddService = () => {
+    handleAddService = async () => {
+
+        const serviceId = await getMaxServiceId();
+        const maxExistingId = Math.max(...this.state.coffeeShopData.data.services.map(service => service.sid), 0);
+        const newId = Math.max(serviceId.maxId, maxExistingId) + 1;
+
         const newService = {
+            sid: newId,
             name_eng: '',
             name_jap: '',
             Include_service: { price: '' }
@@ -225,19 +243,19 @@ class EditCoffeeShop extends Component {
                                                 </div>
                                                 <div>
                                                     {/* <label>Drink Name (Vietnamese)</label> */}
-                                                    <input type='text' value={drink.name_vi} />
+                                                    <input type='text' placeholder='Vietnamese' value={drink.name_vi} />
                                                 </div>
                                                 <div>
                                                     {/* <label>Drink Name (English)</label> */}
-                                                    <input type='text' value={drink.name_eng} />
+                                                    <input type='text' placeholder='English' value={drink.name_eng} />
                                                 </div>
                                                 <div>
                                                     {/* <label>Drink Name (Japanese)</label> */}
-                                                    <input type='text' value={drink.name_ja} />
+                                                    <input type='text' placeholder='Japanese' value={drink.name_ja} />
                                                 </div>
                                                 <div>
                                                     {/* <label>Price</label> */}
-                                                    <input type='text' value={drink.price} />
+                                                    <input type='text' placeholder='Price' value={drink.price} />
                                                 </div>
                                                 <button
                                                     className='delete-btn'
@@ -284,9 +302,10 @@ class EditCoffeeShop extends Component {
                                     <div className='amenity-list'>
                                         {this.state.coffeeShopData.data.amenities.map((amenity, index) => (
                                             <div key={index} className='amenity-item'>
-                                                <input type='text' value={amenity.name_eng} />
-                                                <input type='text' value={amenity.name_jap} />
-                                                <input type='text' value={amenity.Include_amenity.price} />
+                                                <input type='text' value={amenity.aid} readOnly/>
+                                                <input type='text' placeholder='English' value={amenity.name_eng} />
+                                                <input type='text' placeholder='Japanese' value={amenity.name_jap} />
+                                                <input type='text' placeholder='Price' value={amenity.Include_amenity.price} />
                                                 <button
                                                     className='delete-btn'
                                                     onClick={() => this.handleDeleteAmenity(index)}
@@ -307,9 +326,10 @@ class EditCoffeeShop extends Component {
                                     <div className='service-list'>
                                         {this.state.coffeeShopData.data.services.map((service, index) => (
                                             <div key={index} className='service-item'>
-                                                <input type='text' value={service.name_eng} />
-                                                <input type='text' value={service.name_jap} />
-                                                <input type='text' value={service.Include_service.price} />
+                                                <input type='text' value={service.sid} readOnly/>
+                                                <input type='text' placeholder='English' value={service.name_eng} />
+                                                <input type='text' placeholder='Japanese' value={service.name_jap} />
+                                                <input type='text' placeholder='Price' value={service.Include_service.price} />
                                                 <button 
                                                     className='delete-btn'
                                                     onClick={() => this.handleDeleteService(index)}

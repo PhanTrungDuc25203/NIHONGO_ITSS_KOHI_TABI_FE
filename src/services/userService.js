@@ -129,6 +129,18 @@ const getAllUser = () => {
 
 }
 
+const getMaxDrinkId = () => {
+    return axios.get('/api/get-max-drink-id');
+}
+
+const getMaxAmenityId = () => {
+    return axios.get('/api/get-max-amenity-id');
+}
+
+const getMaxServiceId = () => {
+    return axios.get('/api/get-max-service-id');
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -155,4 +167,7 @@ export {
     addServiceToCoffeeShop,
     getAllUser,
     getCoffeeShopData,
+    getMaxDrinkId,
+    getMaxAmenityId,
+    getMaxServiceId,
 };
