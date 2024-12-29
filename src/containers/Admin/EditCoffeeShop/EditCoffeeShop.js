@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
 import { getCoffeeShopData, getMaxDrinkId, getMaxAmenityId, getMaxServiceId, updateCoffeeShop } from '../../../services/userService';
 import all_icons from '../../../assets/Icons/all_icons';
-
+import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 import { withRouter } from 'react-router-dom';
 
 import './EditCoffeeShop.scss';
@@ -208,6 +208,78 @@ class EditCoffeeShop extends Component {
         });
     };
 
+    handleUploadImage = async (files, type, index) => {
+        if (!files || files.length === 0) {
+            alert('Please select an image to upload.');
+            return;
+        }
+
+        const file = files[0];
+        const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validFormats.includes(file.type)) {
+            alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
+            return;
+        }
+
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            alert('File size exceeds 5MB. Please choose a smaller image.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'kohitabi'); // Replace with your upload preset
+
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/digakeefg/image/upload`, {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.json();
+
+            if (type === 'shop') {
+                this.setState((prevState) => ({
+                    coffeeShopData: {
+                        ...prevState.coffeeShopData,
+                        data: {
+                            ...prevState.coffeeShopData.data,
+                            picture: data.secure_url,
+                        },
+                    },
+                }));
+            } else if (type === 'drink') {
+                const updatedDrinks = [...this.state.coffeeShopData.data.drinks];
+                updatedDrinks[index].picture = data.secure_url;
+                this.setState((prevState) => ({
+                    coffeeShopData: {
+                        ...prevState.coffeeShopData,
+                        data: {
+                            ...prevState.coffeeShopData.data,
+                            drinks: updatedDrinks,
+                        },
+                    },
+                }));
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            alert('An error occurred while uploading the image.');
+        }
+    };
+
+    handleChange = (e) => {
+        const { name, value } = e.target;
+        this.setState((prevState) => ({
+            coffeeShopData: {
+                ...prevState.coffeeShopData,
+                data: {
+                    ...prevState.coffeeShopData.data,
+                    [name]: value,
+                },
+            },
+        }));
+    };
+
     render() {
         const { id } = this.props.match.params;
         const { coffeeShopData, loading, error, drinks, amenities, services } = this.state;
@@ -231,7 +303,10 @@ class EditCoffeeShop extends Component {
                         </div>
                         <div className='edit-content'>
                             <div className='coffee-shop-image'>
-                                <img src={coffeeShopData.data.picture} alt='coffee shop' />
+                                <ImageUpload
+                                    onUpload={(files) => this.handleUploadImage(files, 'shop')}
+                                    uploadedImage={coffeeShopData.data.picture}
+                                />
                             </div>
                             <div className='coffee-shop-info'>
                                 <div className='coffee-shop-id'>
@@ -266,54 +341,54 @@ class EditCoffeeShop extends Component {
                                 </div>
                                 <div className="coffee-shop-address">
                                     <label>Address:</label>
-                                    <input 
-                                        type="text" 
-                                        value={coffeeShopData.data.address} 
+                                    <input
+                                        type="text"
+                                        value={coffeeShopData.data.address}
                                         onChange={(e) => {
                                             const updatedData = { ...coffeeShopData };
                                             updatedData.data.address = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
-                                        }}/>
+                                        }} />
                                 </div>
                                 <div className="price-range">
                                     <label>Price Range:</label>
-                                    <input 
-                                        type="text" 
-                                        value={coffeeShopData.data.min_price} 
+                                    <input
+                                        type="text"
+                                        value={coffeeShopData.data.min_price}
                                         onChange={(e) => {
                                             const updatedData = { ...coffeeShopData };
                                             updatedData.data.min_price = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
-                                        }}/>
+                                        }} />
                                     <span>to</span>
-                                    <input 
-                                        type="text" 
-                                        value={coffeeShopData.data.max_price} 
+                                    <input
+                                        type="text"
+                                        value={coffeeShopData.data.max_price}
                                         onChange={(e) => {
                                             const updatedData = { ...coffeeShopData };
                                             updatedData.data.max_price = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
-                                        }}/>
+                                        }} />
                                 </div>
                                 <div className="open-from">
                                     <label>Open From:</label>
-                                    <input 
-                                        type="text" 
-                                        value={coffeeShopData.data.open_hour} 
+                                    <input
+                                        type="text"
+                                        value={coffeeShopData.data.open_hour}
                                         onChange={(e) => {
                                             const updatedData = { ...coffeeShopData };
                                             updatedData.data.open_hour = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
-                                        }}/>
+                                        }} />
                                     <span>to</span>
-                                    <input 
-                                        type="text" 
-                                        value={coffeeShopData.data.close_hour} 
+                                    <input
+                                        type="text"
+                                        value={coffeeShopData.data.close_hour}
                                         onChange={(e) => {
                                             const updatedData = { ...coffeeShopData };
                                             updatedData.data.close_hour = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
-                                        }}/>
+                                        }} />
                                 </div>
                                 <div className='featured-drinks'>
                                     <div className='featured-drinks-header'>
@@ -328,7 +403,10 @@ class EditCoffeeShop extends Component {
                                                     <input className='id-input' type='text' value={drink.did} readOnly />
                                                 </div>
                                                 <div>
-                                                    <img src={drink.picture ? drink.picture : all_icons.imageUp} alt='drink' />
+                                                    <ImageUpload
+                                                        onUpload={(files) => this.handleUploadImage(files, 'drink', index)}
+                                                        uploadedImage={drink.picture}
+                                                    />
                                                 </div>
                                                 <div>
                                                     <input type='text' placeholder='Vietnamese' value={drink.name_vi} onChange={(e) => this.handleInputChange(e, 'name_vi', index, 'drink')} />
@@ -352,23 +430,23 @@ class EditCoffeeShop extends Component {
                                 </div>
                                 <div className='coffee-shop-description_eng'>
                                     <label>Description (English):</label>
-                                    <textarea                            
-                                        value={coffeeShopData.data.description_eng} 
+                                    <textarea
+                                        value={coffeeShopData.data.description_eng}
                                         onChange={(e) => {
                                             const updatedData = { ...coffeeShopData };
                                             updatedData.data.description_eng = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
-                                        }}/>
+                                        }} />
                                 </div>
                                 <div className='coffee-shop-description_jap'>
                                     <label>Description (Japanese):</label>
-                                    <textarea 
-                                        value={coffeeShopData.data.description_jap} 
+                                    <textarea
+                                        value={coffeeShopData.data.description_jap}
                                         onChange={(e) => {
                                             const updatedData = { ...coffeeShopData };
                                             updatedData.data.description_jap = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
-                                        }}/>
+                                        }} />
                                 </div>
 
                                 <div className="coffee-shop-style">
