@@ -129,6 +129,7 @@ const getAllUser = () => {
 
 }
 
+
 const getMaxDrinkId = async () => {
     return axios.get('/api/get-max-drink-id');
 }
@@ -292,6 +293,27 @@ const updateCoffeeShop = async (coffeeShopData) => {
         errCode: 0,
         newCoffeeShop,
     }
+
+const getUserPreference = (email) => {
+    return axios.get('/api/get-user-preference', { params: { email: email } });
+}
+
+const getAllUserPreference = () => {
+    return axios.get('/api/get-data-for-select-box-user-preference-page');
+}
+
+const updateUserPreference = (email, stylePreference, servicePreference, amenityPreference, drinkPreference, distancePreference, timePreference) => {
+    return axios.post('/api/save-user-preference', 
+        { 
+            email: email, 
+            stylePreference: stylePreference, 
+            servicePreference: servicePreference,
+            amenityPreference: amenityPreference,
+            drinkPreference: drinkPreference,
+            distancePreference: distancePreference,
+            timePreference: timePreference
+        });
+
 }
 
 export {
@@ -319,9 +341,13 @@ export {
     addService,
     addServiceToCoffeeShop,
     getAllUser,
+    edit_coffee_shop,
     getCoffeeShopData,
     getMaxDrinkId,
     getMaxAmenityId,
     getMaxServiceId,
     updateCoffeeShop,
+    getUserPreference,
+    getAllUserPreference,
+    updateUserPreference
 };

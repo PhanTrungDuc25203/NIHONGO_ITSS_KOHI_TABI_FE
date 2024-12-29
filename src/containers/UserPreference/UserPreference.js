@@ -1,93 +1,106 @@
 import React, { Component } from 'react';
-import Header from '../../components/Users/Header';
-import { Modal, Button, Input } from 'antd';
-import './UserPreference.scss';
 import { connect } from 'react-redux';
-import { FormattedMessage } from "react-intl";
-import { languages } from "../../utils";
-import { getDataForUserPreference } from '../../services/userService';
+import { withRouter } from 'react-router-dom';
+import './UserPreference.scss';
+import Header from '../../components/Users/Header';
+import { getUserPreference, getAllUserPreference, updateUserPreference } from '../../services/userService';
+import { languages } from "../../utils"; // Import languages
 
 class UserPreference extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            allPreferences: {
+                favoriteStyle: ['Modern', 'Vintage', 'Eco-Friendly'],
+                favoriteService: [],
+                favoriteAmenity: [],
+                favoriteDrink: [],
+            },
             preferences: {
-                style: ['Modern', 'Vintage', 'Eco-Friendly'],
-                services: [],
-                amenities: [],
-                drinks: [],
-                time: [],
+                favoriteStyle: [],
+                favoriteService: [],
+                favoriteAmenity: [],
+                favoriteDrink: [],
+                favoriteTime: [],
                 distance: '',
             },
-            isModalOpen: false,
-            currentCategory: '',
-            currentTitle: '',
-            newItem: '',
+            availableOptions: [],
         };
     }
 
     componentDidMount() {
         this.handleGetUserPreference();
+        this.handleGetAllUserPreferences();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         if (prevProps.userInfo !== this.props.userInfo) {
             this.handleGetUserPreference();
+            this.handleGetAllUserPreferences();
         }
     }
 
-    handleGetUserPreference = async () => {
+    handleGetAllUserPreferences = async () => {
         try {
-            const response = await getDataForUserPreference();
-
-            if (response && response.data) {
-                const { services, amenities, drinks } = response.data;
-
-                const preferences = {
-                    ...this.state.preferences,
-                    services: this.mapToPreferredItems(services, this.props.lang),
-                    amenities: this.mapToPreferredItems(amenities, this.props.lang),
-                    drinks: this.mapToPreferredItems(drinks, this.props.lang),
+            const response = await getAllUserPreference();
+            if (response.errCode === 0) {
+                console.log('All User Preferences:', response.data);
+                const data = response.data;
+                const mapAllPreferences = {
+                    favoriteStyle: ['Modern', 'Vintage', 'Eco-Friendly'],
+                    favoriteService: data.services.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_jap,
+                    })),
+                    favoriteAmenity: data.amenities.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_jap,
+                    })),
+                    favoriteDrink: data.drinks.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_ja,
+                    })),
                 };
-
-                this.setState({ preferences });
+                this.setState({ allPreferences: mapAllPreferences });
+            } else {
+                console.error('Error fetching all preferences:', response.errMessage);
             }
         } catch (error) {
-            console.error('Error fetching user preferences:', error);
+            console.error('Error fetching all preferences:', error);
         }
     };
 
-    mapToPreferredItems = (items, lang) => {
-        return items.map(item => {
-            if (lang === languages.JA) {
-                return item.name_jap || item.name_ja;
+    handleGetUserPreference = async () => {
+        const email = this.props.userInfo?.email;
+        try {
+            const response = await getUserPreference(email);
+            if (response.errCode === 0) {
+                const user = response.user;
+                const mappedPreferences = {
+                    favoriteStyle: user.favoriteStyle.map((item) => item.style),
+                    favoriteService: user.favoriteService.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_jap,
+                    })),
+                    favoriteAmenity: user.favoriteAmenity.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_jap,
+                    })),
+                    favoriteDrink: user.favoriteDrink.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_ja,
+                    })),
+                    favoriteTime: user.favoriteTime.map((item) => item.time),
+                    distance: user.favoriteDistance,
+                };
+
+                console.log('User Preferences:', mappedPreferences);
+                this.setState({ preferences: mappedPreferences });
             } else {
-                return item.name_eng;
+                console.error('Error fetching preferences:', response);
             }
-        });
-    };
-
-    openModal = (category, title) => {
-        this.setState({ isModalOpen: true, currentCategory: category, currentTitle: title, newItem: '' });
-    };
-
-    closeModal = () => {
-        this.setState({ isModalOpen: false, currentCategory: '', currentTitle: '', newItem: '' });
-    };
-
-    handleAdd = () => {
-        const { currentCategory, newItem } = this.state;
-        if (newItem.trim()) {
-            this.setState((prevState) => ({
-                preferences: {
-                    ...prevState.preferences,
-                    [currentCategory]: [...prevState.preferences[currentCategory], newItem],
-                },
-                isModalOpen: false,
-                currentCategory: '',
-                currentTitle: '',
-                newItem: '',
-            }));
+        } catch (error) {
+            console.error('Error fetching preferences:', error);
         }
     };
 
@@ -97,39 +110,135 @@ class UserPreference extends Component {
                 ...prevState.preferences,
                 [category]: prevState.preferences[category].filter((i) => i !== item),
             },
-        }));
+        }), () => {
+            console.log(`${item} removed from ${category}`);
+        });
     };
 
-    renderCategory = (title, category) => {
+    handleAdd = (category, selectedItem) => {
+        if (!selectedItem) return;
+        
+        const parsedItem = JSON.parse(selectedItem); // Parse stringified object from <select>
+        
+        // Check if the item already exists in the category
+        const isItemAlreadyAdded = this.state.preferences[category].some(item => 
+            typeof item === 'object' 
+            ? item.name_eng === parsedItem.name_eng || item.name_jap === parsedItem.name_jap 
+            : item === parsedItem
+        );
+    
+        if (isItemAlreadyAdded) {
+            console.log(`${parsedItem.name_eng || parsedItem} is already added to ${category}`);
+            return;
+        }
+    
+        this.setState((prevState) => ({
+            preferences: {
+                ...prevState.preferences,
+                [category]: [...prevState.preferences[category], parsedItem],
+            },
+            selectedOption: '',
+        }), () => {
+            console.log(`${parsedItem.name_eng || parsedItem} added to ${category}`);
+            console.log(this.state.preferences);
+        });
+    };
+    
+    handleSavePreferences = async () => {
+        const { preferences } = this.state;
+        const { email } = this.props.userInfo;
+    
+        // Convert preferences to English before sending
+        const convertedPreferences = {
+            email: email,
+            stylePreference: preferences.favoriteStyle, // Assuming styles are already in English
+            servicePreference: preferences.favoriteService.map(item => item.name_eng),
+            amenityPreference: preferences.favoriteAmenity.map(item => item.name_eng),
+            drinkPreference: preferences.favoriteDrink.map(item => item.name_eng),
+            distancePreference: preferences.distance,
+            timePreference: preferences.favoriteTime, // Assuming time is already in English
+        };
+    
+        try {
+            const response = await updateUserPreference(
+                convertedPreferences.email,
+                convertedPreferences.stylePreference,
+                convertedPreferences.servicePreference,
+                convertedPreferences.amenityPreference,
+                convertedPreferences.drinkPreference,
+                convertedPreferences.distancePreference,
+                convertedPreferences.timePreference
+            );
+            
+            if (response.data.errCode === 0) {
+                console.log('Preferences saved successfully');
+            } else {
+                console.error('Error saving preferences:', response.data.errMessage);
+            }
+        } catch (error) {
+            console.error('Error saving preferences:', error);
+        }
+    };    
+    
+    renderCategory = (titleEng, titleJap, category) => {
+        const { language } = this.props;
+        const title = language === languages.JA ? titleJap : titleEng;
+    
+        const availableOptions = this.state.allPreferences[category] || [];
+    
         return (
             <div className='preference-category'>
                 <h4>{title}</h4>
                 <div className='preference-items'>
                     {this.state.preferences[category].map((item, index) => (
                         <span key={index} className='preference-item'>
-                            {item} <button onClick={() => this.handleRemove(category, item)}>-</button>
+                            {typeof item === 'object'
+                                ? language === languages.JA
+                                    ? item.name_jap || item.name_eng
+                                    : item.name_eng
+                                : item}
+                            <button onClick={() => this.handleRemove(category, item)}>-</button>
                         </span>
                     ))}
-                    <button className='add-button' onClick={() => this.openModal(category, title)}>+</button>
+    
+                    <select
+                        className="add-select"
+                        value={this.state.selectedOption}
+                        onChange={(e) => this.setState({ selectedOption: e.target.value })}
+                    >
+                        <option value="">Select an item...</option>
+                        {availableOptions.map((item, index) => (
+                            <option key={index} value={JSON.stringify(item)}>
+                                {language === languages.JA ? item.name_jap || item.name_eng : item.name_eng || item}
+                            </option>
+                        ))}
+                    </select>
+                    <button
+                        className='add-button'
+                        onClick={() => this.handleAdd(category, this.state.selectedOption)}
+                    >
+                        +
+                    </button>
                 </div>
             </div>
         );
     };
-
+    
+    
     render() {
-        const { preferences, isModalOpen, currentTitle, newItem } = this.state;
+        const { preferences } = this.state;
 
         return (
             <div className='user-preference'>
                 <Header />
                 <div className='preferences-container'>
-                    {this.renderCategory('Style', 'style')}
-                    {this.renderCategory('Preferred Services', 'services')}
-                    {this.renderCategory('Preferred Amenities', 'amenities')}
-                    {this.renderCategory('Preferred Drinks', 'drinks')}
-                    {this.renderCategory('Preferred Time', 'time')}
+                    {this.renderCategory('Style', 'スタイル', 'favoriteStyle')}
+                    {this.renderCategory('Preferred Services', 'サービス', 'favoriteService')}
+                    {this.renderCategory('Preferred Amenities', 'アメニティ', 'favoriteAmenity')}
+                    {this.renderCategory('Preferred Drink', 'ドリンク', 'favoriteDrink')}
+                    {this.renderCategory('Preferred Time', '時間帯', 'favoriteTime')}
                     <div className='preference-category'>
-                        <h4>Distance</h4>
+                        <h4>{this.props.language === languages.JA ? '距離' : 'Distance'}</h4>
                         <input
                             type='text'
                             value={preferences.distance}
@@ -141,37 +250,18 @@ class UserPreference extends Component {
                                     },
                                 })
                             }
-                            placeholder='km'
+                            placeholder={this.props.language === languages.JA ? 'キロメートル' : 'km'}
                         />
                     </div>
                 </div>
                 <div className='actions'>
-                    <button className='discard-button'>Discard change</button>
-                    <button className='save-button'>Save</button>
+                    <button className='discard-button'>
+                        {this.props.language === languages.JA ? '変更を破棄' : 'Discard change'}
+                    </button>
+                    <button className='save-button' onClick={this.handleSavePreferences}>
+                        {this.props.language === languages.JA ? '保存' : 'Save'}
+                    </button>
                 </div>
-
-                {/* Modal */}
-                <Modal
-                    title={`Add a new item to ${currentTitle}`}
-                    visible={isModalOpen}
-                    onOk={this.handleAdd}
-                    onCancel={this.closeModal}
-                    okText="Add"
-                    cancelText="Cancel"
-                    okButtonProps={{
-                        style: {
-                            backgroundColor: '#ffa16c',
-                            borderColor: '#ffa16c',
-                            color: '#fff',
-                        },
-                    }}
-                >
-                    <Input
-                        value={newItem}
-                        onChange={(e) => this.setState({ newItem: e.target.value })}
-                        placeholder="Enter new item"
-                    />
-                </Modal>
             </div>
         );
     }
@@ -179,8 +269,10 @@ class UserPreference extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        lang: state.app.language,
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
     };
 };
 
-export default connect(mapStateToProps)(UserPreference);
+export default withRouter(connect(mapStateToProps)(UserPreference));
