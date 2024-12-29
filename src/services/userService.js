@@ -25,6 +25,10 @@ const fetchCoffeeShopDetail = (id) => {
     return axios.get(`/api/get-coffee-shop/${id}`);
 }
 
+const getCoffeeShopData = (id) => {
+    return axios.get(`/api/get-coffee-shop-data/${id}`);
+}
+
 const isFavoriteCoffeeShop = (userId, coffeeShopId) => {
     return axios.get('/api/is-favorite-coffee-shop', {
         params: {
@@ -150,4 +154,5 @@ export {
     addService,
     addServiceToCoffeeShop,
     getAllUser,
+    getCoffeeShopData,
 };
