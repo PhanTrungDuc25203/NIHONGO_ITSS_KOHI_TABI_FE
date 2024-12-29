@@ -125,6 +125,27 @@ const getAllUser = () => {
 
 }
 
+const getUserPreference = (email) => {
+    return axios.get('/api/get-user-preference', { params: { email: email } });
+}
+
+const getAllUserPreference = () => {
+    return axios.get('/api/get-data-for-select-box-user-preference-page');
+}
+
+const updateUserPreference = (email, stylePreference, servicePreference, amenityPreference, drinkPreference, distancePreference, timePreference) => {
+    return axios.post('/api/save-user-preference', 
+        { 
+            email: email, 
+            stylePreference: stylePreference, 
+            servicePreference: servicePreference,
+            amenityPreference: amenityPreference,
+            drinkPreference: drinkPreference,
+            distancePreference: distancePreference,
+            timePreference: timePreference
+        });
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -150,4 +171,7 @@ export {
     addService,
     addServiceToCoffeeShop,
     getAllUser,
+    getUserPreference,
+    getAllUserPreference,
+    updateUserPreference
 };

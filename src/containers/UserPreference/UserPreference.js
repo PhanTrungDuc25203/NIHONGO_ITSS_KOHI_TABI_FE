@@ -1,267 +1,278 @@
 import React, { Component } from 'react';
-import Header from '../../components/Users/Header';
-import './UserPreference.scss';
 import { connect } from 'react-redux';
-import { FormattedMessage } from "react-intl";
-import { languages } from "../../utils";
-import {getDataForUserPreference} from '../../services/userService';
+import { withRouter } from 'react-router-dom';
+import './UserPreference.scss';
+import Header from '../../components/Users/Header';
+import { getUserPreference, getAllUserPreference, updateUserPreference } from '../../services/userService';
+import { languages } from "../../utils"; // Import languages
 
 class UserPreference extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            preferences: this.getTranslatedPreferences(props.lang),
-            distance: '',
-            errMessage: '',
-            userPreferenceData: {},
+            allPreferences: {
+                favoriteStyle: ['Modern', 'Vintage', 'Eco-Friendly'],
+                favoriteService: [],
+                favoriteAmenity: [],
+                favoriteDrink: [],
+            },
+            preferences: {
+                favoriteStyle: [],
+                favoriteService: [],
+                favoriteAmenity: [],
+                favoriteDrink: [],
+                favoriteTime: [],
+                distance: '',
+            },
+            availableOptions: [],
         };
     }
-
-    // async componentDidMount() {
-    //     let response = await getDataForUserPreference();
-    //     if(response&&response.errCode === 0){
-    //         this.setState({userPreferenceData: response.data}, console.log(this.state.userPreferenceData));
-            
-    //     }
-    // }
-
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (prevProps.userInfo !== this.props.userInfo) {
-    //         getDataForUserPreference();
-    //     }
-    // }
 
     componentDidMount() {
         this.handleGetUserPreference();
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.userInfo !== this.props.userInfo) {
-            this.handleGetUserPreference();
-        }
-    }
-    
-    handleGetUserPreference = async () => {
-        const email = this.props.userInfo?.email;
-
-        try {
-            const response = await getDataForUserPreference();
-
-            const userPreferenceData = response.data || {};
-
-            console.log(response.data);
-            this.setState({ userPreferenceData });
-        } catch (error) {
-            console.error('Error fetching coffee shop data:', error);
-        }
-    };
-
-
-    // Hàm dịch preferences dựa vào ngôn ngữ
-    getTranslatedPreferences(lang) {
-        const timeOptions = [];
-        for (let hour = 0; hour < 24; hour++) {
-            for (let minute = 0; minute < 60; minute += 30) {
-                const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
-                timeOptions.push(time);
-            }
-        }
-
-        const translations = {
-            EN: [
-                { title: "Style", items: ["Vintage"], options: ["Vintage", "Modern", "Eco-Friendly"] },
-                { title: "Preferred Services", items: ["Table Service", "Takeaway"], options: ["Table Service", "Takeaway", "Outdoor Seating", "Event Hosting"] },
-                { title: "Preferred Amenities", items: ["Wifi", "Parking"], options: ["Wifi", "Parking", "Air Conditioning", "Restroom"] },
-                { title: "Preferred Drink", items: ["Black Coffee", "Milk Tea"], options: ["Black Coffee", "Milk Tea", "Ice Coffee with Milk", "Orange Juice"] },
-                { title: "Preferred Time", items: ["09:00:00", "12:30:00"], options: timeOptions } // Thêm nhóm "Preferred Time"
-            ],
-            JA: [
-                { title: "スタイル", items: ["ヴィンテージ"], options: ["ヴィンテージ", "モダン", "エコフレンドリー"] },
-                { title: "サービスの好み", items: ["テーブルサービス", "テイクアウト"], options: ["テーブルサービス", "テイクアウト", "屋外席", "イベント開催"] },
-                { title: "設備の好み", items: ["WiFi", "駐車場"], options: ["WiFi", "駐車場", "エアコン", "トイレ"] },
-                { title: "飲み物の好み", items: ["ブラックコーヒー", "ミルクティー"], options: ["ブラックコーヒー", "ミルクティー", "ミルク入りアイスコーヒー", "オレンジジュース"] },
-                { title: "時間の好み", items: ["09:00:00", "12:30:00"], options: timeOptions } // Thêm nhóm "Preferred Time" cho tiếng Nhật
-            ]
-        };
-        return lang === languages.JA ? translations.JA : translations.EN;
+        this.handleGetAllUserPreferences();
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.lang !== this.props.lang) {
-            this.setState({ preferences: this.getTranslatedPreferences(this.props.lang) });
+        if (prevProps.userInfo !== this.props.userInfo) {
+            this.handleGetUserPreference();
+            this.handleGetAllUserPreferences();
         }
     }
 
-    handleAdd = (category, newItem) => {
-        if (newItem) {
-            this.setState(prevState => ({
-                preferences: prevState.preferences.map(group =>
-                    group.title === category && !group.items.includes(newItem)
-                        ? { ...group, items: [...group.items, newItem] }
-                        : group
-                )
-            }));
+    handleGetAllUserPreferences = async () => {
+        try {
+            const response = await getAllUserPreference();
+            if (response.errCode === 0) {
+                console.log('All User Preferences:', response.data);
+                const data = response.data;
+                const mapAllPreferences = {
+                    favoriteStyle: ['Modern', 'Vintage', 'Eco-Friendly'],
+                    favoriteService: data.services.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_jap,
+                    })),
+                    favoriteAmenity: data.amenities.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_jap,
+                    })),
+                    favoriteDrink: data.drinks.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_ja,
+                    })),
+                };
+                this.setState({ allPreferences: mapAllPreferences });
+            } else {
+                console.error('Error fetching all preferences:', response.errMessage);
+            }
+        } catch (error) {
+            console.error('Error fetching all preferences:', error);
         }
     };
 
-    handleRemove = (item, category) => {
-        this.setState(prevState => ({
-            preferences: prevState.preferences.map(group =>
-                group.title === category
-                    ? { ...group, items: group.items.filter(i => i !== item) }
-                    : group
-            )
-        }));
+    handleGetUserPreference = async () => {
+        const email = this.props.userInfo?.email;
+        try {
+            const response = await getUserPreference(email);
+            if (response.errCode === 0) {
+                const user = response.user;
+                const mappedPreferences = {
+                    favoriteStyle: user.favoriteStyle.map((item) => item.style),
+                    favoriteService: user.favoriteService.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_jap,
+                    })),
+                    favoriteAmenity: user.favoriteAmenity.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_jap,
+                    })),
+                    favoriteDrink: user.favoriteDrink.map((item) => ({
+                        name_eng: item.name_eng,
+                        name_jap: item.name_ja,
+                    })),
+                    favoriteTime: user.favoriteTime.map((item) => item.time),
+                    distance: user.favoriteDistance,
+                };
+
+                console.log('User Preferences:', mappedPreferences);
+                this.setState({ preferences: mappedPreferences });
+            } else {
+                console.error('Error fetching preferences:', response);
+            }
+        } catch (error) {
+            console.error('Error fetching preferences:', error);
+        }
     };
 
-    handleDistanceChange = (e) => {
-        this.setState({ distance: e.target.value });
-    };
-
-    handleSaveButtonClicked = async () => {
-        this.setState({
-            errMessage: '', // Reset lỗi trước khi gửi dữ liệu
+    handleRemove = (category, item) => {
+        this.setState((prevState) => ({
+            preferences: {
+                ...prevState.preferences,
+                [category]: prevState.preferences[category].filter((i) => i !== item),
+            },
+        }), () => {
+            console.log(`${item} removed from ${category}`);
         });
-        
-        // Mã hóa dữ liệu service và amenity
-        const serviceMap = {
-            "Table Service": "1",
-            "Takeaway": "2",
-            "Outdoor Seating": "3",
-            "Event Hosting": "4"
-        };
-    
-        const amenityMap = {
-            "Wifi": "1",
-            "Parking": "2",
-            "Air Conditioning": "3",
-            "Restroom": "4"
-        };
-    
-        // Mã hóa drinkPreference theo tên đồ uống
-        const drinkPreferenceMap = {
-            "Black Coffee": "1",
-            "Milk Tea": "Tea",
-            "Ice Coffee with Milk": "3", // ví dụ thêm các đồ uống
-            "Orange Juice": "4", // ví dụ thêm các đồ uống
-    
-        };
-    
-        // Xây dựng đối tượng dữ liệu cần gửi
-        const dataToSend = {
-            // tôi không biết lấy email của người dùng trong phiên hiện tại, giúp với 
-            email: this.props.userInfo.email,
-            stylePreference: this.state.preferences.find(group => group.title === "Style").items,
-            servicePreference: this.state.preferences.find(group => group.title === "Preferred Services").items.map(service => serviceMap[service] || service),
-            amenityPreference: this.state.preferences.find(group => group.title === "Preferred Amenities").items.map(amenity => amenityMap[amenity] || amenity),
-            drinkPreference: this.state.preferences.find(group => group.title === "Preferred Drink").items.map(drink => drinkPreferenceMap[drink] || drink),
-            timePreference: this.state.preferences.find(group => group.title === "Preferred Time").items,
-            distancePreference: this.state.distance
-        };
-    
-        // try {
-        //     let response = await yourApiService.savePreferences(dataToSend);  // thay api xử lý dữ liệu vào đây
-    
-        //     if (response && response.data && response.data.errCode === 0) {
-        //         console.log('Dữ liệu đã được lưu thành công');
-        //     } else {
-        //         this.setState({
-        //             errMessage: response.data.message || 'Có lỗi xảy ra khi lưu dữ liệu.'
-        //         });
-        //     }
-        // } catch (e) {
-        //     if (e.response && e.response.data) {
-        //         this.setState({
-        //             errMessage: e.response.data.message || 'Có lỗi xảy ra khi gửi dữ liệu.'
-        //         });
-        //     }
-        // }
     };
 
+    handleAdd = (category, selectedItem) => {
+        if (!selectedItem) return;
+        
+        const parsedItem = JSON.parse(selectedItem); // Parse stringified object from <select>
+        
+        // Check if the item already exists in the category
+        const isItemAlreadyAdded = this.state.preferences[category].some(item => 
+            typeof item === 'object' 
+            ? item.name_eng === parsedItem.name_eng || item.name_jap === parsedItem.name_jap 
+            : item === parsedItem
+        );
+    
+        if (isItemAlreadyAdded) {
+            console.log(`${parsedItem.name_eng || parsedItem} is already added to ${category}`);
+            return;
+        }
+    
+        this.setState((prevState) => ({
+            preferences: {
+                ...prevState.preferences,
+                [category]: [...prevState.preferences[category], parsedItem],
+            },
+            selectedOption: '',
+        }), () => {
+            console.log(`${parsedItem.name_eng || parsedItem} added to ${category}`);
+            console.log(this.state.preferences);
+        });
+    };
+    
+    handleSavePreferences = async () => {
+        const { preferences } = this.state;
+        const { email } = this.props.userInfo;
+    
+        // Convert preferences to English before sending
+        const convertedPreferences = {
+            email: email,
+            stylePreference: preferences.favoriteStyle, // Assuming styles are already in English
+            servicePreference: preferences.favoriteService.map(item => item.name_eng),
+            amenityPreference: preferences.favoriteAmenity.map(item => item.name_eng),
+            drinkPreference: preferences.favoriteDrink.map(item => item.name_eng),
+            distancePreference: preferences.distance,
+            timePreference: preferences.favoriteTime, // Assuming time is already in English
+        };
+    
+        try {
+            const response = await updateUserPreference(
+                convertedPreferences.email,
+                convertedPreferences.stylePreference,
+                convertedPreferences.servicePreference,
+                convertedPreferences.amenityPreference,
+                convertedPreferences.drinkPreference,
+                convertedPreferences.distancePreference,
+                convertedPreferences.timePreference
+            );
+            
+            if (response.data.errCode === 0) {
+                console.log('Preferences saved successfully');
+            } else {
+                console.error('Error saving preferences:', response.data.errMessage);
+            }
+        } catch (error) {
+            console.error('Error saving preferences:', error);
+        }
+    };    
+    
+    renderCategory = (titleEng, titleJap, category) => {
+        const { language } = this.props;
+        const title = language === languages.JA ? titleJap : titleEng;
+    
+        const availableOptions = this.state.allPreferences[category] || [];
+    
+        return (
+            <div className='preference-category'>
+                <h4>{title}</h4>
+                <div className='preference-items'>
+                    {this.state.preferences[category].map((item, index) => (
+                        <span key={index} className='preference-item'>
+                            {typeof item === 'object'
+                                ? language === languages.JA
+                                    ? item.name_jap || item.name_eng
+                                    : item.name_eng
+                                : item}
+                            <button onClick={() => this.handleRemove(category, item)}>-</button>
+                        </span>
+                    ))}
+    
+                    <select
+                        className="add-select"
+                        value={this.state.selectedOption}
+                        onChange={(e) => this.setState({ selectedOption: e.target.value })}
+                    >
+                        <option value="">Select an item...</option>
+                        {availableOptions.map((item, index) => (
+                            <option key={index} value={JSON.stringify(item)}>
+                                {language === languages.JA ? item.name_jap || item.name_eng : item.name_eng || item}
+                            </option>
+                        ))}
+                    </select>
+                    <button
+                        className='add-button'
+                        onClick={() => this.handleAdd(category, this.state.selectedOption)}
+                    >
+                        +
+                    </button>
+                </div>
+            </div>
+        );
+    };
+    
+    
     render() {
-        const { preferences, distance } = this.state;
+        const { preferences } = this.state;
 
         return (
-            <React.Fragment>
+            <div className='user-preference'>
                 <Header />
-                <div className="user-preference-container">
-                    <div className="content-area">
-                        <h1 className="title">
-                            {this.props.lang === languages.JA ? "パーソナライズ" : "Personalization"}
-                        </h1>
-                        <main className="preferences">
-                            {preferences.map((group, index) => (
-                                <div className="preference-group" key={index}>
-                                    <h3 className="group-title">{group.title}</h3>
-                                    <div className="items">
-                                        {group.items.map((item, idx) => (
-                                            <span className="item" key={idx}>
-                                                {item}
-                                                <button className="remove-button" onClick={() => this.handleRemove(item, group.title)}>−</button>
-                                            </span>
-                                        ))}
-                                        <select
-                                            className="add-dropdown"
-                                            onChange={(e) => {
-                                                this.handleAdd(group.title, e.target.value);
-                                                e.target.value = ""; // Reset the dropdown after selection
-                                            }}
-                                            defaultValue=""
-                                        >
-                                            <option value="" disabled>
-                                                {this.props.lang === languages.JA ? "項目を追加" : "Add an item"}
-                                            </option>
-                                            {group.options
-                                                .filter(option => !group.items.includes(option)) // Filter out already selected options
-                                                .map((option, idx) => (
-                                                    <option key={idx} value={option}>
-                                                        {option}
-                                                    </option>
-                                                ))}
-                                        </select>
-                                    </div>
-                                </div>
-                            ))}
-                            <div className="preference-group">
-                                <h3 className="group-title">
-                                    {this.props.lang === languages.JA ? "距離" : "Distance"}
-                                </h3>
-                                <input
-                                    type="text"
-                                    className="distance-input"
-                                    value={distance}
-                                    onChange={this.handleDistanceChange}
-                                    placeholder={this.props.lang === languages.JA ? "距離を入力" : "Enter distance"}
-                                />
-                                <select className="distance-unit">
-                                    <option value="km">km</option>
-                                    <option value="miles">miles</option>
-                                </select>
-                            </div>
-                        </main>
-                        <footer className="footer">
-                            <button className="discard-button">
-                                {this.props.lang === languages.JA ? "変更を破棄" : "Discard changes"}
-                            </button>
-                            <button className="save-button" onClick={() => { this.handleSaveButtonClicked() }} >
-                                {this.props.lang === languages.JA ? "保存" : "Save"}
-                            </button>
-                        </footer>
+                <div className='preferences-container'>
+                    {this.renderCategory('Style', 'スタイル', 'favoriteStyle')}
+                    {this.renderCategory('Preferred Services', 'サービス', 'favoriteService')}
+                    {this.renderCategory('Preferred Amenities', 'アメニティ', 'favoriteAmenity')}
+                    {this.renderCategory('Preferred Drink', 'ドリンク', 'favoriteDrink')}
+                    {this.renderCategory('Preferred Time', '時間帯', 'favoriteTime')}
+                    <div className='preference-category'>
+                        <h4>{this.props.language === languages.JA ? '距離' : 'Distance'}</h4>
+                        <input
+                            type='text'
+                            value={preferences.distance}
+                            onChange={(e) =>
+                                this.setState({
+                                    preferences: {
+                                        ...preferences,
+                                        distance: e.target.value,
+                                    },
+                                })
+                            }
+                            placeholder={this.props.language === languages.JA ? 'キロメートル' : 'km'}
+                        />
                     </div>
                 </div>
-            </React.Fragment>
+                <div className='actions'>
+                    <button className='discard-button'>
+                        {this.props.language === languages.JA ? '変更を破棄' : 'Discard change'}
+                    </button>
+                    <button className='save-button' onClick={this.handleSavePreferences}>
+                        {this.props.language === languages.JA ? '保存' : 'Save'}
+                    </button>
+                </div>
+            </div>
         );
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        lang: state.app.language,
+        language: state.app.language,
         isLoggedIn: state.user.isLoggedIn,
         userInfo: state.user.userInfo,
     };
 };
 
-export default connect(mapStateToProps)(UserPreference);
-
-
+export default withRouter(connect(mapStateToProps)(UserPreference));
