@@ -294,6 +294,8 @@ const updateCoffeeShop = async (coffeeShopData) => {
         newCoffeeShop,
     }
 
+}
+
 const getUserPreference = (email) => {
     return axios.get('/api/get-user-preference', { params: { email: email } });
 }
@@ -341,7 +343,6 @@ export {
     addService,
     addServiceToCoffeeShop,
     getAllUser,
-    edit_coffee_shop,
     getCoffeeShopData,
     getMaxDrinkId,
     getMaxAmenityId,
