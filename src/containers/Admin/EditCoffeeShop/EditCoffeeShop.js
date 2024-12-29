@@ -61,6 +61,22 @@ class EditCoffeeShop extends Component {
         }));
     };
 
+    handleDeleteDrink = (index) => {
+        this.setState((prevState) => {
+            const updatedDrinks = [...prevState.coffeeShopData.data.drinks];
+            updatedDrinks.splice(index, 1);
+            return {
+                coffeeShopData: {
+                    ...prevState.coffeeShopData,
+                    data: {
+                        ...prevState.coffeeShopData.data,
+                        drinks: updatedDrinks
+                    }
+                }
+            };
+        });
+    };
+
     handleAddAmenity = () => {
         const newAmenity = {
             name_eng: '',
@@ -202,7 +218,7 @@ class EditCoffeeShop extends Component {
                                             <div key={index} className='drink-item'>
                                                 <div>
                                                     <label>Drink ID</label>
-                                                    <input className='id-input' type='text' value={drink.did} />
+                                                    <input className='id-input' type='text' value={drink.did} readOnly/>
                                                 </div>
                                                 <div>
                                                     <img src={drink.picture ? drink.picture : all_icons.imageUp} alt='drink' />
@@ -223,6 +239,10 @@ class EditCoffeeShop extends Component {
                                                     {/* <label>Price</label> */}
                                                     <input type='text' value={drink.price} />
                                                 </div>
+                                                <button
+                                                    className='delete-btn'
+                                                    onClick={() => this.handleDeleteDrink(index)}
+                                                >−</button>
                                             </div>
                                         ))}
                                     </div>
@@ -304,7 +324,9 @@ class EditCoffeeShop extends Component {
                             </div>
 
                         </div>
-                        <button>Save</button>
+                        <div className='save-button-container'>
+                            <button>Save</button>
+                        </div>
                     </div>
                 </Layout>
             </div>

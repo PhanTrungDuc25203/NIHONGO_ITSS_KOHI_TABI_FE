@@ -181,3 +181,15 @@
         }
     }
 }
+
+.save-button-container {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 30px;
+
+    button {
+        border: none;
+        border-radius: 40px;
+        padding: 10px 20px;
+    }
+}
