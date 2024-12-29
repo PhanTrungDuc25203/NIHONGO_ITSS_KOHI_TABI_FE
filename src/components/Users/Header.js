@@ -35,6 +35,14 @@ class UsersHeader extends Component {
         this.props.history.push(`/user-profile/${this.props.userInfo.email}`);
     }
 
+    handleUserInfoClick = () => {
+        if (this.props.isLoggedIn) {
+            this.navigateToProfilePage();
+        } else {
+            this.props.history.push('/login');
+        }
+    }
+
     render() {
         return (
             <div className="header">
@@ -42,7 +50,7 @@ class UsersHeader extends Component {
                     <span className="logoKohi">KOHI</span>
                     <span className="logoTabi">TABI</span>
                 </div>
-                <div className="userInfo">
+                <div className="userInfo" onClick={this.handleUserInfoClick}>
                     <div className="userAvatar">
                         <img src={avatar} alt="avatar" />
                     </div>
