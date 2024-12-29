@@ -144,8 +144,8 @@ const getMaxServiceId = () => {
 const updateCoffeeShop = async (coffeeShopData) => {
     const newCoffeeShop = axios.put('/api/update-coffee-shop', coffeeShopData);
     const drinks = coffeeShopData.drinks;
-    const amenityData = coffeeShopData.amenities;
-    const serviceData = coffeeShopData.services
+    const amenities = coffeeShopData.amenities;
+    const services = coffeeShopData.services
     for (const drink of drinks) {
 
         const response = await axios.get('/api/get-max-drink-id');
@@ -178,6 +178,60 @@ const updateCoffeeShop = async (coffeeShopData) => {
             cid: coffeeShopData.cid,
         });
     }
+
+    for (const amenity of amenities) {
+        const response = await axios.get('/api/get-max-amenity-id');
+        const maxId = response.maxId;
+        console.log("maxAmenityId", maxId);
+        console.log("amenityId", amenity.aid);
+
+        console.log("amenity: ", amenity);
+
+        if (amenity.aid > maxId) {
+            console.log("Tạo tiện ích mới nè!");
+
+            const amenityData1 = {
+                name_eng: amenity.name_eng,
+                name_jap: amenity.name_jap,
+            }
+
+            const responseAmenity1 = await addAmenity(amenityData1);
+            if (responseAmenity1.errCode !== 0) {
+                console.log('Failed to add amenity: ' + responseAmenity1.errMessage);
+                return;
+            }
+            console.log("resAmenity1: ", responseAmenity1);
+
+            const amenityData2 = {
+                cid: coffeeShopData.cid,
+                aid: responseAmenity1.newAmenity.aid,
+                price: amenity.Include_amenity.price,
+            }
+
+            console.log("amenityData2: ", amenityData2);
+
+            const responseAmenity2 = await addAmenityToCoffeeShop(amenityData2);
+            if (responseAmenity2.errCode !== 0) {
+                console.log("Failed to add amenity to coffee shop: " + responseAmenity2.errMessage);
+                return;
+            }
+
+            
+        } else {
+            console.log("Hoặc là sửa tiện ích cũ!");
+            axios.put('/api/update-amenity', amenity);
+        }
+    }
+
+    const deleteAmenities = coffeeShopData.deleteAmenities;
+    console.log("deleteAmenities", deleteAmenities);
+    for (const amenity of deleteAmenities) {
+        axios.put('/api/remove-included-amenity', {
+            aid: amenity,
+            cid: coffeeShopData.cid,
+        });
+    }
+
     return {
         errCode: 0,
         newCoffeeShop,
