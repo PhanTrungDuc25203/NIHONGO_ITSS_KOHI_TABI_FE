@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
-import { withRouter, useNavigate, useHistory } from 'react-router-dom';
+import { withRouter , useNavigate, useHistory } from 'react-router-dom';
 import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
@@ -10,7 +10,6 @@ import { FormattedMessage } from "react-intl";
 import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
 import { handleSearch, handleGetCoffeeShopForYou, getListFavoriteCoffeeShop } from '../../services/userService';
-import { path } from '../../utils';
 
 const WaitingTime = {
     FIVE_MINUTES: '1',
@@ -130,20 +129,21 @@ class Homepage extends Component {
 
     handleSearchClick = async () => {
         this.setState((prevState) => ({
-            showSearchResults: true,
+            showSearchResults: !prevState.showSearchResults,
         }));
         const { name, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
         try {
             let response = await handleSearch(
-                name,
-                selectedWaitingTime,
-                (openingStartHour === null || openingStartMinute === null) ? null : openingStartHour + ':' + openingStartMinute + ':0',
-                (closingStartHour === null || closingStartMinute === null) ? null : closingStartHour + ':' + closingStartMinute + ':0',
-                minPrice,
-                maxPrice,
-                selectedStyle,
-                selectedServiceTags[0],
-                selectedAmenityTags[0]);
+                name, 
+                selectedWaitingTime, 
+                (openingStartHour === null || openingStartMinute === null) ? null : openingStartHour + ':' + openingStartMinute + ':0', 
+                (closingStartHour === null || closingStartMinute === null) ? null : closingStartHour + ':' + closingStartMinute + ':0', 
+                minPrice, 
+                maxPrice, 
+                selectedStyle, 
+                selectedServiceTags[0], 
+                selectedAmenityTags[0],
+                this.props.userInfo.id);
             const coffeeShops = response.coffeShops || [];
             const resultSearch = coffeeShops.map(shop => ({
                 cid: shop.cid,
@@ -191,7 +191,7 @@ class Homepage extends Component {
     };
 
     handleGetDataFavorite = async () => {
-        const id = this.props.userInfo?.id;
+        const id = this.props.userInfo.id;
 
         try {
             const response = await getListFavoriteCoffeeShop(id);
@@ -220,12 +220,24 @@ class Homepage extends Component {
     }
 
     handleOpenMap() {
-        this.props.history.push(path.FIND_MAP.replace('/:id?', ''));
+        this.props.history.push(`/find-map/`);
     }
 
 
     render() {
-        const distances = ['<3km', '<5km', '<10km'];
+        const provinces = [
+            'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu', 'Bắc Ninh',
+            'Bến Tre', 'Bình Định', 'Bình Dương', 'Bình Phước', 'Bình Thuận', 'Cà Mau',
+            'Cần Thơ', 'Cao Bằng', 'Đà Nẵng', 'Đắk Lắk', 'Đắk Nông', 'Điện Biên', 'Đồng Nai',
+            'Đồng Tháp', 'Gia Lai', 'Hà Giang', 'Hà Nam', 'Hà Nội', 'Hà Tĩnh', 'Hải Dương',
+            'Hải Phòng', 'Hậu Giang', 'Hòa Bình', 'Hưng Yên', 'Khánh Hòa', 'Kiên Giang',
+            'Kon Tum', 'Lai Châu', 'Lâm Đồng', 'Lạng Sơn', 'Lào Cai', 'Long An', 'Nam Định',
+            'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên', 'Quảng Bình',
+            'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị', 'Sóc Trăng', 'Sơn La',
+            'Tây Ninh', 'Thái Bình', 'Thái Nguyên', 'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang',
+            'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
+        ];
+
 
         const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou, resultFavorite = [] } = this.state;
 
@@ -257,10 +269,10 @@ class Homepage extends Component {
                                     onChange={this.handleLocationSelect}
                                 >
                                     <option value="">
-                                        {this.props.language === languages.JA ? '最も近い' : 'Nearest'}
+                                        {this.props.language === languages.JA ? '都市を選んでください' : 'Select a province'}
                                     </option>
-                                    {distances.map((distance, index) => (
-                                        <option key={index} value={distance}>{distance}</option>
+                                    {provinces.map((province, index) => (
+                                        <option key={index} value={province}>{province}</option>
                                     ))}
                                 </select>
                             </div>
@@ -460,7 +472,7 @@ class Homepage extends Component {
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
-                                    />
+                                        />
                                 ))}
                             </div>
                         </section>
@@ -487,7 +499,7 @@ class Homepage extends Component {
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
-                                    />
+                                        />
                                 ))}
                             </div>
                         </section>

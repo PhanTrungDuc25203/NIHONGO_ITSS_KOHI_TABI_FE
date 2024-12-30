@@ -5,7 +5,7 @@ const handleLogin = (usernameOrEmail, password) => {
     return axios.post('/api/login', { usernameOrEmail: usernameOrEmail, password: password });
 }
 
-const handleSearch = (name, waiting_time, open_time, end_time, min_price, max_price, style, service, amenity) => {
+const handleSearch = (name, waiting_time, open_time, end_time, min_price, max_price, style, service, amenity,uid) => {
     return axios.get('/api/search-coffeshop', {
         params: {
             name: name,
@@ -16,7 +16,8 @@ const handleSearch = (name, waiting_time, open_time, end_time, min_price, max_pr
             max_price: max_price,
             style: style,
             service: service,
-            amenity: amenity
+            amenity: amenity,
+            uid: uid
         }
     });
 }
@@ -318,6 +319,10 @@ const updateUserPreference = (email, stylePreference, servicePreference, amenity
 
 }
 
+const getRecent = (uid) => {
+    return axios.get('/api/getrecent', { params: { uid: uid } });
+}
+
 export {
     handleLogin,
     handleSearch,
@@ -350,5 +355,6 @@ export {
     updateCoffeeShop,
     getUserPreference,
     getAllUserPreference,
-    updateUserPreference
+    updateUserPreference,
+    getRecent,
 };
