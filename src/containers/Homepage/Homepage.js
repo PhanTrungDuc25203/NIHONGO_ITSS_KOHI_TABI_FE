@@ -177,6 +177,7 @@ class Homepage extends Component {
                 const coffeeShops = response?.coffeeShops || [];
 
                 const resultForYou = coffeeShops.map(shop => ({
+                    picture: shop.picture,
                     cid: shop.cid,
                     name: shop.name,
                     provinceVie: shop.province_vie,
@@ -226,6 +227,7 @@ class Homepage extends Component {
             const coffeeShops = response?.coffeeShops || [];
 
             const resultRecent = coffeeShops.map(data => ({
+                picture: data.picture,
                 cid: data.cid,
                 name: data.name,
                 provinceVie: data.province_vie,
@@ -482,7 +484,7 @@ class Homepage extends Component {
                                 {resultForYou.map((shop, idx) => (
                                     <Card
                                         key={idx}
-                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        imageUrl={shop.picture}
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
@@ -496,7 +498,7 @@ class Homepage extends Component {
                                 {resultRecent.map((shop, idx) => (
                                     <Card
                                         key={idx}
-                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        imageUrl={shop.picture}
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}

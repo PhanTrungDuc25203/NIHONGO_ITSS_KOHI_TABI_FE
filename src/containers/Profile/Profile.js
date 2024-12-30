@@ -6,6 +6,7 @@ import Header from '../../components/Users/Header';
 import * as actions from "../../store/actions";
 import { getUserProfileData, updateUserProfileData } from '../../services/userService';
 import e from 'cors';
+import {languages} from '../../utils'
 
 class Profile extends Component {
     constructor(props) {
