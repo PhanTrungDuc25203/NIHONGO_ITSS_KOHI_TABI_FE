@@ -50,7 +50,6 @@ class Homepage extends Component {
             openingStartMinute: null,
             closingStartHour: null,
             closingStartMinute: null,
-            showSearchResults: false,
             resultSearch: [],
             resultForYou: [],
             resultFavorite: [],
@@ -131,9 +130,6 @@ class Homepage extends Component {
     };
 
     handleSearchClick = async () => {
-        this.setState((prevState) => ({
-            showSearchResults: !prevState.showSearchResults,
-        }));
         const { name, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
         try {
             let response = await handleSearch(
@@ -154,7 +150,6 @@ class Homepage extends Component {
                 provinceVie: shop.province_vie,
                 provinceJap: shop.province_jap
             }));
-            console.log(resultSearch);
             this.setState({ resultSearch });
         } catch (e) {
             console.log('Error searching: ', e);
@@ -178,7 +173,7 @@ class Homepage extends Component {
         try {
             const response = await handleGetCoffeeShopForYou(email);
 
-            const coffeeShops = response.coffeeShops || [];
+            const coffeeShops = response?.coffeeShops || [];
 
             const resultForYou = coffeeShops.map(shop => ({
                 cid: shop.cid,
@@ -198,11 +193,8 @@ class Homepage extends Component {
 
         try {
             const response = await getListFavoriteCoffeeShop(id);
-            console.log('API response:', response.data);
 
-            const datas = response.data || [];
-
-            console.log(datas);
+            const datas = response?.data || [];
 
             const resultFavorite = datas.map(data => ({
                 cid: data.coffeeShop.cid,
@@ -223,7 +215,7 @@ class Homepage extends Component {
         try {
             const response = await getRecent(id);
 
-            const coffeeShops = response.coffeeShops || [];
+            const coffeeShops = response?.coffeeShops || [];
 
             const resultRecent = coffeeShops.map(data => ({
                 cid: data.cid,
@@ -239,7 +231,6 @@ class Homepage extends Component {
     };
 
     handleNavigateToDetail(shopId) {
-        // Use history.push() to navigate to another route
         this.props.history.push(`/detail-coffee-shop/${shopId}`);
     }
 
@@ -263,7 +254,7 @@ class Homepage extends Component {
         ];
 
 
-        const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou, resultFavorite, resultRecent = [] } = this.state;
+        const { selectedLocation, isPasswordVisible, resultSearch, resultForYou, resultFavorite, resultRecent = [] } = this.state;
 
         return (
             <div className="homepage">
@@ -470,7 +461,7 @@ class Homepage extends Component {
                         ><FormattedMessage id="homepage.sidebar.filters.open-map" /></button>
                     </aside>
                     <main className="content">
-                        {showSearchResults && (
+                        {(resultSearch.length > 0) && (
                             <section className="card-section">
                                 <h4>Search Result</h4>
                                 <div className="cards">
