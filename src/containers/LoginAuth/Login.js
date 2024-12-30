@@ -65,6 +65,10 @@ class Login extends Component {
         }));
     };
 
+    handleSingupLinkClicked = () => {
+        this.props.history.push('/signup');
+    }
+
     render() {
         const { isPasswordVisible } = this.state;
 
@@ -134,7 +138,7 @@ class Login extends Component {
                         ><FormattedMessage id="login.login-text" /></button>
                     </div>
                     <p className="signup-text">
-                        <a href="#" className="signup-link"><FormattedMessage id="login.sign-up" /></a>
+                        <a onClick={this.handleSingupLinkClicked} className="signup-link"><FormattedMessage id="login.sign-up" /></a>
                     </p>
                 </div>
             </div>
