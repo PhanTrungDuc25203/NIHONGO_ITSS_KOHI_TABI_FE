@@ -9,6 +9,7 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import all_icons from "../../assets/Icons/all_icons";
 import Header from '../../components/Users/Header';
 import { fetchCoffeeShopDetail } from '../../services/userService';
+import { IoIosArrowBack } from "react-icons/io";
 
 class FindMap extends Component {
     constructor(props) {
@@ -238,7 +239,12 @@ class FindMap extends Component {
                 <Header />
                 <div className="find-map-container">
                     <div className="find-map-container-left">
-                        <p>Back</p>
+                    <IoIosArrowBack
+                        size={50}
+                        color="#ffa16c"
+                        onClick={() => this.props.history.goBack()}
+                        style={{ cursor: "pointer" }}
+                    />
                         <form className="form">
                             <div className="form-group">
                                 <label htmlFor="startPoint">From</label>
