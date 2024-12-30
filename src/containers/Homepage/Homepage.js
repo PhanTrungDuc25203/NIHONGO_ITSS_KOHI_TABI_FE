@@ -9,7 +9,7 @@ import './../../components/Card/Card'
 import { FormattedMessage } from "react-intl";
 import Header from '../../components/Users/Header';
 import Card from './../../components/Card/Card';
-import { handleSearch, handleGetCoffeeShopForYou, getListFavoriteCoffeeShop } from '../../services/userService';
+import { handleSearch, handleGetCoffeeShopForYou, getListFavoriteCoffeeShop, getRecent } from '../../services/userService';
 
 const WaitingTime = {
     FIVE_MINUTES: '1',
@@ -54,18 +54,21 @@ class Homepage extends Component {
             resultSearch: [],
             resultForYou: [],
             resultFavorite: [],
+            resultRecent: [],
         };
     }
 
     componentDidMount() {
         this.handleGetDataForYou();
         this.handleGetDataFavorite();
+        this.handleGetDataRecent();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.userInfo !== this.props.userInfo) {
             this.handleGetDataForYou();
             this.handleGetDataFavorite();
+            this.handleGetDataRecent();
         }
     }
 
@@ -214,6 +217,27 @@ class Homepage extends Component {
         }
     };
 
+    handleGetDataRecent = async () => {
+        const id = this.props.userInfo?.id;
+
+        try {
+            const response = await getRecent(id);
+
+            const coffeeShops = response.coffeeShops || [];
+
+            const resultRecent = coffeeShops.map(data => ({
+                cid: data.cid,
+                name: data.name,
+                provinceVie: data.province_vie,
+                provinceJap: data.province_jap
+            }))
+
+            this.setState({ resultRecent });
+        } catch (error) {
+            console.error('Error fetching coffee shop data:', error);
+        }
+    };
+
     handleNavigateToDetail(shopId) {
         // Use history.push() to navigate to another route
         this.props.history.push(`/detail-coffee-shop/${shopId}`);
@@ -239,7 +263,7 @@ class Homepage extends Component {
         ];
 
 
-        const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou, resultFavorite = [] } = this.state;
+        const { selectedLocation, isPasswordVisible, showSearchResults, resultSearch, resultForYou, resultFavorite, resultRecent = [] } = this.state;
 
         return (
             <div className="homepage">
@@ -479,13 +503,14 @@ class Homepage extends Component {
                         <section className="card-section">
                             <h4><FormattedMessage id="homepage.sidebar.filters.recent" /></h4>
                             <div className="cards">
-                                {Array.from({ length: 5 }).map((_, idx) => (
+                                {resultRecent.map((shop, idx) => (
                                     <Card
                                         key={idx}
                                         imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                        title="Đông Tây Cafe sách"
-                                        location="Hanoi"
-                                    ></Card>
+                                        title={shop.name}
+                                        location={shop.provinceVie || shop.provinceJap}
+                                        onClick={() => this.handleNavigateToDetail(shop.cid)}
+                                        />
                                 ))}
                             </div>
                         </section>
