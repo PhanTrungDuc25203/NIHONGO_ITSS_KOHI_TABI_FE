@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'; // Import withRouter
+import { withRouter , useHistory } from 'react-router-dom'; // Import withRouter
 import './Profile.scss';
 import Header from '../../components/Users/Header';
 import * as actions from "../../store/actions";
@@ -88,6 +88,10 @@ class Profile extends Component {
         this.props.history.push(`/login`);
     }
 
+    handleOpenUserPreference() {
+        this.props.history.push(`/user-preference`);
+    }
+
     render() {
         const { username, name, email, phone, addresses, newAddress, selectedImage } = this.state;
 
@@ -95,14 +99,14 @@ class Profile extends Component {
             <div className='profile'>
                 <Header />
                 <div className="profile-container">
-                    <h1 className="profile-title">Profile</h1>
+                    <h1 className="profile-title">{this.props.language === languages.JA ? 'プロファイル' : 'Profile'}</h1>
                     <div className="profile-content">
                         <div className="profile-image">
                             <div className="image-placeholder">
                                 {selectedImage ? (
                                     <img src={selectedImage} alt="Profile" />
                                 ) : (
-                                    <div className="placeholder">No Image</div>
+                                    <div className="placeholder">{this.props.language === languages.JA ? '画像なし' : 'No Image'}</div>
                                 )}
                             </div>
                             <label className="upload-button">
@@ -112,23 +116,23 @@ class Profile extends Component {
                                     onChange={this.handleImageChange}
                                     style={{ display: 'none' }}
                                 />
-                                <i className="icon-upload">Upload</i>
+                                <i className="icon-upload">{this.props.language === languages.JA ? 'アップロード' : 'Upload'}</i>
                             </label>
                         </div>
 
                         <div className="profile-details">
                             <div className="detail-item">
-                                <span className="label">Username:</span>
+                                <span className="label">{this.props.language === languages.JA ? 'ユーザー名' : 'Username'}</span>
                                 <span className="value">{username && username}</span>
                             </div>
 
                             <div className="detail-item">
-                                <span className="label">Email:</span>
+                                <span className="label">{this.props.language === languages.JA ? 'メールアドレス' : 'Email'}</span>
                                 <span className="value">{email && email}</span>
                             </div>
 
                             <div className="detail-item">
-                                <span className="label">Name:</span>
+                                <span className="label">{this.props.language === languages.JA ? '名前' : 'Name'}</span>
                                 <input
                                     type="text"
                                     value={name}
@@ -138,7 +142,7 @@ class Profile extends Component {
                             </div>
 
                             <div className="detail-item">
-                                <span className="label">Phone:</span>
+                                <span className="label">{this.props.language === languages.JA ? '電話番号' : 'Phone'}</span>
                                 <input
                                     type="text"
                                     value={phone}
@@ -168,15 +172,15 @@ class Profile extends Component {
                                 </div>
                             </div>
 
-                            <button className="btn personalization-btn">Personalization Setting</button>
+                            <button className="btn personalization-btn" onClick={() => this.handleOpenUserPreference()}>{this.props.language === languages.JA ? 'パーソナライズ設定' : 'Personalization Setting'}</button>
                             <div className="change-password">
-                                <p>Change password</p>
+                                <p>{this.props.language === languages.JA ? 'パスワードの変更' : 'Change password'}</p>
                             </div>
-                            <button className="btn logout-btn" onClick={this.handleLoginForUser}>Logout</button>
+                            <button className="btn logout-btn" onClick={this.handleLoginForUser}>{this.props.language === languages.JA ? 'ログアウト' : 'Login'}</button>
 
                             <div className="actions">
-                                <button className="btn discard-btn">Discard change</button>
-                                <button className="btn save-btn" onClick={this.handleUpdateProfile}>Save</button>
+                                {/* <button className="btn discard-btn">{this.props.language === languages.JA ? 'ログアウト' : 'Login'}Discard change</button> */}
+                                <button className="btn save-btn" onClick={this.handleUpdateProfile}>{this.props.language === languages.JA ? '保存' : 'Save'}</button>
                             </div>
                         </div>
                     </div>
