@@ -143,18 +143,13 @@ class Homepage extends Component {
                 selectedServiceTags[0], 
                 selectedAmenityTags[0],
                 this.props.userInfo.id);
-
-            let resultSearch = [];
-            
-            if (response?.errCode == 0) {
-                const coffeeShops = response?.coffeShops || [];
-                resultSearch = coffeeShops.map(shop => ({
-                    cid: shop.cid,
-                    name: shop.name,
-                    provinceVie: shop.province_vie,
-                    provinceJap: shop.province_jap
-                }));
-            }
+            const coffeeShops = response.coffeShops || [];
+            const resultSearch = coffeeShops.map(shop => ({
+                cid: shop.cid,
+                name: shop.name,
+                provinceVie: shop.province_vie,
+                provinceJap: shop.province_jap
+            }));
             this.setState({ resultSearch });
         } catch (e) {
             console.log('Error searching: ', e);
@@ -178,18 +173,14 @@ class Homepage extends Component {
         try {
             const response = await handleGetCoffeeShopForYou(email);
 
-            const resultForYou = [];
+            const coffeeShops = response?.coffeeShops || [];
 
-            if (response?.errCode === 0) {
-                const coffeeShops = response?.coffeeShops || [];
-
-                resultForYou = coffeeShops.map(shop => ({
-                    cid: shop.cid,
-                    name: shop.name,
-                    provinceVie: shop.province_vie,
-                    provinceJap: shop.province_jap
-                }));
-            }
+            const resultForYou = coffeeShops.map(shop => ({
+                cid: shop.cid,
+                name: shop.name,
+                provinceVie: shop.province_vie,
+                provinceJap: shop.province_jap
+            }));
 
             this.setState({ resultForYou });
         } catch (error) {
@@ -202,11 +193,10 @@ class Homepage extends Component {
 
         try {
             const response = await getListFavoriteCoffeeShop(id);
-            const resultFavorite = [];
 
-            if (response?.errCode === 0) {
-                const datas = response?.data || [];
+            const datas = response?.data || [];
 
+<<<<<<< HEAD
                 resultFavorite = datas.map(data => ({
                     picture: data.coffeeShop.picture,
                     cid: data.coffeeShop.cid,
@@ -215,6 +205,14 @@ class Homepage extends Component {
                     provinceJap: data.coffeeShop.province_jap
                 }))
             }
+=======
+            const resultFavorite = datas.map(data => ({
+                cid: data.coffeeShop.cid,
+                name: data.coffeeShop.name,
+                provinceVie: data.coffeeShop.province_vie,
+                provinceJap: data.coffeeShop.province_jap
+            }))
+>>>>>>> parent of 537c92c (phong thu tuyet doi)
 
             this.setState({ resultFavorite });
         } catch (error) {
@@ -227,20 +225,17 @@ class Homepage extends Component {
 
         try {
             const response = await getRecent(id);
-            const resultRecent = [];
 
-            if (response?.errCode === 0) {
-                const coffeeShops = response?.coffeeShops || [];
+            const coffeeShops = response?.coffeeShops || [];
 
-                resultRecent = coffeeShops.map(data => ({
-                    cid: data.cid,
-                    name: data.name,
-                    provinceVie: data.province_vie,
-                    provinceJap: data.province_jap
-                }))
+            const resultRecent = coffeeShops.map(data => ({
+                cid: data.cid,
+                name: data.name,
+                provinceVie: data.province_vie,
+                provinceJap: data.province_jap
+            }))
 
-                this.setState({ resultRecent });
-            }
+            this.setState({ resultRecent });
         } catch (error) {
             console.error('Error fetching coffee shop data:', error);
         }
