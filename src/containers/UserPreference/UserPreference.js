@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import './UserPreference.scss';
 import Header from '../../components/Users/Header';
 import { getUserPreference, getAllUserPreference, updateUserPreference } from '../../services/userService';
-import { languages } from "../../utils"; // Import languages
+import { languages } from "../../utils";
 
 class UserPreference extends Component {
     constructor(props) {
@@ -15,6 +15,7 @@ class UserPreference extends Component {
                 favoriteService: [],
                 favoriteAmenity: [],
                 favoriteDrink: [],
+                favoriteTime: []
             },
             preferences: {
                 favoriteStyle: [],
@@ -44,21 +45,28 @@ class UserPreference extends Component {
         try {
             const response = await getAllUserPreference();
             if (response.errCode === 0) {
-                console.log('All User Preferences:', response.data);
                 const data = response.data;
                 const mapAllPreferences = {
                     favoriteStyle: ['Modern', 'Vintage', 'Eco-Friendly'],
                     favoriteService: data.services.map((item) => ({
+                        id: item.sid,
                         name_eng: item.name_eng,
                         name_jap: item.name_jap,
                     })),
                     favoriteAmenity: data.amenities.map((item) => ({
+                        id: item.aid,
                         name_eng: item.name_eng,
                         name_jap: item.name_jap,
                     })),
                     favoriteDrink: data.drinks.map((item) => ({
+                        id: item.did,
                         name_eng: item.name_eng,
                         name_jap: item.name_ja,
+                    })),
+                    favoriteTime: data.time.map((item) => ({
+                        id: item,
+                        name_eng: item,
+                        name_jap: item,
                     })),
                 };
                 this.setState({ allPreferences: mapAllPreferences });
@@ -90,11 +98,9 @@ class UserPreference extends Component {
                         name_eng: item.name_eng,
                         name_jap: item.name_ja,
                     })),
-                    favoriteTime: user.favoriteTime.map((item) => item.time),
+                    favoriteTime: user.favoriteTime.map((item) => item),
                     distance: user.favoriteDistance,
                 };
-
-                console.log('User Preferences:', mappedPreferences);
                 this.setState({ preferences: mappedPreferences });
             } else {
                 console.error('Error fetching preferences:', response);
@@ -111,16 +117,14 @@ class UserPreference extends Component {
                 [category]: prevState.preferences[category].filter((i) => i !== item),
             },
         }), () => {
-            console.log(`${item} removed from ${category}`);
         });
     };
 
     handleAdd = (category, selectedItem) => {
         if (!selectedItem) return;
         
-        const parsedItem = JSON.parse(selectedItem); // Parse stringified object from <select>
-        
-        // Check if the item already exists in the category
+        const parsedItem = JSON.parse(selectedItem);
+
         const isItemAlreadyAdded = this.state.preferences[category].some(item => 
             typeof item === 'object' 
             ? item.name_eng === parsedItem.name_eng || item.name_jap === parsedItem.name_jap 
@@ -128,7 +132,6 @@ class UserPreference extends Component {
         );
     
         if (isItemAlreadyAdded) {
-            console.log(`${parsedItem.name_eng || parsedItem} is already added to ${category}`);
             return;
         }
     
@@ -139,24 +142,21 @@ class UserPreference extends Component {
             },
             selectedOption: '',
         }), () => {
-            console.log(`${parsedItem.name_eng || parsedItem} added to ${category}`);
-            console.log(this.state.preferences);
         });
     };
     
     handleSavePreferences = async () => {
         const { preferences } = this.state;
         const { email } = this.props.userInfo;
-    
-        // Convert preferences to English before sending
+
         const convertedPreferences = {
             email: email,
-            stylePreference: preferences.favoriteStyle, // Assuming styles are already in English
-            servicePreference: preferences.favoriteService.map(item => item.name_eng),
-            amenityPreference: preferences.favoriteAmenity.map(item => item.name_eng),
-            drinkPreference: preferences.favoriteDrink.map(item => item.name_eng),
-            distancePreference: preferences.distance,
-            timePreference: preferences.favoriteTime, // Assuming time is already in English
+            stylePreference: preferences.favoriteStyle,
+            servicePreference: preferences.favoriteService.map(item => String(item.id)),
+            amenityPreference: preferences.favoriteAmenity.map(item => String(item.id)),
+            drinkPreference: preferences.favoriteDrink.map(item => String(item.id)),
+            distancePreference: parseInt(preferences.distance, 10),
+            timePreference: preferences.favoriteTime.map(item => String(item.id)),
         };
     
         try {
@@ -169,12 +169,6 @@ class UserPreference extends Component {
                 convertedPreferences.distancePreference,
                 convertedPreferences.timePreference
             );
-            
-            if (response.data.errCode === 0) {
-                console.log('Preferences saved successfully');
-            } else {
-                console.error('Error saving preferences:', response.data.errMessage);
-            }
         } catch (error) {
             console.error('Error saving preferences:', error);
         }
