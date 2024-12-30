@@ -208,6 +208,7 @@ class Homepage extends Component {
                 const datas = response?.data || [];
 
                 resultFavorite = datas.map(data => ({
+                    picture: data.coffeeShop.picture,
                     cid: data.coffeeShop.cid,
                     name: data.coffeeShop.name,
                     provinceVie: data.coffeeShop.province_vie,
@@ -526,7 +527,7 @@ class Homepage extends Component {
                                 {resultFavorite.map((shop, idx) => (
                                     <Card
                                         key={idx}
-                                        imageUrl="https://images.pexels.com/photos/26545646/pexels-photo-26545646/free-photo-of-xay-d-ng-m-u-k-t-c-u-tr-u-t-ng.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                        imageUrl={shop.picture}
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
