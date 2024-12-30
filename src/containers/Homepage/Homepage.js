@@ -196,23 +196,14 @@ class Homepage extends Component {
 
             const datas = response?.data || [];
 
-<<<<<<< HEAD
-                resultFavorite = datas.map(data => ({
-                    picture: data.coffeeShop.picture,
-                    cid: data.coffeeShop.cid,
-                    name: data.coffeeShop.name,
-                    provinceVie: data.coffeeShop.province_vie,
-                    provinceJap: data.coffeeShop.province_jap
-                }))
-            }
-=======
+
             const resultFavorite = datas.map(data => ({
+                picture: data.coffeeShop.picture,
                 cid: data.coffeeShop.cid,
                 name: data.coffeeShop.name,
                 provinceVie: data.coffeeShop.province_vie,
                 provinceJap: data.coffeeShop.province_jap
             }))
->>>>>>> parent of 537c92c (phong thu tuyet doi)
 
             this.setState({ resultFavorite });
         } catch (error) {
