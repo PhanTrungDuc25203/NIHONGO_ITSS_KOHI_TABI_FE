@@ -10,6 +10,7 @@ import all_icons from "../../assets/Icons/all_icons";
 import Header from '../../components/Users/Header';
 import { fetchCoffeeShopDetail } from '../../services/userService';
 import { IoIosArrowBack } from "react-icons/io";
+import { languages } from "../../utils";
 
 class FindMap extends Component {
     constructor(props) {
@@ -247,7 +248,7 @@ class FindMap extends Component {
                     />
                         <form className="form">
                             <div className="form-group">
-                                <label htmlFor="startPoint">From</label>
+                                <label htmlFor="startPoint">{this.props.language === languages.JA ? '出発地点' : 'Starting point'}</label>
                                 <input
                                     type="text"
                                     id="startPoint"
@@ -264,7 +265,7 @@ class FindMap extends Component {
                                 </button> */}
                             </div>
                             <div className="form-group">
-                                <label htmlFor="endPoint">To</label>
+                                <label htmlFor="endPoint">{this.props.language === languages.JA ? '目的地' : 'Destination'}</label>
                                 <input
                                     type="text"
                                     id="endPoint"
@@ -275,7 +276,7 @@ class FindMap extends Component {
                             </div>
                         </form>
                         <button className="btn" onClick={this.handleFindRoute}>
-                            Tìm đường
+                        {this.props.language === languages.JA ? '道順を調べる' : 'Find the way'}
                         </button>
                     </div>
                     <div className="find-map-container-right">
