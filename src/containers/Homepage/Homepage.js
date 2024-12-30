@@ -142,7 +142,7 @@ class Homepage extends Component {
                 selectedStyle, 
                 selectedServiceTags[0], 
                 selectedAmenityTags[0],
-                this.props.userInfo.id);
+                this.props.userInfo?.id);
             const coffeeShops = response.coffeShops || [];
             const resultSearch = coffeeShops.map(shop => ({
                 cid: shop.cid,
@@ -173,39 +173,43 @@ class Homepage extends Component {
         try {
             const response = await handleGetCoffeeShopForYou(email);
 
-            const coffeeShops = response?.coffeeShops || [];
+            if (response.errCode === 0) {
+                const coffeeShops = response?.coffeeShops || [];
 
-            const resultForYou = coffeeShops.map(shop => ({
-                cid: shop.cid,
-                name: shop.name,
-                provinceVie: shop.province_vie,
-                provinceJap: shop.province_jap
-            }));
+                const resultForYou = coffeeShops.map(shop => ({
+                    cid: shop.cid,
+                    name: shop.name,
+                    provinceVie: shop.province_vie,
+                    provinceJap: shop.province_jap
+                }));
 
-            this.setState({ resultForYou });
+                this.setState({ resultForYou });
+            }
         } catch (error) {
             console.error('Error fetching coffee shop data:', error);
         }
     };
 
     handleGetDataFavorite = async () => {
-        const id = this.props.userInfo.id;
+        const id = this.props.userInfo?.id;
 
         try {
             const response = await getListFavoriteCoffeeShop(id);
 
+            if (response.errCode === 0) {
+
             const datas = response?.data || [];
 
+                const resultFavorite = datas.map(data => ({
+                    picture: data.coffeeShop.picture,
+                    cid: data.coffeeShop.cid,
+                    name: data.coffeeShop.name,
+                    provinceVie: data.coffeeShop.province_vie,
+                    provinceJap: data.coffeeShop.province_jap
+                }))
 
-            const resultFavorite = datas.map(data => ({
-                picture: data.coffeeShop.picture,
-                cid: data.coffeeShop.cid,
-                name: data.coffeeShop.name,
-                provinceVie: data.coffeeShop.province_vie,
-                provinceJap: data.coffeeShop.province_jap
-            }))
-
-            this.setState({ resultFavorite });
+                this.setState({ resultFavorite });
+            }
         } catch (error) {
             console.error('Error fetching coffee shop data:', error);
         }
@@ -217,6 +221,8 @@ class Homepage extends Component {
         try {
             const response = await getRecent(id);
 
+            if (response.errCode === 0){
+
             const coffeeShops = response?.coffeeShops || [];
 
             const resultRecent = coffeeShops.map(data => ({
@@ -226,7 +232,7 @@ class Homepage extends Component {
                 provinceJap: data.province_jap
             }))
 
-            this.setState({ resultRecent });
+            this.setState({ resultRecent });}
         } catch (error) {
             console.error('Error fetching coffee shop data:', error);
         }
