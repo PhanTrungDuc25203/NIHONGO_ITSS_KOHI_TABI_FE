@@ -212,7 +212,7 @@ class UserPreference extends Component {
                         value={this.state.selectedOption}
                         onChange={(e) => this.setState({ selectedOption: e.target.value })}
                     >
-                        <option value="">Select an item...</option>
+                        <option value="">{this.props.language === languages.JA ? '項目を選択してください...' : 'Select an item...'}</option>
                         {availableOptions.map((item, index) => (
                             <option key={index} value={JSON.stringify(item)}>
                                 {language === languages.JA ? item.name_jap || item.name_eng : item.name_eng || item}
