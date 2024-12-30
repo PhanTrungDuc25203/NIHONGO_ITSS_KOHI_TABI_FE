@@ -97,7 +97,7 @@ class AddCoffeeShop extends Component {
         const file = files[0];
     
         // Kiểm tra định dạng file
-        const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
+        const validFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
         if (!validFormats.includes(file.type)) {
             alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
             return;
