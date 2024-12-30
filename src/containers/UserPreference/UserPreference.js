@@ -87,18 +87,25 @@ class UserPreference extends Component {
                 const mappedPreferences = {
                     favoriteStyle: user.favoriteStyle.map((item) => item.style),
                     favoriteService: user.favoriteService.map((item) => ({
+                        id: item.sid,
                         name_eng: item.name_eng,
                         name_jap: item.name_jap,
                     })),
                     favoriteAmenity: user.favoriteAmenity.map((item) => ({
+                        id: item.aid,
                         name_eng: item.name_eng,
                         name_jap: item.name_jap,
                     })),
                     favoriteDrink: user.favoriteDrink.map((item) => ({
+                        id: item.did,
                         name_eng: item.name_eng,
                         name_jap: item.name_ja,
                     })),
-                    favoriteTime: user.favoriteTime.map((item) => item),
+                    favoriteTime: user.favoriteTime.map((item) => ({
+                        id: item.time,
+                        name_eng: item.time,
+                        name_jap: item.time,
+                    })),
                     distance: user.favoriteDistance,
                 };
                 this.setState({ preferences: mappedPreferences });
@@ -142,12 +149,15 @@ class UserPreference extends Component {
             },
             selectedOption: '',
         }), () => {
+            console.log(this.state.preferences);
         });
     };
     
     handleSavePreferences = async () => {
         const { preferences } = this.state;
         const { email } = this.props.userInfo;
+
+        console.log(preferences);
 
         const convertedPreferences = {
             email: email,
@@ -158,6 +168,8 @@ class UserPreference extends Component {
             distancePreference: parseInt(preferences.distance, 10),
             timePreference: preferences.favoriteTime.map(item => String(item.id)),
         };
+
+        console.log('convertedPreferences:', convertedPreferences);
     
         try {
             const response = await updateUserPreference(
