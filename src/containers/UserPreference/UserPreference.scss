@@ -1,8 +1,8 @@
 .user-preference {
   .preferences-container {
-    padding: 20px;
+    padding: 20px 200px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 20px;
 
     .preference-category {
@@ -64,6 +64,7 @@
         }
 
         .add-button {
+            text-align: center;
           background-color: #f5f5f5;
           border: 1px dashed #ccc;
           border-radius: 50%;
@@ -78,6 +79,12 @@
 
           &:hover {
             background-color: #e2e2e2;
+          }
+
+          p {
+            margin-bottom: 0;
+            display: inline-flex;
+            align-items: center;
           }
         }
       }
@@ -99,7 +106,8 @@
   }
 
   .actions {
-    margin-right: 20px;
+    margin-right: 200px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -167,6 +175,14 @@
       transform: translateY(-50%);
       font-size: 12px;
       color: #888;
+    }
+  }
+  .flex {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    .add-select {
+        width: 150px;
     }
   }
 }

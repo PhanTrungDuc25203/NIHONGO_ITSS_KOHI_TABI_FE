@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'; 
+import { withRouter } from 'react-router-dom';
 import './FindMap.scss';
 import L from "leaflet";
 import "leaflet-routing-machine";
@@ -29,7 +29,7 @@ class FindMap extends Component {
     async componentDidMount() {
         this.initializeMap();
         this.handleGetCurrentLocation();
-    
+
         let { id } = this.props.match.params || {};
         if (id) {
             let res = await fetchCoffeeShopDetail(id);
@@ -67,12 +67,12 @@ class FindMap extends Component {
         const { activeInput } = this.state;
         const lat = e.latlng.lat;
         const lng = e.latlng.lng;
-    
+
         const icon = L.icon({
             iconUrl: activeInput === "start" ? all_icons.start : all_icons.end,
             iconSize: [30, 30],
         });
-    
+
         if (activeInput === "start") {
             this.setState({ startPoint: [lat, lng] }, () => {
                 this.fetchAddress(lat, lng, 'startAddress');
@@ -86,7 +86,7 @@ class FindMap extends Component {
                 this.endMarker = L.marker([lat, lng], { icon }).addTo(this.map);
             });
         }
-    };    
+    };
 
     handleAddressChangeDirect = async (address, addressKey, pointKey, markerKey) => {
         try {
@@ -95,18 +95,18 @@ class FindMap extends Component {
             );
             if (!response.ok) throw new Error("Failed to fetch geocoding data");
             const data = await response.json();
-    
+
             if (data.length > 0) {
                 const lat = parseFloat(data[0].lat);
                 const lon = parseFloat(data[0].lon);
-    
+
                 this.setState({ [pointKey]: [lat, lon] });
-    
+
                 const icon = L.icon({
                     iconUrl: addressKey === "startAddress" ? all_icons.start : all_icons.end,
                     iconSize: [30, 30],
                 });
-    
+
                 if (this[markerKey]) this.map.removeLayer(this[markerKey]);
                 this[markerKey] = L.marker([lat, lon], { icon }).addTo(this.map);
             }
@@ -114,14 +114,14 @@ class FindMap extends Component {
             console.error("Geocoding error:", error);
         }
     };
-    
+
 
     handleAddressChange = async (e, addressKey, pointKey, markerKey) => {
         const value = e.target.value;
         this.setState({ [addressKey]: value });
-    
+
         if (this.geocodeTimeout) clearTimeout(this.geocodeTimeout);
-    
+
         this.geocodeTimeout = setTimeout(async () => {
             try {
                 const response = await fetch(
@@ -129,18 +129,18 @@ class FindMap extends Component {
                 );
                 if (!response.ok) throw new Error("Failed to fetch geocoding data");
                 const data = await response.json();
-    
+
                 if (data.length > 0) {
                     const lat = parseFloat(data[0].lat);
                     const lon = parseFloat(data[0].lon);
-    
+
                     this.setState({ [pointKey]: [lat, lon] });
-    
+
                     const icon = L.icon({
                         iconUrl: addressKey === "startAddress" ? all_icons.start : all_icons.end,
                         iconSize: [30, 30],
                     });
-    
+
                     if (this[markerKey]) this.map.removeLayer(this[markerKey]);
                     this[markerKey] = L.marker([lat, lon], { icon }).addTo(this.map);
                 }
@@ -149,7 +149,7 @@ class FindMap extends Component {
             }
         }, 500);
     };
-    
+
     fetchAddress = async (lat, lng, addressKey) => {
         try {
             const response = await fetch(
@@ -162,26 +162,26 @@ class FindMap extends Component {
             console.error("Error fetching address:", error);
             this.setState({ [addressKey]: "Không xác định" });
         }
-    };    
+    };
 
     handleFindRoute = () => {
         const { startPoint, endPoint } = this.state;
         if (!startPoint || !endPoint) return;
-    
+
         if (this.routingControl) {
             this.map.removeControl(this.routingControl);
         }
-    
+
         const startIcon = L.icon({
             iconUrl: all_icons.start,
             iconSize: [30, 30],
         });
-    
+
         const endIcon = L.icon({
             iconUrl: all_icons.end,
             iconSize: [30, 30],
         });
-    
+
         this.routingControl = L.Routing.control({
             waypoints: [L.latLng(startPoint), L.latLng(endPoint)],
             createMarker: function (i, waypoint) {
@@ -191,9 +191,9 @@ class FindMap extends Component {
             routeOptions: {
                 styles: [
                     {
-                        color: '#ff5733',
-                        weight: 5,
-                        opacity: 0.7
+                        color: '#000000',
+                        weight: 6,
+                        opacity: 0.8
                     }
                 ]
             }
@@ -205,19 +205,19 @@ class FindMap extends Component {
             alert("Trình duyệt của bạn không hỗ trợ định vị địa lý.");
             return;
         }
-    
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
-    
+
                 this.setState({ startPoint: [latitude, longitude] }, () => {
                     this.fetchAddress(latitude, longitude, 'startAddress');
-    
+
                     const icon = L.icon({
                         iconUrl: all_icons.start,
                         iconSize: [30, 30],
                     });
-    
+
                     if (this.startMarker) this.map.removeLayer(this.startMarker);
                     this.startMarker = L.marker([latitude, longitude], { icon }).addTo(this.map);
                 });
@@ -239,7 +239,7 @@ class FindMap extends Component {
             }
         );
     };
-    
+
 
     render() {
         const { startAddress, endAddress, startPoint, endPoint } = this.state;
@@ -249,12 +249,12 @@ class FindMap extends Component {
                 <Header />
                 <div className="find-map-container">
                     <div className="find-map-container-left">
-                    <IoIosArrowBack
-                        size={50}
-                        color="#ffa16c"
-                        onClick={() => this.props.history.goBack()}
-                        style={{ cursor: "pointer" }}
-                    />
+                        <IoIosArrowBack
+                            size={50}
+                            color="#ffa16c"
+                            onClick={() => this.props.history.goBack()}
+                            style={{ cursor: "pointer" }}
+                        />
                         <form className="form">
                             <div className="form-group">
                                 <label htmlFor="startPoint">{this.props.language === languages.JA ? '出発地点' : 'Starting point'}</label>
@@ -285,7 +285,7 @@ class FindMap extends Component {
                             </div>
                         </form>
                         <button className="btn" onClick={this.handleFindRoute}>
-                        {this.props.language === languages.JA ? '道順を調べる' : 'Find the way'}
+                            {this.props.language === languages.JA ? '道順を調べる' : 'Find the way'}
                         </button>
                     </div>
                     <div className="find-map-container-right">

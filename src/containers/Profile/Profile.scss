@@ -99,6 +99,26 @@
             font-weight: bold;
             color: #555;
           }
+          .act-lang{
+            display: flex;
+            gap: 20px;
+            button{
+                padding: 10px;
+            background-color: #ff7f50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            &:hover {
+              background-color: #e66a45;
+            }
+            }
+          }
   
           .value,
           input {

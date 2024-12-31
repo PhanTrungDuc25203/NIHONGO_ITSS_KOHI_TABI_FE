@@ -188,7 +188,7 @@ class Profile extends Component {
                             <div className="change-password">
                                 <p>{this.props.language === languages.JA ? 'パスワードの変更' : 'Change password'}</p>
                             </div>
-                            <button className="btn logout-btn" onClick={this.handleLoginForUser}>{this.props.language === languages.JA ? 'ログアウト' : 'Login'}</button>
+                            <button className="btn logout-btn" onClick={this.handleLoginForUser}>{this.props.language === languages.JA ? 'ログアウト' : 'Logout'}</button>
 
                             <div className="actions">
                                 <button className="btn save-btn" onClick={this.handleUpdateProfile}>{this.props.language === languages.JA ? '保存' : 'Save'}</button>

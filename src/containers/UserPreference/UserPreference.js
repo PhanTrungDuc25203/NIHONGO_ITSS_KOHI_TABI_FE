@@ -110,12 +110,8 @@ class UserPreference extends Component {
                     distance: user.favoriteDistance,
                 };
                 this.setState({ preferences: mappedPreferences });
-                toast.success(this.props.language === languages.JA ? '設定が正常に更新されました！' : 'Preference updated successfully!');
-            } else {
-                toast.success(this.props.language === languages.JA ? '設定の更新中にエラーが発生しました。もう一度お試しください。' : 'Error updating preference. Please try again.!');
             }
         } catch (error) {
-            toast.success(this.props.language === languages.JA ? '設定の更新中にエラーが発生しました。もう一度お試しください。' : 'Error updating preference. Please try again.!');
         }
     };
 
@@ -131,19 +127,19 @@ class UserPreference extends Component {
 
     handleAdd = (category, selectedItem) => {
         if (!selectedItem) return;
-        
+
         const parsedItem = JSON.parse(selectedItem);
 
-        const isItemAlreadyAdded = this.state.preferences[category].some(item => 
-            typeof item === 'object' 
-            ? item.name_eng === parsedItem.name_eng || item.name_jap === parsedItem.name_jap 
-            : item === parsedItem
+        const isItemAlreadyAdded = this.state.preferences[category].some(item =>
+            typeof item === 'object'
+                ? item.name_eng === parsedItem.name_eng || item.name_jap === parsedItem.name_jap
+                : item === parsedItem
         );
-    
+
         if (isItemAlreadyAdded) {
             return;
         }
-    
+
         this.setState((prevState) => ({
             preferences: {
                 ...prevState.preferences,
@@ -154,7 +150,7 @@ class UserPreference extends Component {
             console.log(this.state.preferences);
         });
     };
-    
+
     handleSavePreferences = async () => {
         const { preferences } = this.state;
         const { email } = this.props.userInfo;
@@ -172,7 +168,7 @@ class UserPreference extends Component {
         };
 
         console.log('convertedPreferences:', convertedPreferences);
-    
+
         try {
             const response = await updateUserPreference(
                 convertedPreferences.email,
@@ -183,17 +179,18 @@ class UserPreference extends Component {
                 convertedPreferences.distancePreference,
                 convertedPreferences.timePreference
             );
+            toast.success(this.props.language === languages.JA ? '設定が正常に更新されました！' : 'Preference updated successfully!');
         } catch (error) {
-            console.error('Error saving preferences:', error);
+            toast.error(this.props.language === languages.JA ? '設定の更新中にエラーが発生しました。もう一度お試しください。' : 'Error updating preference. Please try again.!');
         }
-    };    
-    
+    };
+
     renderCategory = (titleEng, titleJap, category) => {
         const { language } = this.props;
         const title = language === languages.JA ? titleJap : titleEng;
-    
+
         const availableOptions = this.state.allPreferences[category] || [];
-    
+
         return (
             <div className='preference-category'>
                 <ToastContainer />
@@ -209,31 +206,33 @@ class UserPreference extends Component {
                             <button onClick={() => this.handleRemove(category, item)}>-</button>
                         </span>
                     ))}
-    
-                    <select
-                        className="add-select"
-                        value={this.state.selectedOption}
-                        onChange={(e) => this.setState({ selectedOption: e.target.value })}
-                    >
-                        <option value="">{this.props.language === languages.JA ? '項目を選択してください...' : 'Select an item...'}</option>
-                        {availableOptions.map((item, index) => (
-                            <option key={index} value={JSON.stringify(item)}>
-                                {language === languages.JA ? item.name_jap || item.name_eng : item.name_eng || item}
-                            </option>
-                        ))}
-                    </select>
-                    <button
-                        className='add-button'
-                        onClick={() => this.handleAdd(category, this.state.selectedOption)}
-                    >
-                        +
-                    </button>
+
+                    <div className='flex'>
+                        <select
+                            className="add-select"
+                            value={this.state.selectedOption}
+                            onChange={(e) => this.setState({ selectedOption: e.target.value })}
+                        >
+                            <option value="">{this.props.language === languages.JA ? '項目を選択してください...' : 'Select an item...'}</option>
+                            {availableOptions.map((item, index) => (
+                                <option key={index} value={JSON.stringify(item)}>
+                                    {language === languages.JA ? item.name_jap || item.name_eng : item.name_eng || item}
+                                </option>
+                            ))}
+                        </select>
+                        <button
+                            className='add-button'
+                            onClick={() => this.handleAdd(category, this.state.selectedOption)}
+                        >
+                            <p>+</p>
+                        </button>
+                    </div>
                 </div>
             </div>
         );
     };
-    
-    
+
+
     render() {
         const { preferences } = this.state;
 
