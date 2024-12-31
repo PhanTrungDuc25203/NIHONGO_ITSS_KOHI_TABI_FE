@@ -285,7 +285,7 @@ class FindMap extends Component {
                             </div>
                         </form>
                         <button className="btn" onClick={this.handleFindRoute}>
-                            {this.props.language === languages.JA ? '道順を調べる' : 'Find the way'}
+                        {this.props.language === languages.JA ? '道順を調べる' : 'Find the way'}
                         </button>
                     </div>
                     <div className="find-map-container-right">
