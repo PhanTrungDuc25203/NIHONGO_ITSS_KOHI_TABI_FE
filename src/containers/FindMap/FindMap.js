@@ -188,6 +188,15 @@ class FindMap extends Component {
                 const icon = i === 0 ? startIcon : endIcon;
                 return L.marker(waypoint.latLng, { icon });
             },
+            routeOptions: {
+                styles: [
+                    {
+                        color: '#ff5733',
+                        weight: 5,
+                        opacity: 0.7
+                    }
+                ]
+            }
         }).addTo(this.map);
     };
 
