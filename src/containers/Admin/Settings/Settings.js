@@ -95,8 +95,8 @@ class Settings extends Component {
                                 onChange={this.handleLanguageChange}
                                 value={this.props.language}
                             >
-                                <option value="en">{this.props.language === languages.EN ? 'English' : '英語'}</option>
-                                <option value="ja">{this.props.language === languages.EN ? 'Japanese' : '日本語'}</option>
+                                <option value="en">{this.props.language === languages.JA ? '英語' : 'English'}</option>
+                                <option value="ja">{this.props.language === languages.JA ? '日本語' : 'Japanese'}</option>
                             </select>
                         </div>
                         <div className="form-group">

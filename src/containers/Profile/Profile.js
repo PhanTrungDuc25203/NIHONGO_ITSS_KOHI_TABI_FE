@@ -8,7 +8,8 @@ import Header from '../../components/Users/Header';
 import * as actions from "../../store/actions";
 import { getUserProfileData, updateUserProfileData } from '../../services/userService';
 import e from 'cors';
-import {languages} from '../../utils'
+import { LanguageUtils, languages } from "../../utils";
+import { FormattedMessage } from "react-intl";
 
 class Profile extends Component {
     constructor(props) {
@@ -58,6 +59,10 @@ class Profile extends Component {
             toast.error(this.props.language === languages.JA ? 'プロフィールの更新中にエラーが発生しました。もう一度お試しください。' : 'Error updating profile. Please try again.');
         }
     };
+
+    changeLanguage = (language) => {
+        this.props.switchLanguageOfWebsite(language);
+    }
 
     handleInputChange = (e, field) => {
         this.setState({ [field]: e.target.value });
@@ -184,8 +189,8 @@ class Profile extends Component {
                             <div className='detail-item'>
                                 <span className="label">{this.props.language === languages.JA ? '言語' : 'Language'}</span>
                                 <div className='act-lang'>
-                                    <button>{this.props.language === languages.JA ? '英語' : 'English'}</button>
-                                    <button>{this.props.language === languages.JA ? '日本語' : 'Japanese'}</button>
+                                    <button onClick={() => { this.changeLanguage(languages.EN) }}>{this.props.language === languages.JA ? '英語' : 'English'}</button>
+                                    <button onClick={() => { this.changeLanguage(languages.JA) }}>{this.props.language === languages.JA ? '日本語' : 'Japanese'}</button>
                                 </div>
                             </div>
 
@@ -217,6 +222,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         processLogout: () => dispatch(actions.processLogout()),
+        switchLanguageOfWebsite: (language) => dispatch(actions.switchLanguageOfWebsite(language)),
     };
 };
 
