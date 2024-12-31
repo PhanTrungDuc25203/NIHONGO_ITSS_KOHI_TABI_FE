@@ -156,7 +156,7 @@ class Profile extends Component {
                             </div>
 
                             <div className="detail-item">
-                                <span className="label">Address:</span>
+                                <span className="label">{this.props.language === languages.JA ? '住所' : 'Address'}</span>
                                 <div className="address-list">
                                     {addresses.map((address, index) => (
                                         <div key={index} className="address-item" >
@@ -173,6 +173,14 @@ class Profile extends Component {
                                         />
                                         <button className="add-button" onClick={this.addAddress}>+</button>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className='detail-item'>
+                                <span className="label">{this.props.language === languages.JA ? '言語' : 'Language'}</span>
+                                <div className='act-lang'>
+                                    <button>{this.props.language === languages.JA ? '英語' : 'English'}</button>
+                                    <button>{this.props.language === languages.JA ? '日本語' : 'Japanese'}</button>
                                 </div>
                             </div>
 
