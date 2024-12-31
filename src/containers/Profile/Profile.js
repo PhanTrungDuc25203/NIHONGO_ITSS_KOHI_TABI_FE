@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter , useHistory } from 'react-router-dom'; // Import withRouter
+import { withRouter } from 'react-router-dom'; // Import withRouter
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Profile.scss';
 import Header from '../../components/Users/Header';
 import * as actions from "../../store/actions";
 import { getUserProfileData, updateUserProfileData } from '../../services/userService';
-import e from 'cors';
-import {languages} from '../../utils'
+import { languages } from '../../utils';
 
 class Profile extends Component {
     constructor(props) {
@@ -41,7 +42,8 @@ class Profile extends Component {
                 addresses: user.address ? user.address.split('.') : [],
             });
         } catch (error) {
-            console.error('Error fetching proflie data:', error);
+            console.error('Error fetching profile data:', error);
+            toast.error('Error fetching profile data');
         }
     };
 
@@ -50,9 +52,9 @@ class Profile extends Component {
         try {
             const formattedAddress = addresses.join('.');
             const response = await updateUserProfileData(email, phone, name, formattedAddress);
-            console.log('response:', response);
+            toast.success(this.props.language === languages.JA ? 'プロフィールが正常に更新されました！' : 'Profile updated successfully!');
         } catch (error) {
-            console.error('Error updating profile:', error);
+            toast.error(this.props.language === languages.JA ? 'プロフィールの更新中にエラーが発生しました。もう一度お試しください。' : 'Error updating profile. Please try again.');
         }
     };
 
@@ -87,7 +89,7 @@ class Profile extends Component {
     handleLoginForUser = () => {
         this.props.processLogout();
         this.props.history.push(`/login`);
-    }
+    };
 
     handleOpenUserPreference() {
         this.props.history.push(`/user-preference`);
@@ -99,6 +101,7 @@ class Profile extends Component {
         return (
             <div className='profile'>
                 <Header />
+                <ToastContainer />
                 <div className="profile-container">
                     <h1 className="profile-title">{this.props.language === languages.JA ? 'プロファイル' : 'Profile'}</h1>
                     <div className="profile-content">
@@ -180,7 +183,6 @@ class Profile extends Component {
                             <button className="btn logout-btn" onClick={this.handleLoginForUser}>{this.props.language === languages.JA ? 'ログアウト' : 'Login'}</button>
 
                             <div className="actions">
-                                {/* <button className="btn discard-btn">{this.props.language === languages.JA ? 'ログアウト' : 'Login'}Discard change</button> */}
                                 <button className="btn save-btn" onClick={this.handleUpdateProfile}>{this.props.language === languages.JA ? '保存' : 'Save'}</button>
                             </div>
                         </div>

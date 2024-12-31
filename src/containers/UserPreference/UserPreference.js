@@ -5,6 +5,7 @@ import './UserPreference.scss';
 import Header from '../../components/Users/Header';
 import { getUserPreference, getAllUserPreference, updateUserPreference } from '../../services/userService';
 import { languages } from "../../utils";
+import { toast, ToastContainer } from 'react-toastify';
 
 class UserPreference extends Component {
     constructor(props) {
@@ -109,11 +110,12 @@ class UserPreference extends Component {
                     distance: user.favoriteDistance,
                 };
                 this.setState({ preferences: mappedPreferences });
+                toast.success(this.props.language === languages.JA ? '設定が正常に更新されました！' : 'Preference updated successfully!');
             } else {
-                console.error('Error fetching preferences:', response);
+                toast.success(this.props.language === languages.JA ? '設定の更新中にエラーが発生しました。もう一度お試しください。' : 'Error updating preference. Please try again.!');
             }
         } catch (error) {
-            console.error('Error fetching preferences:', error);
+            toast.success(this.props.language === languages.JA ? '設定の更新中にエラーが発生しました。もう一度お試しください。' : 'Error updating preference. Please try again.!');
         }
     };
 
@@ -194,6 +196,7 @@ class UserPreference extends Component {
     
         return (
             <div className='preference-category'>
+                <ToastContainer />
                 <h4>{title}</h4>
                 <div className='preference-items'>
                     {this.state.preferences[category].map((item, index) => (
