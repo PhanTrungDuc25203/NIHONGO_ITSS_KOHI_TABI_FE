@@ -405,15 +405,15 @@ class Homepage extends Component {
                                     <button
                                         className={this.state.selectedStyle === 'Vintage' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Vintage')}
-                                    >Vintage</button>
+                                    >{this.props.language === languages.JA ? 'コワーキング' : 'Co-Working'}</button>
                                     <button
                                         className={this.state.selectedStyle === 'Modern' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Modern')}
-                                    >Modern</button>
+                                    >{this.props.language === languages.JA ? '話' : 'Talking'}</button>
                                     <button
                                         className={this.state.selectedStyle === 'Eco-Friendly' ? 'active' : ''}
                                         onClick={() => this.handleStyleSelect('Eco-Friendly')}
-                                    >Eco-Friendly</button>
+                                    >{this.props.language === languages.JA ? '猫' : 'Cat'}</button>
                                 </div>
                             </div>
                             <div className="filter-group">
