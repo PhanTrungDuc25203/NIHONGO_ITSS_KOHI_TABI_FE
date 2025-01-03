@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
-import { withRouter , useNavigate, useHistory } from 'react-router-dom';
+import { withRouter, useNavigate, useHistory } from 'react-router-dom';
 import { KeyCodeUtils, LanguageUtils, languages } from "../../utils";
 import './Homepage.scss';
 import './../../components/Card/Card'
@@ -133,14 +133,14 @@ class Homepage extends Component {
         const { name, selectedWaitingTime, selectedStyle, selectedAmenityTags, selectedServiceTags, minPrice, maxPrice, openingStartHour, openingStartMinute, closingStartHour, closingStartMinute } = this.state;
         try {
             let response = await handleSearch(
-                name, 
-                selectedWaitingTime, 
-                (openingStartHour === null || openingStartMinute === null) ? null : openingStartHour + ':' + openingStartMinute + ':0', 
-                (closingStartHour === null || closingStartMinute === null) ? null : closingStartHour + ':' + closingStartMinute + ':0', 
-                minPrice, 
-                maxPrice, 
-                selectedStyle, 
-                selectedServiceTags[0], 
+                name,
+                selectedWaitingTime,
+                (openingStartHour === null || openingStartMinute === null) ? null : openingStartHour + ':' + openingStartMinute + ':0',
+                (closingStartHour === null || closingStartMinute === null) ? null : closingStartHour + ':' + closingStartMinute + ':0',
+                minPrice,
+                maxPrice,
+                selectedStyle,
+                selectedServiceTags[0],
                 selectedAmenityTags[0],
                 this.props.userInfo?.id);
             const coffeeShops = response.coffeShops || [];
@@ -200,7 +200,7 @@ class Homepage extends Component {
 
             if (response.errCode === 0) {
 
-            const datas = response?.data || [];
+                const datas = response?.data || [];
 
                 const resultFavorite = datas.map(data => ({
                     picture: data.coffeeShop.picture,
@@ -223,19 +223,20 @@ class Homepage extends Component {
         try {
             const response = await getRecent(id);
 
-            if (response.errCode === 0){
+            if (response.errCode === 0) {
 
-            const coffeeShops = response?.coffeeShops || [];
+                const coffeeShops = response?.coffeeShops || [];
 
-            const resultRecent = coffeeShops.map(data => ({
-                picture: data.picture,
-                cid: data.cid,
-                name: data.name,
-                provinceVie: data.province_vie,
-                provinceJap: data.province_jap
-            }))
+                const resultRecent = coffeeShops.map(data => ({
+                    picture: data.picture,
+                    cid: data.cid,
+                    name: data.name,
+                    provinceVie: data.province_vie,
+                    provinceJap: data.province_jap
+                }))
 
-            this.setState({ resultRecent });}
+                this.setState({ resultRecent });
+            }
         } catch (error) {
             console.error('Error fetching coffee shop data:', error);
         }
@@ -387,15 +388,15 @@ class Homepage extends Component {
                                     <button
                                         className={this.state.selectedWaitingTime === WaitingTime.FIVE_MINUTES ? 'active' : ''}
                                         onClick={() => this.handleWaitingTimeSelect('FIVE_MINUTES')}
-                                    >5m</button>
+                                    >{this.props.language === languages.JA ? '５分' : '5m'}</button>
                                     <button
                                         className={this.state.selectedWaitingTime === WaitingTime.FIFTEEN_MINUTES ? 'active' : ''}
                                         onClick={() => this.handleWaitingTimeSelect('FIFTEEN_MINUTES')}
-                                    >15m</button>
+                                    >{this.props.language === languages.JA ? '１５分' : '15m'}</button>
                                     <button
                                         className={this.state.selectedWaitingTime === WaitingTime.THIRTY_MINUTES ? 'active' : ''}
                                         onClick={() => this.handleWaitingTimeSelect('THIRTY_MINUTES')}
-                                    >30m</button>
+                                    >{this.props.language === languages.JA ? '３０分' : '30m'}</button>
                                 </div>
                             </div>
                             <div className="filter-group">
@@ -489,7 +490,7 @@ class Homepage extends Component {
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
-                                        />
+                                    />
                                 ))}
                             </div>
                         </section>
@@ -503,7 +504,7 @@ class Homepage extends Component {
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
-                                        />
+                                    />
                                 ))}
                             </div>
                         </section>
@@ -517,7 +518,7 @@ class Homepage extends Component {
                                         title={shop.name}
                                         location={shop.provinceVie || shop.provinceJap}
                                         onClick={() => this.handleNavigateToDetail(shop.cid)}
-                                        />
+                                    />
                                 ))}
                             </div>
                         </section>
