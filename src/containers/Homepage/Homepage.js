@@ -287,7 +287,7 @@ class Homepage extends Component {
                                     onChange={this.handleLocationSelect}
                                 >
                                     <option value="">
-                                        {this.props.language === languages.JA ? '都市を選んでください' : 'Select a province'}
+                                        {this.props.language === languages.JA ? '距離を選んでください' : 'Select distance'}
                                     </option>
                                     {provinces.map((province, index) => (
                                         <option key={index} value={province}>{province}</option>
@@ -466,7 +466,7 @@ class Homepage extends Component {
                     <main className="content">
                         {(resultSearch.length > 0) && (
                             <section className="card-section">
-                                <h4>Search Result</h4>
+                                <h4>{this.props.language === languages.JA ? '結果' : 'Search result'}</h4>
                                 <div className="cards">
                                     {resultSearch.map((shop, idx) => (
                                         <Card
