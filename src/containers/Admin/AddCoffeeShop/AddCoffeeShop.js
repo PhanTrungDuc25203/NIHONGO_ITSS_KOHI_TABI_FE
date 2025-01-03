@@ -76,7 +76,7 @@ class AddCoffeeShop extends Component {
     }
 
     handleServiceChange = (index, e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         const services = [...this.state.services];
         services[index][name] = value;
         this.setState({ services });
@@ -93,16 +93,16 @@ class AddCoffeeShop extends Component {
             alert('Please select an image to upload.');
             return;
         }
-    
+
         const file = files[0];
-    
+
         // Kiểm tra định dạng file
         const validFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
         if (!validFormats.includes(file.type)) {
             alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
             return;
         }
-    
+
         // Kiểm tra kích thước file (giới hạn 5MB)
         const maxSize = 5 * 1024 * 1024; // 5MB
         if (file.size > maxSize) {
@@ -318,7 +318,12 @@ class AddCoffeeShop extends Component {
                                     </div>
                                 </div>
                                 <div>
-                                    <label>Featured drinks</label>
+                                    <div className='add-btn-ctn'>
+                                        <label>Featured drinks</label>
+                                        <div className='add-btn'>
+                                            <button type="button" onClick={this.handleAddDrink}>+ Add Drink</button>
+                                        </div>
+                                    </div>
                                     <div className="featured-drinks">
                                         {this.state.drinks.map((drink, index) => (
                                             <div key={index} className="drink-item">
@@ -363,7 +368,7 @@ class AddCoffeeShop extends Component {
                                                 </div>
                                             </div>
                                         ))}
-                                        <button type="button" onClick={this.handleAddDrink}>+ Add Drink</button>
+                                        {/* <button type="button" onClick={this.handleAddDrink}>+ Add Drink</button> */}
                                     </div>
                                 </div>
                                 <div>
@@ -398,7 +403,13 @@ class AddCoffeeShop extends Component {
                                     </select>
                                 </div>
                                 <div className="amenities">
-                                    <label>Amenities</label>
+                                    <div className='add-btn-ctn'>
+                                        <label>Amenities</label>
+                                        <div className='add-btn'>
+                                            <button type="button" onClick={this.handleAddAmenity}>+ Add Amenity</button>
+                                        </div>
+                                    </div>
+
                                     <div className="amenities-list">
                                         {this.state.amenities.map((amenity, index) => (
                                             <div key={index} className="amenity-item">
@@ -425,11 +436,17 @@ class AddCoffeeShop extends Component {
                                                 />
                                             </div>
                                         ))}
-                                        <button type="button" onClick={this.handleAddAmenity}>+ Add Amenity</button>
+
                                     </div>
                                 </div>
                                 <div className="services">
-                                    <label>Services</label>
+                                    <div className='add-btn-ctn'>
+                                        <label>Services</label>
+                                        <div className='add-btn'>
+                                            <button type="button" onClick={this.handleAddService}>+ Add Service</button>
+                                        </div>
+                                    </div>
+
                                     <div className="services-list">
                                         {this.state.services.map((service, index) => (
                                             <div key={index} className="service-item">
@@ -456,7 +473,7 @@ class AddCoffeeShop extends Component {
                                                 />
                                             </div>
                                         ))}
-                                        <button type="button" onClick={this.handleAddService}>+ Add Service</button>
+
                                     </div>
                                 </div>
                                 <div className="coffee-shop-picture-url">
