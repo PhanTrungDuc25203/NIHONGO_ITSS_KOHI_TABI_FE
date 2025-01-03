@@ -133,7 +133,15 @@ class UserPreference extends Component {
                 const user = response.user;
                 const mappedPreferences = {
                     favoriteStyle: user.favoriteStyle.map((item) => {
-                        return this.state.favoriteStyle.find((itemStyle) => item.style === itemStyle.name_eng) || item;
+                        return this.state.favoriteStyle.map((itemStyle) => {
+                            if (itemStyle.name_fake_eng === item.style) {
+                                return {
+                                    id: itemStyle.name_fake_eng,
+                                    name_eng: itemStyle.name_eng,
+                                    name_jap: itemStyle.name_jap,
+                                }
+                            }
+                        });
                     }),
                     favoriteService: user.favoriteService.map((item) => ({
                         id: item.sid,
@@ -207,7 +215,7 @@ class UserPreference extends Component {
 
         const convertedPreferences = {
             email: email,
-            stylePreference: preferences.favoriteStyle.map(item => String(item.name_fake_eng)),
+            stylePreference: preferences.favoriteStyle.map(item => String(item.id)),
             servicePreference: preferences.favoriteService.map(item => String(item.id)),
             amenityPreference: preferences.favoriteAmenity.map(item => String(item.id)),
             drinkPreference: preferences.favoriteDrink.map(item => String(item.id)),
