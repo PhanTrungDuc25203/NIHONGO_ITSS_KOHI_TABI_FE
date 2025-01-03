@@ -11,8 +11,39 @@ class UserPreference extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            favoriteStyle:[{
+                name_eng: 'Modern',
+                name_jap: 'モダン',
+                name_fake_eng: 'Co-Working',
+                name_fake_jap: 'コワーキング'
+            }, {
+                name_eng: 'Vintage',
+                name_jap: 'ヴィンテージ',
+                name_fake_eng: 'Talking Coffee',
+                name_fake_jap: '話コーヒー'
+            }, {
+                name_eng:'Eco-Friendly',
+                name_jap: 'エコフレンドリー',
+                name_fake_eng: 'Cat',
+                name_fake_jap: '猫'
+            }],
             allPreferences: {
-                favoriteStyle: ['Modern', 'Vintage', 'Eco-Friendly'],
+                favoriteStyle: [{
+                    name_eng: 'Modern',
+                    name_jap: 'モダン',
+                    name_fake_eng: 'Co-Working',
+                    name_fake_jap: 'コワーキング'
+                }, {
+                    name_eng: 'Vintage',
+                    name_jap: 'ヴィンテージ',
+                    name_fake_eng: 'Talking Coffee',
+                    name_fake_jap: '話コーヒー'
+                }, {
+                    name_eng:'Eco-Friendly',
+                    name_jap: 'エコフレンドリー',
+                    name_fake_eng: 'Cat',
+                    name_fake_jap: '猫'
+                }],
                 favoriteService: [],
                 favoriteAmenity: [],
                 favoriteDrink: [],
@@ -48,7 +79,22 @@ class UserPreference extends Component {
             if (response.errCode === 0) {
                 const data = response.data;
                 const mapAllPreferences = {
-                    favoriteStyle: ['Modern', 'Vintage', 'Eco-Friendly'],
+                    favoriteStyle: [{
+                        name_eng: 'Modern',
+                        name_jap: 'モダン',
+                        name_fake_eng: 'Co-Working',
+                        name_fake_jap: 'コワーキング'
+                    }, {
+                        name_eng: 'Vintage',
+                        name_jap: 'ヴィンテージ',
+                        name_fake_eng: 'Talking Coffee',
+                        name_fake_jap: '話コーヒー'
+                    }, {
+                        name_eng:'Eco-Friendly',
+                        name_jap: 'エコフレンドリー',
+                        name_fake_eng: 'Cat',
+                        name_fake_jap: '猫'
+                    }],
                     favoriteService: data.services.map((item) => ({
                         id: item.sid,
                         name_eng: item.name_eng,
@@ -86,7 +132,9 @@ class UserPreference extends Component {
             if (response.errCode === 0) {
                 const user = response.user;
                 const mappedPreferences = {
-                    favoriteStyle: user.favoriteStyle.map((item) => item.style),
+                    favoriteStyle: user.favoriteStyle.map((item) => {
+                        return this.state.favoriteStyle.find((itemStyle) => item.style === itemStyle.name_eng) || item;
+                    }),
                     favoriteService: user.favoriteService.map((item) => ({
                         id: item.sid,
                         name_eng: item.name_eng,
@@ -159,7 +207,7 @@ class UserPreference extends Component {
 
         const convertedPreferences = {
             email: email,
-            stylePreference: preferences.favoriteStyle,
+            stylePreference: preferences.favoriteStyle.map(item => String(item.name_eng)),
             servicePreference: preferences.favoriteService.map(item => String(item.id)),
             amenityPreference: preferences.favoriteAmenity.map(item => String(item.id)),
             drinkPreference: preferences.favoriteDrink.map(item => String(item.id)),
