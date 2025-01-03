@@ -20,7 +20,7 @@ class System extends Component {
                 <div className="system-container">
                     <div className="system-list">
                         <Switch>
-                            <Route path="/system/user-manage" component={UserManage} />
+                            <Route path="/system/user-manage" component={Dashboard} />
                             <Route path="/system/product-manage" component={ProductManage} />
                             <Route path="/system/register-package-group-or-account" component={RegisterPackageGroupOrAcc} />
 
