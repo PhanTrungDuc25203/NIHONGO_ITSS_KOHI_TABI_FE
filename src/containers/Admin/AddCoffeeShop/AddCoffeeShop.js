@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
+import { connect } from 'react-redux';
+import { withRouter, useNavigate, useHistory } from 'react-router-dom';
 import './AddCoffeeShop.scss';
 import all_icons from '../../../assets/Icons/all_icons';
 import { addCoffeeShop, getMaxCoffeeShopId, addDrinkToCoffeeShop, addAmenity, addAmenityToCoffeeShop, addService, addServiceToCoffeeShop } from '../../../services/userService';
 import { Cloudinary } from 'cloudinary-core';
+import { KeyCodeUtils, LanguageUtils, languages } from "../../../utils";
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 
 const cloudinary = new Cloudinary({ cloud_name: 'digakeefg', secure: true });
@@ -234,9 +237,9 @@ class AddCoffeeShop extends Component {
                 <div className="add-coffee-shop">
                     <div className="back-header">
                         <button className="back-button">
-                            <b>&lt;</b> Back to Cafe List
+                            <b>&lt;</b> {this.props.language === languages.JA ? 'カフェリストに戻る' : 'Back to Cafe List'}
                         </button>
-                        <h5>New Cafe</h5>
+                        <h5>{this.props.language === languages.JA ? '新しいカフェ' : 'New Cafe'}</h5>
                     </div>
                     <div className="add-coffee-shop-content">
                         <div className="left-panel">
@@ -245,73 +248,73 @@ class AddCoffeeShop extends Component {
                         <div className="right-panel">
                             <div className="add-coffee-shop-form">
                                 <div>
-                                    <label>Name</label>
+                                    <label>{this.props.language === languages.JA ? '名前' : 'Name'}</label>
                                     <input
                                         type="text"
                                         name="name"
-                                        placeholder="Name"
+                                        placeholder={this.props.language === languages.JA ? '名前' : 'Name'}
                                         value={this.state.name}
                                         onChange={this.handleChange}
                                     />
                                 </div>
                                 <div>
-                                    <label>Province</label>
+                                    <label>{this.props.language === languages.JA ? '県' : 'Province'}</label>
                                     <select
                                         name="province_id"
                                         value={this.state.province_id}
                                         onChange={this.handleChange}
                                     >
-                                        <option value="">Select Province</option>
+                                        <option value="">{this.props.language === languages.JA ? '県を選択' : 'Select Province'}</option>
                                         {provinces.map((province, index) => (
                                             <option key={index} value={index + 1}>{province}</option>
                                         ))}
                                     </select>
                                 </div>
                                 <div>
-                                    <label>Address</label>
+                                    <label>{this.props.language === languages.JA ? '住所' : 'Address'}</label>
                                     <input
                                         type="text"
                                         name="address"
-                                        placeholder="Address"
+                                        placeholder={this.props.language === languages.JA ? '住所' : 'Address'}
                                         value={this.state.address}
                                         onChange={this.handleChange}
                                     />
                                 </div>
                                 <div>
-                                    <label>Price range</label>
+                                    <label>{this.props.language === languages.JA ? '価格帯' : 'Price range'}</label>
                                     <div className="range-input">
                                         <input
                                             type="text"
                                             name="min_price"
-                                            placeholder="Min price"
+                                            placeholder={this.props.language === languages.JA ? '最小価格' : 'Min price'}
                                             value={this.state.min_price}
                                             onChange={this.handleChange}
                                         />
-                                        to
+                                        {this.props.language === languages.JA ? '~ ' : 'to '}
                                         <input
                                             type="text"
                                             name="max_price"
-                                            placeholder="Max price"
+                                            placeholder={this.props.language === languages.JA ? '最大価格' : 'Max price'}
                                             value={this.state.max_price}
                                             onChange={this.handleChange}
                                         />
                                     </div>
                                 </div>
                                 <div>
-                                    <label>Open from</label>
+                                    <label>{this.props.language === languages.JA ? '営業時間' : 'Open from'}</label>
                                     <div className="time-input">
                                         <input
                                             type="text"
                                             name="open_hour"
-                                            placeholder="Open time"
+                                            placeholder={this.props.language === languages.JA ? '開店時間' : 'Open time'}
                                             value={this.state.open_hour}
                                             onChange={this.handleChange}
                                         />
-                                        to
+                                        {this.props.language === languages.JA ? '~ ' : 'to '}
                                         <input
                                             type="text"
                                             name="close_hour"
-                                            placeholder="Close time"
+                                            placeholder={this.props.language === languages.JA ? '閉店時間' : 'Close time'}
                                             value={this.state.close_hour}
                                             onChange={this.handleChange}
                                         />
@@ -319,9 +322,9 @@ class AddCoffeeShop extends Component {
                                 </div>
                                 <div>
                                     <div className='add-btn-ctn'>
-                                        <label>Featured drinks</label>
+                                        <label>{this.props.language === languages.JA ? 'おすすめドリンク' : 'Featured drinks'}</label>
                                         <div className='add-btn'>
-                                            <button type="button" onClick={this.handleAddDrink}>+ Add Drink</button>
+                                            <button type="button" onClick={this.handleAddDrink}>{this.props.language === languages.JA ? '+ ドリンクを追加' : '+ Add Drink'}</button>
                                         </div>
                                     </div>
                                     <div className="featured-drinks">
@@ -332,35 +335,35 @@ class AddCoffeeShop extends Component {
                                                     <input
                                                         type="text"
                                                         name="name_vi"
-                                                        placeholder="New drink (Vietnamese)"
+                                                        placeholder={this.props.language === languages.JA ? '新しいドリンク (ベトナム語)' : 'New drink (Vietnamese)'}
                                                         value={drink.name_vi}
                                                         onChange={(e) => this.handleDrinkChange(index, e)}
                                                     />
                                                     <input
                                                         type="text"
                                                         name="name_eng"
-                                                        placeholder="New drink (English)"
+                                                        placeholder={this.props.language === languages.JA ? '新しいドリンク (英語)' : 'New drink (English)'}
                                                         value={drink.name_eng}
                                                         onChange={(e) => this.handleDrinkChange(index, e)}
                                                     />
                                                     <input
                                                         type="text"
                                                         name="name_ja"
-                                                        placeholder="New drink (Japanese)"
+                                                        placeholder={this.props.language === languages.JA ? '新しいドリンク (日本語)' : 'New drink (Japanese)'}
                                                         value={drink.name_ja}
                                                         onChange={(e) => this.handleDrinkChange(index, e)}
                                                     />
                                                     <input
                                                         type="text"
                                                         name="price"
-                                                        placeholder="Price"
+                                                        placeholder={this.props.language === languages.JA ? '価格' : 'Price'}
                                                         value={drink.price}
                                                         onChange={(e) => this.handleDrinkChange(index, e)}
                                                     />
                                                     <input
                                                         type="text"
                                                         name="picture"
-                                                        placeholder="Drink Picture URL"
+                                                        placeholder={this.props.language === languages.JA ? 'ドリンク画像URL' : 'Drink Picture URL'}
                                                         value={drink.picture}
                                                         onChange={(e) => this.handleDrinkChange(index, e)}
                                                         className="coffee-shop-picture-url"
@@ -372,31 +375,31 @@ class AddCoffeeShop extends Component {
                                     </div>
                                 </div>
                                 <div>
-                                    <label>Description</label>
+                                    <label>{this.props.language === languages.JA ? '説明' : 'Description'}</label>
                                     <textarea
                                         name="description_en"
-                                        placeholder="Description"
+                                        placeholder={this.props.language === languages.JA ? '説明' : 'Description'}
                                         value={this.state.description_en}
                                         onChange={this.handleChange}
                                     ></textarea>
                                 </div>
                                 <div>
-                                    <label>Description Japanese</label>
+                                    <label>{this.props.language === languages.JA ? '説明 (日本語)' : 'Description Japanese'}</label>
                                     <textarea
                                         name="description_jp"
-                                        placeholder="Description Japanese"
+                                        placeholder={this.props.language === languages.JA ? '説明 (日本語)' : 'Description Japanese'}
                                         value={this.state.description_jp}
                                         onChange={this.handleChange}
                                     ></textarea>
                                 </div>
                                 <div>
-                                    <label>Style</label>
+                                    <label>{this.props.language === languages.JA ? 'スタイル' : 'Style'}</label>
                                     <select
                                         name="style"
                                         value={this.state.style}
                                         onChange={this.handleChange}
                                     >
-                                        <option value="">Select Style</option>
+                                        <option value="">{this.props.language === languages.JA ? 'スタイルを選択' : 'Select Style'}</option>
                                         {styles.map((style, index) => (
                                             <option key={index} value={index + 1}>{style}</option>
                                         ))}
@@ -404,9 +407,9 @@ class AddCoffeeShop extends Component {
                                 </div>
                                 <div className="amenities">
                                     <div className='add-btn-ctn'>
-                                        <label>Amenities</label>
+                                        <label>{this.props.language === languages.JA ? '設備' : 'Amenities'}</label>
                                         <div className='add-btn'>
-                                            <button type="button" onClick={this.handleAddAmenity}>+ Add Amenity</button>
+                                            <button type="button" onClick={this.handleAddAmenity}>{this.props.language === languages.JA ? '+ 設備を追加' : '+ Add Amenity'}</button>
                                         </div>
                                     </div>
 
@@ -441,9 +444,9 @@ class AddCoffeeShop extends Component {
                                 </div>
                                 <div className="services">
                                     <div className='add-btn-ctn'>
-                                        <label>Services</label>
+                                        <label>{this.props.language === languages.JA ? 'サービス' : 'Services'}</label>
                                         <div className='add-btn'>
-                                            <button type="button" onClick={this.handleAddService}>+ Add Service</button>
+                                            <button type="button" onClick={this.handleAddService}>{this.props.language === languages.JA ? '+ サービスを追加' : '+ Add Service'}</button>
                                         </div>
                                     </div>
 
@@ -477,7 +480,7 @@ class AddCoffeeShop extends Component {
                                     </div>
                                 </div>
                                 <div className="coffee-shop-picture-url">
-                                    <label>Picture URL</label>
+                                    <label>{this.props.language === languages.JA ? '画像URL' : 'Picture URL'}</label>
                                     <input
                                         type="text"
                                         name="picture"
@@ -498,4 +501,17 @@ class AddCoffeeShop extends Component {
     }
 }
 
-export default AddCoffeeShop;
+const mapStateToProps = state => {
+    return {
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddCoffeeShop));
