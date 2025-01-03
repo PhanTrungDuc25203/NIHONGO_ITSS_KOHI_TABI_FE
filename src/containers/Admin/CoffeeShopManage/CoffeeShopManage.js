@@ -4,6 +4,7 @@ import { getAllCoffeeShopData, adminDeleteCoffeeShop, getMostFavoriteCoffeeShop 
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from "../../../store/actions";
+import { KeyCodeUtils, LanguageUtils, languages } from "../../../utils";
 
 class CoffeeShopManage extends Component {
     constructor(props) {
@@ -200,14 +201,14 @@ class CoffeeShopManage extends Component {
 
         return (
             <div className="coffee-shop-manage">
-                <div className="title">Coffee Management</div>
-                <div className="sub-title">Coffee list</div>
+                <div className="title">{this.props.language === languages.JA ? 'コーヒー管理' : 'Coffee Management'}</div>
+                <div className="sub-title">{this.props.language === languages.JA ? 'コーヒーリスト' : 'Coffee list'}</div>
 
                 <div className="header">
                     <div className="search-bar">
                         <input
                             type="text"
-                            placeholder="Search"
+                            placeholder={this.props.language === languages.JA ? '検索' : 'Search'}
                             className="search-input"
                             onChange={(event) => { this.handleSearch(event) }}
                         />
@@ -216,27 +217,27 @@ class CoffeeShopManage extends Component {
                             onChange={(event) => { this.handleFilterChange(event) }}
                             defaultValue="name"
                         >
-                            <option value="name">Name</option>
-                            <option value="id">Cafe ID</option>
-                            <option value="address">Address</option>
+                            <option value="name">{this.props.language === languages.JA ? '名前' : 'Name'}</option>
+                            <option value="id">{this.props.language === languages.JA ? 'カフェID' : 'Cafe ID'}</option>
+                            <option value="address">{this.props.language === languages.JA ? 'アドレス' : 'Address'}</option>
                         </select>
                     </div>
                     <div className="add-button-container">
-                        <button onClick={this.handleAddNewCoffeeShop}>Add new +</button>
+                        <button onClick={this.handleAddNewCoffeeShop}>{this.props.language === languages.JA ? '新規追加 +' : 'Add new +'}</button>
                     </div>
                 </div>
 
                 <div className="summary">
                     <div className="summary-item">
-                        <p>Total</p>
+                        <p>{this.props.language === languages.JA ? '合計' : 'Total'}</p>
                         <h3>{filteredShops.length}</h3>
                     </div>
                     <div className="summary-item">
-                        <p>Most Favorited</p>
+                        <p>{this.props.language === languages.JA ? '最もお気に入り' : 'Most Favorited'}</p>
                         <h3>{mostFavoriteCoffeeShop && mostFavoriteCoffeeShop}</h3>
                     </div>
                     <div className="summary-item">
-                        <p>Most Searched</p>
+                        <p>{this.props.language === languages.JA ? '最も検索された' : 'Most Searched'}</p>
                         <h3>Lena Page</h3>
                     </div>
                 </div>
@@ -245,12 +246,12 @@ class CoffeeShopManage extends Component {
                     <table>
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Cafe ID</th>
-                                <th>Address</th>
-                                <th>Price</th>
-                                <th>Description</th>
-                                <th>Action</th>
+                                <th>{this.props.language === languages.JA ? '名前' : 'Name'}</th>
+                                <th>{this.props.language === languages.JA ? 'カフェID' : 'Cafe ID'}</th>
+                                <th>{this.props.language === languages.JA ? 'アドレス' : 'Address'}</th>
+                                <th>{this.props.language === languages.JA ? '価格' : 'Price'}</th>
+                                <th>{this.props.language === languages.JA ? '説明' : 'Description'}</th>
+                                <th>{this.props.language === languages.JA ? '操作 (アクション)' : 'Action'}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -262,9 +263,9 @@ class CoffeeShopManage extends Component {
                                     <td>{`${shop.min_price} - ${shop.max_price}`}</td>
                                     <td>{shop.description_eng}</td>
                                     <td>
-                                        <button 
-                                        onClick={() => this.handleEditClick(shop)} 
-                                        className="edit-button">✎</button>
+                                        <button
+                                            onClick={() => this.handleEditClick(shop)}
+                                            className="edit-button">✎</button>
                                         <button
                                             className="delete-button"
                                             onClick={() => this.handleDeleteClick(shop)}

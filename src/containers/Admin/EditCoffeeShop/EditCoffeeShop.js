@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import Layout from '../Layout/Layout';
 import { getCoffeeShopData, getMaxDrinkId, getMaxAmenityId, getMaxServiceId, updateCoffeeShop } from '../../../services/userService';
 import all_icons from '../../../assets/Icons/all_icons';
+import { KeyCodeUtils, LanguageUtils, languages } from "../../../utils";
+import { connect } from 'react-redux';
+import { withRouter, useNavigate, useHistory } from 'react-router-dom';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
-import { withRouter } from 'react-router-dom';
 
 import './EditCoffeeShop.scss';
 
@@ -302,11 +304,11 @@ class EditCoffeeShop extends Component {
                     <div className="edit-coffee-shop">
                         <div className="edit-header">
                             <div>
-                                <button className='back-btn'onClick={this.handleBackButtonClick}> 
-                                &lt; Back to CafeList 
+                                <button className='back-btn' onClick={this.handleBackButtonClick}>
+                                    &lt; {this.props.language === languages.JA ? 'カフェリストに戻る' : 'Back to Cafe List'}
                                 </button>
                                 <div className='title'>
-                                    <h5>New Cafe</h5>
+                                    <h5>{this.props.language === languages.JA ? '新しいカフェ' : 'New Cafe'}</h5>
                                 </div>
                             </div>
                         </div>
@@ -319,11 +321,11 @@ class EditCoffeeShop extends Component {
                             </div>
                             <div className='coffee-shop-info'>
                                 <div className='coffee-shop-id'>
-                                    <label>Cafe ID:</label>
+                                    <label>{this.props.language === languages.JA ? 'カフェID' : 'Cafe ID'}</label>
                                     <input type='text' className='id-input' value={coffeeShopData.data.cid} readOnly />
                                 </div>
                                 <div className="coffee-shop-name">
-                                    <label>Name:</label>
+                                    <label>{this.props.language === languages.JA ? '名前' : 'Name'}</label>
                                     <input
                                         type="text"
                                         onChange={(e) => {
@@ -334,7 +336,7 @@ class EditCoffeeShop extends Component {
                                         value={coffeeShopData.data.name} />
                                 </div>
                                 <div className="coffee-shop-province">
-                                    <label>Province:</label>
+                                    <label>{this.props.language === languages.JA ? '県' : 'Province'}</label>
                                     <select
                                         value={coffeeShopData.data.province_vie || ''}
                                         onChange={(e) => {
@@ -349,7 +351,7 @@ class EditCoffeeShop extends Component {
                                     </select>
                                 </div>
                                 <div className="coffee-shop-address">
-                                    <label>Address:</label>
+                                    <label>{this.props.language === languages.JA ? 'アドレス' : 'Address'}</label>
                                     <input
                                         type="text"
                                         value={coffeeShopData.data.address}
@@ -360,7 +362,7 @@ class EditCoffeeShop extends Component {
                                         }} />
                                 </div>
                                 <div className="price-range">
-                                    <label>Price Range:</label>
+                                    <label>{this.props.language === languages.JA ? '価格帯' : 'Price range'}</label>
                                     <input
                                         type="text"
                                         value={coffeeShopData.data.min_price}
@@ -369,7 +371,7 @@ class EditCoffeeShop extends Component {
                                             updatedData.data.min_price = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
                                         }} />
-                                    <span>to</span>
+                                    <span>{this.props.language === languages.JA ? '~ ' : 'to '}</span>
                                     <input
                                         type="text"
                                         value={coffeeShopData.data.max_price}
@@ -380,7 +382,7 @@ class EditCoffeeShop extends Component {
                                         }} />
                                 </div>
                                 <div className="open-from">
-                                    <label>Open From:</label>
+                                    <label>{this.props.language === languages.JA ? '営業時間' : 'Open from'}</label>
                                     <input
                                         type="text"
                                         value={coffeeShopData.data.open_hour}
@@ -389,7 +391,7 @@ class EditCoffeeShop extends Component {
                                             updatedData.data.open_hour = e.target.value;
                                             this.setState({ coffeeShopData: updatedData });
                                         }} />
-                                    <span>to</span>
+                                    <span>{this.props.language === languages.JA ? '~ ' : 'to '}</span>
                                     <input
                                         type="text"
                                         value={coffeeShopData.data.close_hour}
@@ -401,14 +403,14 @@ class EditCoffeeShop extends Component {
                                 </div>
                                 <div className='featured-drinks'>
                                     <div className='featured-drinks-header'>
-                                        <label>Featured Drinks:</label>
-                                        <button onClick={this.handleAddDrink}>+ New Drink</button>
+                                        <label>{this.props.language === languages.JA ? 'おすすめドリンク' : 'Featured drinks'}</label>
+                                        <button onClick={this.handleAddDrink}>{this.props.language === languages.JA ? '+ ドリンクを追加' : '+ Add Drink'}</button>
                                     </div>
                                     <div className='drink-list'>
                                         {drinks.map((drink, index) => (
                                             <div key={index} className='drink-item'>
                                                 <div className='id-input-container'>
-                                                    <label>Drink ID</label>
+                                                    <label>{this.props.language === languages.JA ? 'ドリンクID' : 'Drink ID'}</label>
                                                     <input className='id-input' type='text' value={drink.did} readOnly />
                                                 </div>
                                                 <div className='image-upload'>
@@ -438,7 +440,7 @@ class EditCoffeeShop extends Component {
                                     </div>
                                 </div>
                                 <div className='coffee-shop-description_eng'>
-                                    <label>Description (English):</label>
+                                    <label>{this.props.language === languages.JA ? '説明 (英語)' : 'Description (English)'}</label>
                                     <textarea
                                         value={coffeeShopData.data.description_eng}
                                         onChange={(e) => {
@@ -448,7 +450,7 @@ class EditCoffeeShop extends Component {
                                         }} />
                                 </div>
                                 <div className='coffee-shop-description_jap'>
-                                    <label>Description (Japanese):</label>
+                                    <label>{this.props.language === languages.JA ? '説明 (日本語)' : 'Description (Japanese)'}</label>
                                     <textarea
                                         value={coffeeShopData.data.description_jap}
                                         onChange={(e) => {
@@ -459,7 +461,7 @@ class EditCoffeeShop extends Component {
                                 </div>
 
                                 <div className="coffee-shop-style">
-                                    <label>Style:</label>
+                                    <label>{this.props.language === languages.JA ? 'スタイル' : 'Style'}</label>
                                     <select
                                         value={coffeeShopData.data.style || ''}
                                         onChange={(e) => {
@@ -476,11 +478,11 @@ class EditCoffeeShop extends Component {
 
                                 <div className='amenities'>
                                     <div className='amenities-header'>
-                                        <label>Amenities:</label>
+                                        <label>{this.props.language === languages.JA ? '設備' : 'Amenities'}</label>
                                         <button
                                             className='amenity-item'
                                             onClick={this.handleAddAmenity}>
-                                            + New Amenity
+                                            {this.props.language === languages.JA ? '+ 新しい設備' : '+ New Amenity'}
                                         </button>
                                     </div>
                                     <div className='amenity-list'>
@@ -500,11 +502,11 @@ class EditCoffeeShop extends Component {
                                 </div>
                                 <div className='services'>
                                     <div className='services-header'>
-                                        <label>Services:</label>
+                                        <label>{this.props.language === languages.JA ? 'サービス' : 'Services'}</label>
                                         <button
                                             className='service-item'
                                             onClick={this.handleAddService}>
-                                            + New Service
+                                            {this.props.language === languages.JA ? '+ 新しいサービス' : '+ New Service'}
                                         </button>
                                     </div>
                                     <div className='service-list'>
@@ -529,7 +531,7 @@ class EditCoffeeShop extends Component {
 
                         </div>
                         <div className='save-button-container'>
-                            <button onClick={this.handleSaveButtonClick}>Save</button>
+                            <button onClick={this.handleSaveButtonClick}>{this.props.language === languages.JA ? '保存' : 'Save'}</button>
                         </div>
                     </div>
                 </Layout>
@@ -537,5 +539,17 @@ class EditCoffeeShop extends Component {
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
+    };
+};
 
-export default withRouter(EditCoffeeShop);
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditCoffeeShop));
