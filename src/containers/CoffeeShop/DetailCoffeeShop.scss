@@ -88,7 +88,7 @@
         }
     }
 
-    .featured-drinks {
+    .featured-drinks-users {
         margin-top: 20px;
 
         .drink-list {
@@ -104,7 +104,9 @@
                     border-radius: 10px;
                 }
             }
+            overflow-x: auto !important;
         }
+
     }
 
     .description {

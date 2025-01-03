@@ -195,7 +195,7 @@ class DetailCoffeeShop extends Component {
                                 <div><p><strong><FormattedMessage id="detail-coffee-shop.open-from" /></strong></p></div>
                                 <div><p> {coffeeShop && coffeeShop.open_hour} - {coffeeShop && coffeeShop.close_hour}</p></div>
                             </div>
-                            <div className="featured-drinks">
+                            <div className="featured-drinks-users">
                                 <h2><FormattedMessage id="detail-coffee-shop.featured-drink" /></h2>
                                 <div className="drink-list">
                                     <div className="drink-list" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
