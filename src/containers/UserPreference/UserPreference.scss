@@ -5,6 +5,15 @@
     flex-direction: column;
     gap: 20px;
 
+    .preference-title {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #333;                                            
+    }
+
     .preference-category {
       flex: 1 1 45%;
       border: 1px solid #ddd;

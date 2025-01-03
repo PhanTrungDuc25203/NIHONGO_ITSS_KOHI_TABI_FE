@@ -240,6 +240,7 @@ class UserPreference extends Component {
             <div className='user-preference'>
                 <Header />
                 <div className='preferences-container'>
+                    <h1 className='preference-title'>{this.props.language === languages.JA ? 'ユーザー設定' : 'User Preference'}</h1>
                     {this.renderCategory('Style', 'スタイル', 'favoriteStyle')}
                     {this.renderCategory('Preferred Services', 'サービス', 'favoriteService')}
                     {this.renderCategory('Preferred Amenities', 'アメニティ', 'favoriteAmenity')}
