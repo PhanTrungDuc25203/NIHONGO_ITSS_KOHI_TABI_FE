@@ -422,19 +422,19 @@ class Homepage extends Component {
                                     <button
                                         className={this.state.selectedAmenityTags.includes(Amenity.WIFI) ? 'active' : ''}
                                         onClick={() => this.handleAmenityTagsSelect(Amenity.WIFI)}
-                                    >Wifi</button>
+                                    >{this.props.language === languages.JA ? 'ワイファイ' : 'Wifi'}</button>
                                     <button
                                         className={this.state.selectedAmenityTags.includes(Amenity.PARKING) ? 'active' : ''}
                                         onClick={() => this.handleAmenityTagsSelect(Amenity.PARKING)}
-                                    >Parking</button>
+                                    >{this.props.language === languages.JA ? '駐車場' : 'Parking'}</button>
                                     <button
                                         className={this.state.selectedAmenityTags.includes(Amenity.AIR_CONDITIONING) ? 'active' : ''}
                                         onClick={() => this.handleAmenityTagsSelect(Amenity.AIR_CONDITIONING)}
-                                    >Air Conditioning</button>
+                                    >{this.props.language === languages.JA ? 'エアコン' : 'Air Conditioning'}Air Conditioning</button>
                                     <button
                                         className={this.state.selectedAmenityTags.includes(Amenity.RESTROOM) ? 'active' : ''}
                                         onClick={() => this.handleAmenityTagsSelect(Amenity.RESTROOM)}
-                                    >Restroom</button>
+                                    >{this.props.language === languages.JA ? 'トイレ' : 'Restroom'}</button>
                                 </div>
                             </div>
                             <div className="filter-group">
@@ -443,19 +443,19 @@ class Homepage extends Component {
                                     <button
                                         className={this.state.selectedServiceTags.includes(Service.TABLE_SERVICE) ? 'active' : ''}
                                         onClick={() => this.handleServiceTagsSelect(Service.TABLE_SERVICE)}
-                                    >Table Service</button>
+                                    >{this.props.language === languages.JA ? 'テーブルサービス' : 'Table Service'}</button>
                                     <button
                                         className={this.state.selectedServiceTags.includes(Service.TAKEAWAY) ? 'active' : ''}
                                         onClick={() => this.handleServiceTagsSelect(Service.TAKEAWAY)}
-                                    >Takeaway</button>
+                                    >{this.props.language === languages.JA ? 'テイクアウト' : 'Takeaway'}</button>
                                     <button
                                         className={this.state.selectedServiceTags.includes(Service.OUTDOOR_SEATING) ? 'active' : ''}
                                         onClick={() => this.handleServiceTagsSelect(Service.OUTDOOR_SEATING)}
-                                    >Outdoor Seating</button>
+                                    >{this.props.language === languages.JA ? '屋外座席' : 'Outdoor Seating'}</button>
                                     <button
                                         className={this.state.selectedServiceTags.includes(Service.EVENT_HOSTING) ? 'active' : ''}
                                         onClick={() => this.handleServiceTagsSelect(Service.EVENT_HOSTING)}
-                                    >Event Hosting</button>
+                                    >{this.props.language === languages.JA ? 'イベント開催' : 'Event Hosting'}</button>
                                 </div>
                             </div>
                         </div>
