@@ -12,37 +12,37 @@ class UserPreference extends Component {
         super(props);
         this.state = {
             favoriteStyle:[{
-                name_eng: 'Modern',
-                name_jap: 'モダン',
-                name_fake_eng: 'Co-Working',
-                name_fake_jap: 'コワーキング'
+                name_fake_eng: 'Modern',
+                name_fake_jap: 'モダン',
+                name_eng: 'Co-Working',
+                name_jap: 'コワーキング'
             }, {
-                name_eng: 'Vintage',
-                name_jap: 'ヴィンテージ',
-                name_fake_eng: 'Talking Coffee',
-                name_fake_jap: '話コーヒー'
+                name_fake_eng: 'Vintage',
+                name_fake_jap: 'ヴィンテージ',
+                name_eng: 'Talking Coffee',
+                name_jap: '話コーヒー'
             }, {
-                name_eng:'Eco-Friendly',
-                name_jap: 'エコフレンドリー',
-                name_fake_eng: 'Cat',
-                name_fake_jap: '猫'
+                name_fake_eng:'Eco-Friendly',
+                name_fake_jap: 'エコフレンドリー',
+                name_eng: 'Cat',
+                name_jap: '猫'
             }],
             allPreferences: {
                 favoriteStyle: [{
-                    name_eng: 'Modern',
-                    name_jap: 'モダン',
-                    name_fake_eng: 'Co-Working',
-                    name_fake_jap: 'コワーキング'
+                    name_fake_eng: 'Modern',
+                    name_fake_jap: 'モダン',
+                    name_eng: 'Co-Working',
+                    name_jap: 'コワーキング'
                 }, {
-                    name_eng: 'Vintage',
-                    name_jap: 'ヴィンテージ',
-                    name_fake_eng: 'Talking Coffee',
-                    name_fake_jap: '話コーヒー'
+                    name_fake_eng: 'Vintage',
+                    name_fake_jap: 'ヴィンテージ',
+                    name_eng: 'Talking Coffee',
+                    name_jap: '話コーヒー'
                 }, {
-                    name_eng:'Eco-Friendly',
-                    name_jap: 'エコフレンドリー',
-                    name_fake_eng: 'Cat',
-                    name_fake_jap: '猫'
+                    name_fake_eng:'Eco-Friendly',
+                    name_fake_jap: 'エコフレンドリー',
+                    name_eng: 'Cat',
+                    name_jap: '猫'
                 }],
                 favoriteService: [],
                 favoriteAmenity: [],
@@ -80,20 +80,20 @@ class UserPreference extends Component {
                 const data = response.data;
                 const mapAllPreferences = {
                     favoriteStyle: [{
-                        name_eng: 'Modern',
-                        name_jap: 'モダン',
-                        name_fake_eng: 'Co-Working',
-                        name_fake_jap: 'コワーキング'
+                        name_fake_eng: 'Modern',
+                        name_fake_jap: 'モダン',
+                        name_eng: 'Co-Working',
+                        name_jap: 'コワーキング'
                     }, {
-                        name_eng: 'Vintage',
-                        name_jap: 'ヴィンテージ',
-                        name_fake_eng: 'Talking Coffee',
-                        name_fake_jap: '話コーヒー'
+                        name_fake_eng: 'Vintage',
+                        name_fake_jap: 'ヴィンテージ',
+                        name_eng: 'Talking Coffee',
+                        name_jap: '話コーヒー'
                     }, {
-                        name_eng:'Eco-Friendly',
-                        name_jap: 'エコフレンドリー',
-                        name_fake_eng: 'Cat',
-                        name_fake_jap: '猫'
+                        name_fake_eng:'Eco-Friendly',
+                        name_fake_jap: 'エコフレンドリー',
+                        name_eng: 'Cat',
+                        name_jap: '猫'
                     }],
                     favoriteService: data.services.map((item) => ({
                         id: item.sid,
@@ -207,7 +207,7 @@ class UserPreference extends Component {
 
         const convertedPreferences = {
             email: email,
-            stylePreference: preferences.favoriteStyle.map(item => String(item.name_eng)),
+            stylePreference: preferences.favoriteStyle.map(item => String(item.name_fake_eng)),
             servicePreference: preferences.favoriteService.map(item => String(item.id)),
             amenityPreference: preferences.favoriteAmenity.map(item => String(item.id)),
             drinkPreference: preferences.favoriteDrink.map(item => String(item.id)),
