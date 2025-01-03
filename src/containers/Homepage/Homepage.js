@@ -430,7 +430,7 @@ class Homepage extends Component {
                                     <button
                                         className={this.state.selectedAmenityTags.includes(Amenity.AIR_CONDITIONING) ? 'active' : ''}
                                         onClick={() => this.handleAmenityTagsSelect(Amenity.AIR_CONDITIONING)}
-                                    >{this.props.language === languages.JA ? 'エアコン' : 'Air Conditioning'}Air Conditioning</button>
+                                    >{this.props.language === languages.JA ? 'エアコン' : 'Air Conditioning'}</button>
                                     <button
                                         className={this.state.selectedAmenityTags.includes(Amenity.RESTROOM) ? 'active' : ''}
                                         onClick={() => this.handleAmenityTagsSelect(Amenity.RESTROOM)}
