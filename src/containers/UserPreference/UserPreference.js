@@ -11,7 +11,7 @@ class UserPreference extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            favoriteStyle:[{
+            favoriteStyle: [{
                 name_fake_eng: 'Modern',
                 name_fake_jap: 'モダン',
                 name_eng: 'Co-Working',
@@ -19,10 +19,10 @@ class UserPreference extends Component {
             }, {
                 name_fake_eng: 'Vintage',
                 name_fake_jap: 'ヴィンテージ',
-                name_eng: 'Talking Coffee',
-                name_jap: '話コーヒー'
+                name_eng: 'Talking',
+                name_jap: '話'
             }, {
-                name_fake_eng:'Eco-Friendly',
+                name_fake_eng: 'Eco-Friendly',
                 name_fake_jap: 'エコフレンドリー',
                 name_eng: 'Cat',
                 name_jap: '猫'
@@ -36,10 +36,10 @@ class UserPreference extends Component {
                 }, {
                     name_fake_eng: 'Vintage',
                     name_fake_jap: 'ヴィンテージ',
-                    name_eng: 'Talking Coffee',
-                    name_jap: '話コーヒー'
+                    name_eng: 'Talking',
+                    name_jap: '話'
                 }, {
-                    name_fake_eng:'Eco-Friendly',
+                    name_fake_eng: 'Eco-Friendly',
                     name_fake_jap: 'エコフレンドリー',
                     name_eng: 'Cat',
                     name_jap: '猫'
@@ -87,10 +87,10 @@ class UserPreference extends Component {
                     }, {
                         name_fake_eng: 'Vintage',
                         name_fake_jap: 'ヴィンテージ',
-                        name_eng: 'Talking Coffee',
-                        name_jap: '話コーヒー'
+                        name_eng: 'Talking',
+                        name_jap: '話'
                     }, {
-                        name_fake_eng:'Eco-Friendly',
+                        name_fake_eng: 'Eco-Friendly',
                         name_fake_jap: 'エコフレンドリー',
                         name_eng: 'Cat',
                         name_jap: '猫'
@@ -132,16 +132,14 @@ class UserPreference extends Component {
             if (response.errCode === 0) {
                 const user = response.user;
                 const mappedPreferences = {
-                    favoriteStyle: user.favoriteStyle.map((item) => {
-                        return this.state.favoriteStyle.map((itemStyle) => {
-                            if (itemStyle.name_fake_eng === item.style) {
-                                return {
-                                    id: itemStyle.name_fake_eng,
-                                    name_eng: itemStyle.name_eng,
-                                    name_jap: itemStyle.name_jap,
-                                }
-                            }
-                        });
+                    favoriteStyle: user.favoriteStyle.flatMap((item) => {
+                        return this.state.favoriteStyle
+                            .filter((itemStyle) => itemStyle.name_fake_eng === item.style)
+                            .map((itemStyle) => ({
+                                id: itemStyle.name_fake_eng,
+                                name_eng: itemStyle.name_eng,
+                                name_jap: itemStyle.name_jap,
+                            }));
                     }),
                     favoriteService: user.favoriteService.map((item) => ({
                         id: item.sid,
@@ -296,7 +294,7 @@ class UserPreference extends Component {
             <div className='user-preference'>
                 <Header />
                 <div className='preferences-container'>
-                    <h1 className='preference-title'>{this.props.language === languages.JA ? 'ユーザー設定' : 'User Preference'}</h1>
+                    <h1 className='preference-title'>{this.props.language === languages.JA ? 'パーソナライズ' : 'User Preference'}</h1>
                     {this.renderCategory('Style', 'スタイル', 'favoriteStyle')}
                     {this.renderCategory('Preferred Services', 'サービス', 'favoriteService')}
                     {this.renderCategory('Preferred Amenities', 'アメニティ', 'favoriteAmenity')}
